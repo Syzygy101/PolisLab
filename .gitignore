@@ -1,0 +1,48 @@
+# Dependencies
+node_modules/
+
+# Build
+dist/
+dist-ssr/
+*.local
+
+# Test / tooling
+coverage/
+playwright-report/
+test-results/
+blob-report/
+.playwright/
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+*.swo
+
+# Env
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+
+# TypeScript
+*.tsbuildinfo
+
+# Pre-existing unpublished local research / third-party reference material.
+# These must not be staged or published with Build 01. Authoritative published
+# research remains research/10_* and LICENSE only.
+/research/01_*
+/research/02_*
+/research/03_*
+/research/04_*
+/research/05_*
+/research/06_*
+/research/07_*
+/research/08_*
+/research/09_*
+/references/

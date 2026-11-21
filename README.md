@@ -40,3 +40,45 @@ An open, source-controlled framework for examining competing institutional and e
 Original PolisLab research text and structured claims in this repository are licensed under [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/). See [LICENSE](LICENSE).
 
 Third-party materials cited or linked here are **not** relicensed. External primary sources remain under their own copyright terms; this release links to them rather than redistributing copyrighted source files.
+
+---
+
+## Application (v0.2 Build 01)
+
+Interactive research laboratory shell with a functional **Claims Explorer** over the authentic v0.1.1 atlas. Other product modules are navigation stubs only.
+
+**Software licensing:** the research artefacts remain under CC BY 4.0 as above. A separate licence decision is still required for the application/software layer; this build does not choose one.
+
+### Requirements
+
+- Node.js `^22.12.0 || >=24` (tested on Node 22.23.1 / npm 10.9.8; matches Vitest 5 / Vite 8 toolchain)
+- npm (lockfile committed)
+
+### Commands
+
+```bash
+npm install
+npx playwright install chromium   # once, for end-to-end tests
+npm run ingest                    # regenerate src/data/claims.generated.json from the CSV
+npm run validate                  # fail nonzero on atlas integrity violations
+npm run dev                       # http://127.0.0.1:5173
+npm run typecheck
+npm run test                      # Vitest unit / component tests
+npm run test:e2e                  # Playwright smoke
+npm run build
+```
+
+The published CSV at `research/10_policy_claims_atlas.csv` remains the source of truth. Generated JSON is a reproducible consumer artefact and must not be edited by hand.
+
+`npm run validate` re-ingests the CSV **and** fails if `src/data/claims.generated.json` is missing or drifts from the atlas (stale or hand-edited generated data cannot silently pass).
+
+### Claims Explorer filter semantics
+
+- Free-text search is case-insensitive; whitespace-only search is ignored.
+- Status filters match the exact published status vocabulary.
+- Mechanism / outcome / case controls are **exact-tag** filters over parsed identifiers. Selecting `M1` matches records tagged `M1` only; it does **not** expand to `M1a` / `M1b` / `M1c`. Family-level expansion is intentionally not implemented in Build 01.
+- Within one dimension, selected tags combine with OR. Across dimensions (and with search), filters combine with AND.
+
+### Production routing
+
+This is a Vite SPA using `BrowserRouter`. Direct links such as `/claims/ATLAS-EMP-002` require the host to serve `index.html` for unknown paths (HTML5 history fallback). Without that fallback, deep links and refresh on claim routes will 404 on static hosts. Configure the equivalent of “SPA fallback to `index.html`” for your host; Build 01 does not choose a deployment provider.
