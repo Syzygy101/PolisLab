@@ -43,11 +43,13 @@ Third-party materials cited or linked here are **not** relicensed. External prim
 
 ---
 
-## Application (v0.2 Build 01)
+## Application (development v0.2 — Build 02)
 
-Interactive research laboratory shell with a functional **Claims Explorer** over the authentic v0.1.1 atlas. Other product modules are navigation stubs only.
+Interactive research laboratory with a **Research Overview** orientation surface and a functional **Claims Explorer** over the authentic v0.1.1 atlas. Casebook Explorer, Mechanism Explorer, Policy Comparison, Evidence Gaps, and the Analytical Sandbox remain deferred navigation stubs only.
 
 **Software licensing:** the research artefacts remain under CC BY 4.0 as above. A separate licence decision is still required for the application/software layer; this build does not choose one.
+
+**Versioning:** application development v0.2 is distinct from research release v0.1.1. The institutional/legal cutoff remains 20 November 2026 (correction pass 21 November 2026); visiting the app later does not refresh that baseline.
 
 ### Requirements
 
@@ -76,8 +78,26 @@ The published CSV at `research/10_policy_claims_atlas.csv` remains the source of
 
 - Free-text search is case-insensitive; whitespace-only search is ignored.
 - Status filters match the exact published status vocabulary.
-- Mechanism / outcome / case controls are **exact-tag** filters over parsed identifiers. Selecting `M1` matches records tagged `M1` only; it does **not** expand to `M1a` / `M1b` / `M1c`. Family-level expansion is intentionally not implemented in Build 01.
+- Mechanism / outcome / case controls are **exact-tag** filters over parsed identifiers. Selecting `M1` matches records tagged `M1` only; it does **not** expand to `M1a` / `M1b` / `M1c`. Family-level expansion is intentionally not implemented.
 - Within one dimension, selected tags combine with OR. Across dimensions (and with search), filters combine with AND.
+
+### Claims Explorer URL filter contract
+
+Filters on `/claims` are mirrored in the query string (shareable and history-friendly):
+
+| Parameter | Meaning | Example |
+| --- | --- | --- |
+| `q` | Free-text search | `/claims?q=land+banking` |
+| `status` | Published status (repeatable) | `/claims?status=absence_of_finding` |
+| `case` | Casebook case ID (repeatable) | `/claims?case=Case1` |
+| `outcome` | Exact outcome tag (repeatable) | `/claims?outcome=O6` |
+| `mechanism` | Exact mechanism tag (repeatable) | `/claims?mechanism=M1` |
+
+- Clearing filters removes the corresponding parameters.
+- **Invalid values:** unknown `status`, `case`, and `outcome` values are **ignored** (not applied to results); an on-page notice lists them. Unknown `mechanism` tags are **retained and applied** as exact-tag filters (may match zero claims). Duplicates are deduplicated. Ignored values are not rewritten out of the address bar until the user changes filters.
+- Committed filter state is the URL. Search typing uses a short local draft then updates `q` (replace) so controls, URL, and results stay consistent without racing keystrokes.
+- Direct claim-detail routes `/claims/:claimId` are unchanged.
+- Overview case / status / outcome actions deep-link into this contract.
 
 ### Production routing
 

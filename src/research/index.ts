@@ -5,3 +5,8 @@ export * from './ingest';
 export * from './queries';
 export * from './safeUrl';
 export * from './validateGenerated';
+export * from './taxonomy';
+export * from './coverage';
+export * from './urlFilters';
+export * from './overviewContent';
+export * from './referenceExpectations';

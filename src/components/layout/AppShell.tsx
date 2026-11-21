@@ -41,7 +41,7 @@ export function AppShell() {
             </div>
             <div className="text-right text-xs text-ink-subtle">
               <p>
-                Research {RESEARCH_RELEASE} · app v0.2 · Build 01
+                Research {RESEARCH_RELEASE} · app development v0.2 · Build 02
               </p>
               <p>Evidence cutoff {RESEARCH_CUTOFF}</p>
               <p>Correction pass {RESEARCH_CORRECTION_PASS}</p>

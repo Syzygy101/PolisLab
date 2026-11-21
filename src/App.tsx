@@ -17,7 +17,7 @@ export default function App() {
           element={
             <PlaceholderPage
               title="Casebook Explorer"
-              description="Worked policy assessments from the v0.1.1 casebook will be interactive here. Not implemented in Build 01."
+              description="Worked policy assessments from the v0.1.1 casebook will be interactive here. Deferred to Build 04 — not implemented in Build 02."
             />
           }
         />
@@ -26,7 +26,7 @@ export default function App() {
           element={
             <PlaceholderPage
               title="Mechanism Explorer"
-              description="Causal mechanism mapping (M1–M6) will be explored here. Not implemented in Build 01."
+              description="Causal mechanism mapping (M1–M6) will be explored here. Deferred — not implemented in Build 02."
             />
           }
         />
@@ -35,7 +35,7 @@ export default function App() {
           element={
             <PlaceholderPage
               title="Policy Comparison Laboratory"
-              description="Structured comparison of admissible claims across cases. Not implemented in Build 01."
+              description="Structured comparison of admissible claims across cases. Deferred — not implemented in Build 02."
             />
           }
         />
@@ -44,7 +44,7 @@ export default function App() {
           element={
             <PlaceholderPage
               title="Evidence Gaps and Falsification"
-              description="Observations that would alter assessments and documented evidence gaps. Not implemented in Build 01."
+              description="Observations that would alter assessments and documented evidence gaps. Deferred — not implemented in Build 02."
             />
           }
         />
@@ -53,7 +53,7 @@ export default function App() {
           element={
             <PlaceholderPage
               title="Analytical Sandbox"
-              description="Separately gated analytical workspace. Not available in this build."
+              description="Separately gated analytical workspace. Deferred and gated — not available in Build 02."
               gated
             />
           }
