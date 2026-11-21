@@ -1,25 +1,32 @@
 /**
- * Validation CLI: nonzero exit when atlas integrity requirements are violated.
- * Checks both the published CSV and the on-disk generated JSON consumer artefact.
+ * Validation CLI: nonzero exit when atlas or casebook integrity requirements fail.
+ * Checks published sources and on-disk generated consumer artefacts.
  */
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   ATLAS_SOURCE_FIELDS,
   ATLAS_SOURCE_PATH,
+  CASEBOOK_SOURCE_PATH,
   EXPECTED_CLAIM_COUNT,
   KNOWN_MISSING_PRIMARY_URL_CLAIM_IDS,
   RESEARCH_RELEASE,
+  findCasebookGeneratedDrift,
   findGeneratedDrift,
   ingestAtlasCsv,
+  ingestCasebookMarkdown,
   ResearchIngestError,
   sha256Hex,
+  type CaseId,
+  validateCasebookDataset,
 } from '../src/research/index.ts';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const atlasPath = path.join(root, ATLAS_SOURCE_PATH);
-const generatedPath = path.join(root, 'src/data/claims.generated.json');
+const casebookPath = path.join(root, CASEBOOK_SOURCE_PATH);
+const generatedClaimsPath = path.join(root, 'src/data/claims.generated.json');
+const generatedCasebookPath = path.join(root, 'src/data/casebook.generated.json');
 
 function main(): void {
   const csvText = readFileSync(atlasPath, 'utf8');
@@ -61,28 +68,82 @@ function main(): void {
     throw new ResearchIngestError('ATLAS-HYP-003 not listed as known missing URL');
   }
 
-  if (!existsSync(generatedPath)) {
+  if (!existsSync(generatedClaimsPath)) {
     throw new ResearchIngestError(
-      `Missing generated dataset at ${path.relative(root, generatedPath)}; run npm run ingest`,
+      `Missing generated dataset at ${path.relative(root, generatedClaimsPath)}; run npm run ingest`,
     );
   }
 
-  const generatedRaw: unknown = JSON.parse(readFileSync(generatedPath, 'utf8'));
-  const drift = findGeneratedDrift(dataset, generatedRaw);
-  if (drift.length > 0) {
+  const generatedClaimsRaw: unknown = JSON.parse(
+    readFileSync(generatedClaimsPath, 'utf8'),
+  );
+  const claimsDrift = findGeneratedDrift(dataset, generatedClaimsRaw);
+  if (claimsDrift.length > 0) {
     throw new ResearchIngestError(
-      'Generated dataset drifts from published atlas',
-      drift,
+      'Generated claims dataset drifts from published atlas',
+      claimsDrift,
     );
   }
+
+  const knownClaimIds = new Set(dataset.claims.map((c) => c.claim_id));
+  const atlasMembershipByCase = new Map<CaseId, Set<string>>();
+  for (const claim of dataset.claims) {
+    for (const caseId of claim.cases) {
+      const set = atlasMembershipByCase.get(caseId as CaseId) ?? new Set<string>();
+      set.add(claim.claim_id);
+      atlasMembershipByCase.set(caseId as CaseId, set);
+    }
+  }
+
+  const casebookMarkdown = readFileSync(casebookPath, 'utf8');
+  const casebookChecksum = sha256Hex(casebookMarkdown);
+  const casebook = ingestCasebookMarkdown(casebookMarkdown, {
+    sourceFile: CASEBOOK_SOURCE_PATH,
+    knownClaimIds,
+    atlasMembershipByCase,
+  });
+  validateCasebookDataset(casebook, dataset.claims);
+
+  if (!existsSync(generatedCasebookPath)) {
+    throw new ResearchIngestError(
+      `Missing generated casebook at ${path.relative(root, generatedCasebookPath)}; run npm run ingest`,
+    );
+  }
+  const generatedCasebookRaw: unknown = JSON.parse(
+    readFileSync(generatedCasebookPath, 'utf8'),
+  );
+  const casebookDrift = findCasebookGeneratedDrift(casebook, generatedCasebookRaw);
+  if (casebookDrift.length > 0) {
+    throw new ResearchIngestError(
+      'Generated casebook drifts from published Markdown',
+      casebookDrift,
+    );
+  }
+
+  // Unpublished working files must not be bundled as application source artefacts.
+  for (const name of readdirSync(path.join(root, 'src/data'))) {
+    if (/^0[1-9]_/.test(name)) {
+      throw new ResearchIngestError(
+        `Unpublished research artefact copied into src/data: ${name}`,
+      );
+    }
+  }
+
 
   console.log('Research validation passed');
   console.log(`  release: ${RESEARCH_RELEASE}`);
   console.log(`  claims:  ${dataset.claims.length}`);
   console.log(`  fields:  ${dataset.provenance.fields.length}`);
-  console.log(`  sha256:  ${checksum}`);
-  console.log(`  source:  ${ATLAS_SOURCE_PATH}`);
-  console.log(`  generated: ${path.relative(root, generatedPath)} (in sync)`);
+  console.log(`  atlas sha256:  ${checksum}`);
+  console.log(`  casebook cases: ${casebook.cases.length}`);
+  console.log(`  casebook sections: ${casebook.provenance.sectionCount}`);
+  console.log(`  casebook sha256: ${casebookChecksum}`);
+  console.log(`  source atlas:  ${ATLAS_SOURCE_PATH}`);
+  console.log(`  source casebook: ${CASEBOOK_SOURCE_PATH}`);
+  console.log(`  generated claims: ${path.relative(root, generatedClaimsPath)} (in sync)`);
+  console.log(
+    `  generated casebook: ${path.relative(root, generatedCasebookPath)} (in sync)`,
+  );
 }
 
 try {

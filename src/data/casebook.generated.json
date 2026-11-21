@@ -1,0 +1,630 @@
+{
+  "provenance": {
+    "sourceFile": "research/10_policy_assessment_casebook.md",
+    "researchRelease": "v0.1.1",
+    "researchCutoff": "20 November 2026",
+    "correctionPass": "21 November 2026",
+    "sourceContentSha256": "3da0e29c56f05f76b9cd0c663d3372140122ca39c71d5a202a298cf7c7ca4c08",
+    "generatedAt": "2026-11-21T23:15:26.822Z",
+    "caseCount": 4,
+    "sectionCount": 40
+  },
+  "frontMatterMarkdown": "# Policy Assessment Casebook — Evidence-Based Synthesis v0.1.1\n\n**Document type:** Phase 0F worked policy assessments (public-release correction)  \n**Project:** PolisLab  \n**Release label:** dated policy synthesis v0.1.1 (correction pass 21 November 2026)  \n**Foundation cutoff:** 20 November 2026 (institutional/legal); selected administrative observations dated in-text  \n**Companion atlas:** `research/10_policy_claims_atlas.csv`  \n**Status:** Source-controlled synthesis. Not legal advice. Not an original empirical or theoretical paper. Does not select a policy winner, calibrate a simulator, or invent effect sizes.\n\n---\n\n## How to use this casebook\n\nEach case answers a **precise counterfactual policy question** by applying already verified PolisLab evidence: what the law establishes, what empirics support, which mechanisms are plausible, what could reverse the prediction, and what cannot presently be concluded.\n\n| Label | Meaning |\n|-------|---------|\n| **Layer A** | Law in force |\n| **Layer B** | Administrative practice / observed outcomes |\n| **Layer C** | Announced reforms not treated as current entitlements |\n| **Layer D** | Hypothetical PolisLab instruments |\n\n**Atlas case membership.** The CSV field `casebook_cases` means **direct citation** of that claim ID in the named case body (or in this front-matter where a hard rule is stated to apply to all four cases). It does **not** mean every background source that might be relevant.\n\n**Hard rules retained from Phases 0B–0E** (**ATLAS-ASM-002**; **ATLAS-CON-003** — all cases)\n\n1. Access ≠ capacity ≠ viability ≠ survival ≠ durable constraint ≠ welfare (**O1–O6**).  \n2. Absence of an ACCC land-banking finding is **not** proof that foreclosure is absent.  \n3. US/UK magnitudes are **not** Australian parameters.  \n4. Entry counts, planning approvals, and acquisition notifications do **not** imply welfare.  \n5. Phase 0D.2 toy-game propositions are **not** validated analytical results (**ATLAS-HYP-002**).  \n6. ALDI SA/WA 2016 chronology is an **O2 benchmark**, not a causal estimate (**ATLAS-HYP-004**).\n\n**Mechanism shorthand:** **M1** site/planning/foreclosure · **M2** scale/logistics · **M3** demand/format · **M4** incumbent response · **M5** finance/sunk/exit · **M6** FDI mode/frictions.\n\n---\n",
+  "commonRuleClaimIds": [
+    "ATLAS-ASM-002",
+    "ATLAS-CON-003"
+  ],
+  "cases": [
+    {
+      "id": "Case1",
+      "title": "Undeveloped supermarket sites",
+      "heading": "Case 1 — Undeveloped supermarket sites",
+      "markdown": "## Case 1 — Undeveloped supermarket sites\n\n### 1. Precise policy question\n\nRelative to **current Australian law** (post-2026 merger notification, CCA potential, FIRB foreign vacant-land conditions where triggered), would either of the following **Layer D** instruments be expected — on existing evidence — to improve rival **market access (O1)** and subsequent **productive capacity (O2)** at undeveloped supermarket-capable sites:\n\n- **R — Develop-or-release:** a duty on controllers of strategically important undeveloped supermarket sites to develop within a stated deadline or release control; or  \n- **E — Exclusivity restriction:** a categorical limit or ban on grocery exclusivity / exclusionary covenants that prevent rival grocery use of a controlled site or centre?\n\nThe assessment **does not presume** that site release improves competition.\n\n### 2. Legally accurate baseline\n\n| Element | What current law/institutions do | Atlas IDs |\n|---------|----------------------------------|-----------|\n| Unused incumbent pipelines | ACCC inquiry documented undeveloped/unused pipelines intended for future supermarket use: ALDI **17**, Coles **59**, Woolworths **105** (Coles+Woolworths **164**) — **descriptive**, not a divestiture order | ATLAS-EMP-001 |\n| Nationwide exclusionary land banking | Inquiry **did not** determine case-by-case land banking; outside scope — **absence of finding** | ATLAS-EMP-002 |\n| Major-supermarket land/business acquisitions | Mandatory ACCC notification for Coles/Woolworths connected entities under Determination ss 1-7, 3-1–3-3 (size tests; carve-outs; sunset 30 Jun 2030) | ATLAS-LEG-006; ATLAS-LEG-007 |\n| Foreign vacant commercial land | Generally $0 **notification** for foreign vacant commercial land; Guidance Note 4 separately describes **typical** productive-use / ~5-year construction **conditions** — foreign acquirers, not a domestic incumbent release statute | ATLAS-LEG-003 |\n| Restrictive covenants / exclusivity | CCA can reach anti-competitive provisions; historical undertakings exist; **no verified comprehensive statutory grocery-exclusion ban** matching a blanket PolisLab rule | ATLAS-POL-002 |\n| Numeric local site-share caps | **No verified statute**; 40% cap is Layer D only | ATLAS-POL-004 |\n\n**Baseline framing:** Australia is **not** a site-control vacuum after 1 January 2026 (**ATLAS-ASM-001**). What remains additional is automatic release, numeric caps, and a blanket exclusivity ban beyond case-by-case CCA/merger tools (**ATLAS-POL-001**).\n\n### 3. Counterfactual interventions (defined)\n\n| Instrument | Definition used here | Explicitly **not** claimed |\n|------------|----------------------|----------------------------|\n| **R** | If a designated controller holds exclusive undeveloped control of a qualifying supermarket-capable site past a statutory milestone, it must **develop** (open or commence continuous development under defined criteria) or **release** control into an open assignment process | That released sites go to rivals; that deadlines are constitutionally settled; that R restates FIRB practice |\n| **E** | Grocery exclusivity clauses / covenants that prevent rival supermarket use on the controlled parcel or designated centre are **void or prohibited**, subject to any transitional carve-outs | That E is costless for landlord development inducement; that E equals R |\n\nBoth are **Layer D**. Legal feasibility of compulsory release / property-rights characterisation remains **UNVERIFIED** specialist territory (Phase 0B gap).\n\n### 4. Affected causal mechanisms\n\n| Mechanism | Role |\n|-----------|------|\n| **M1a** physical/commercial scarcity | Unused sites may reflect genuine scarcity of *other* viable parcels |\n| **M1b** planning/zoning | Holding may track permission delay, contamination, liquor, or centre design — not exclusion |\n| **M1c** strategic foreclosure | Holding/options/covenants *may* raise rivals’ costs — **live hypothesis**, not proven general pattern (**ATLAS-HYP-001**) |\n| **M4a** ordinary rivalry | Leasehold expansion can be competitive rivalry with exit-risk side effects — illustrated by the ACCC’s Kalgoorlie determination and its prospective theory of harm (**ATLAS-ADM-002**); distinct from M1c |\n| **M4b** exclusionary response | Preemption via sites/covenants/acquisitions of nascent constraints |\n| **M5a** irreversible investment / option value | Vacant control can be efficient waiting under uncertainty |\n\n**Required separation:** scarcity ≠ planning ≠ foreclosure. Table 3.3 counts are compatible with all three (**ATLAS-EMP-001**; **ATLAS-EMP-002**).\n\n### 5. What existing evidence supports or contradicts\n\n**Supports treating sites as a material candidate constraint**\n\n- ACCC: suitable sites limited; majors advantaged; planning/zoning can deter entry (**ATLAS-EMP-003**).  \n- UK: more restrictive planning associated with fewer large-format stores — Griffith & Harmgart (**ATLAS-LIT-006**; https://doi.org/10.1080/09593969.2011.634071).  \n- UK: Town Centre First associated with less productive store locations — Cheshire, Hilber & Kaplanis (2015) (**ATLAS-LIT-006** companion; https://doi.org/10.1093/jeg/lbu007).  \n- UK CC: controlled land *can* barrier entry in highly concentrated local markets (**ATLAS-LIT-004**).\n\n**Does *not* support a nationwide foreclosure premise**\n\n- ACCC absence of land-banking determination (**ATLAS-EMP-002**).  \n- UK CC absence of systematic sole-purpose holding — also an absence of finding, not contrary proof (**ATLAS-LIT-004**).  \n- No AU public causal decomposition of M1a/M1b/M1c registered (**ATLAS-GAP-001**).\n\n**Instrument-specific cautions (qualitative; not validated AU estimates)**\n\n- **Sadun (2015):** restricting large formats can induce chain format shifts that harm independents (**ATLAS-LIT-003**).  \n- **Conditional mechanisms for R vs E** (substitution between holding and exclusivity; incumbent re-bidding after release; reduced development incentives if exclusivity is banned in sparse markets): treated as **qualitative hypotheses**, with the development-inducement channel anchored to Schneier’s exclusive-dealing research — **not** as Phase 0D.2 equilibrium proof (**ATLAS-HYP-002**).  \n- **UK CLO effectiveness** for consumer outcomes **not verified**; 2026 Aldi/Lidl designation is institutional only (**ATLAS-GAP-004**).\n\n### 6. Plausible favourable, unfavourable and null pathways\n\n| Pathway | R (develop-or-release) | E (exclusivity restriction) |\n|---------|------------------------|-----------------------------|\n| **Favourable** | Forces productive use or frees control where **M1c holding** was the binding block; rivals obtain released sites and open (**O1→O2**) | Removes contractual blocks while landlord still develops; rivals enter centres previously locked (**O1**) |\n| **Unfavourable** | Destroys efficient **option value**; premature/low-productivity development; incumbent **self-develops** after release and still excludes rivals; planning (**M1b**) remains binding so release changes little | Landlord willingness to support development falls where exclusivity was an inducement; **Idle** capacity; substitution into ownership/option holding if E bans contracts but not fee-simple vacant control |\n| **Null** | Sites were never commercially viable for rivals (scarcity/planning); release auctions won by incumbents; no change in fascia counts or prices | Exclusivity was not the binding constraint; CCA already constrained the worst clauses; centres redesign around other barriers |\n\n### 7. Which O1–O6 outcomes can be assessed\n\n| Outcome | Assessable now? | Basis |\n|---------|-----------------|-------|\n| **O1** | Partially (qualitative) | Pipeline facts; notification coverage of *new* major acquisitions; covenant text largely non-public |\n| **O2** | Weakly | Release/develop rules speak to whether capacity appears; who operates is unidentified |\n| **O3–O4** | Not from instrument text alone | Need demand and rivalry evidence |\n| **O5–O6** | **Not** | No AU diversion/welfare estimates; forbid inference from site counts (**ATLAS-CON-003**) |\n\n### 8. What cannot currently be inferred\n\n- That unused Coles/Woolworths sites are predominantly strategic foreclosure.  \n- That R or E would raise consumer welfare.  \n- That R outperforms E (or the reverse) in Australian grocery — Phase 0D.2 explored related substitution in a stylised game and **rejected** it as an original contribution; those propositions are **not** treated here as established equilibrium results (**ATLAS-HYP-002**).  \n- That UK controlled-land remedies “worked” in a welfare sense.  \n- Constitutional/administrative feasibility of compulsory release or numeric caps.\n\n### 9. Evidence that would materially change the answer\n\n1. Parcel-level findings (ACCC/court) establishing exclusionary intent in a material share of long-held sites — or systematic rejection of that characterisation.  \n2. Observed assignment of released sites to non-incumbents with subsequent openings.  \n3. AU quasi-experiment decomposing planning delay vs holding vs exclusivity.  \n4. Credible evaluation of exclusivity bans’ effects on *developed* grocery capacity (inducement channel).  \n5. Specialist confirmation of a lawful, administrable release regime.\n\n### 10. Carefully qualified conclusion\n\n**On existing evidence, neither R nor E can be ranked as a welfare-improving reform.** Current law already scrutinises many major-supermarket *acquisitions* of qualifying land and applies foreign vacant-land development conditions where FIRB is triggered. The ACCC pipeline shows **many undeveloped sites** without proving **why** they are undeveloped. A serious reader can therefore evaluate site policies only by keeping **M1a / M1b / M1c / option value** as competing explanations, treating R and E as **additional** instruments with **sign-reversal risk** (premature development; re-acquisition after release; inducement failure under exclusivity bans), and refusing any claim that “releasing sites improves competition” without evidence on **who obtains the site** and **what consumers pay**.\n",
+      "sections": [
+        {
+          "number": 1,
+          "title": "Precise policy question",
+          "heading": "1. Precise policy question",
+          "anchor": "section-1",
+          "markdown": "Relative to **current Australian law** (post-2026 merger notification, CCA potential, FIRB foreign vacant-land conditions where triggered), would either of the following **Layer D** instruments be expected — on existing evidence — to improve rival **market access (O1)** and subsequent **productive capacity (O2)** at undeveloped supermarket-capable sites:\n\n- **R — Develop-or-release:** a duty on controllers of strategically important undeveloped supermarket sites to develop within a stated deadline or release control; or  \n- **E — Exclusivity restriction:** a categorical limit or ban on grocery exclusivity / exclusionary covenants that prevent rival grocery use of a controlled site or centre?\n\nThe assessment **does not presume** that site release improves competition.\n",
+          "explicitClaimIds": []
+        },
+        {
+          "number": 2,
+          "title": "Legally accurate baseline",
+          "heading": "2. Legally accurate baseline",
+          "anchor": "section-2",
+          "markdown": "| Element | What current law/institutions do | Atlas IDs |\n|---------|----------------------------------|-----------|\n| Unused incumbent pipelines | ACCC inquiry documented undeveloped/unused pipelines intended for future supermarket use: ALDI **17**, Coles **59**, Woolworths **105** (Coles+Woolworths **164**) — **descriptive**, not a divestiture order | ATLAS-EMP-001 |\n| Nationwide exclusionary land banking | Inquiry **did not** determine case-by-case land banking; outside scope — **absence of finding** | ATLAS-EMP-002 |\n| Major-supermarket land/business acquisitions | Mandatory ACCC notification for Coles/Woolworths connected entities under Determination ss 1-7, 3-1–3-3 (size tests; carve-outs; sunset 30 Jun 2030) | ATLAS-LEG-006; ATLAS-LEG-007 |\n| Foreign vacant commercial land | Generally $0 **notification** for foreign vacant commercial land; Guidance Note 4 separately describes **typical** productive-use / ~5-year construction **conditions** — foreign acquirers, not a domestic incumbent release statute | ATLAS-LEG-003 |\n| Restrictive covenants / exclusivity | CCA can reach anti-competitive provisions; historical undertakings exist; **no verified comprehensive statutory grocery-exclusion ban** matching a blanket PolisLab rule | ATLAS-POL-002 |\n| Numeric local site-share caps | **No verified statute**; 40% cap is Layer D only | ATLAS-POL-004 |\n\n**Baseline framing:** Australia is **not** a site-control vacuum after 1 January 2026 (**ATLAS-ASM-001**). What remains additional is automatic release, numeric caps, and a blanket exclusivity ban beyond case-by-case CCA/merger tools (**ATLAS-POL-001**).\n",
+          "explicitClaimIds": [
+            "ATLAS-ASM-001",
+            "ATLAS-EMP-001",
+            "ATLAS-EMP-002",
+            "ATLAS-LEG-003",
+            "ATLAS-LEG-006",
+            "ATLAS-LEG-007",
+            "ATLAS-POL-001",
+            "ATLAS-POL-002",
+            "ATLAS-POL-004"
+          ]
+        },
+        {
+          "number": 3,
+          "title": "Counterfactual interventions (defined)",
+          "heading": "3. Counterfactual interventions (defined)",
+          "anchor": "section-3",
+          "markdown": "| Instrument | Definition used here | Explicitly **not** claimed |\n|------------|----------------------|----------------------------|\n| **R** | If a designated controller holds exclusive undeveloped control of a qualifying supermarket-capable site past a statutory milestone, it must **develop** (open or commence continuous development under defined criteria) or **release** control into an open assignment process | That released sites go to rivals; that deadlines are constitutionally settled; that R restates FIRB practice |\n| **E** | Grocery exclusivity clauses / covenants that prevent rival supermarket use on the controlled parcel or designated centre are **void or prohibited**, subject to any transitional carve-outs | That E is costless for landlord development inducement; that E equals R |\n\nBoth are **Layer D**. Legal feasibility of compulsory release / property-rights characterisation remains **UNVERIFIED** specialist territory (Phase 0B gap).\n",
+          "explicitClaimIds": []
+        },
+        {
+          "number": 4,
+          "title": "Affected causal mechanisms",
+          "heading": "4. Affected causal mechanisms",
+          "anchor": "section-4",
+          "markdown": "| Mechanism | Role |\n|-----------|------|\n| **M1a** physical/commercial scarcity | Unused sites may reflect genuine scarcity of *other* viable parcels |\n| **M1b** planning/zoning | Holding may track permission delay, contamination, liquor, or centre design — not exclusion |\n| **M1c** strategic foreclosure | Holding/options/covenants *may* raise rivals’ costs — **live hypothesis**, not proven general pattern (**ATLAS-HYP-001**) |\n| **M4a** ordinary rivalry | Leasehold expansion can be competitive rivalry with exit-risk side effects — illustrated by the ACCC’s Kalgoorlie determination and its prospective theory of harm (**ATLAS-ADM-002**); distinct from M1c |\n| **M4b** exclusionary response | Preemption via sites/covenants/acquisitions of nascent constraints |\n| **M5a** irreversible investment / option value | Vacant control can be efficient waiting under uncertainty |\n\n**Required separation:** scarcity ≠ planning ≠ foreclosure. Table 3.3 counts are compatible with all three (**ATLAS-EMP-001**; **ATLAS-EMP-002**).\n",
+          "explicitClaimIds": [
+            "ATLAS-ADM-002",
+            "ATLAS-EMP-001",
+            "ATLAS-EMP-002",
+            "ATLAS-HYP-001"
+          ]
+        },
+        {
+          "number": 5,
+          "title": "What existing evidence supports or contradicts",
+          "heading": "5. What existing evidence supports or contradicts",
+          "anchor": "section-5",
+          "markdown": "**Supports treating sites as a material candidate constraint**\n\n- ACCC: suitable sites limited; majors advantaged; planning/zoning can deter entry (**ATLAS-EMP-003**).  \n- UK: more restrictive planning associated with fewer large-format stores — Griffith & Harmgart (**ATLAS-LIT-006**; https://doi.org/10.1080/09593969.2011.634071).  \n- UK: Town Centre First associated with less productive store locations — Cheshire, Hilber & Kaplanis (2015) (**ATLAS-LIT-006** companion; https://doi.org/10.1093/jeg/lbu007).  \n- UK CC: controlled land *can* barrier entry in highly concentrated local markets (**ATLAS-LIT-004**).\n\n**Does *not* support a nationwide foreclosure premise**\n\n- ACCC absence of land-banking determination (**ATLAS-EMP-002**).  \n- UK CC absence of systematic sole-purpose holding — also an absence of finding, not contrary proof (**ATLAS-LIT-004**).  \n- No AU public causal decomposition of M1a/M1b/M1c registered (**ATLAS-GAP-001**).\n\n**Instrument-specific cautions (qualitative; not validated AU estimates)**\n\n- **Sadun (2015):** restricting large formats can induce chain format shifts that harm independents (**ATLAS-LIT-003**).  \n- **Conditional mechanisms for R vs E** (substitution between holding and exclusivity; incumbent re-bidding after release; reduced development incentives if exclusivity is banned in sparse markets): treated as **qualitative hypotheses**, with the development-inducement channel anchored to Schneier’s exclusive-dealing research — **not** as Phase 0D.2 equilibrium proof (**ATLAS-HYP-002**).  \n- **UK CLO effectiveness** for consumer outcomes **not verified**; 2026 Aldi/Lidl designation is institutional only (**ATLAS-GAP-004**).\n",
+          "explicitClaimIds": [
+            "ATLAS-EMP-002",
+            "ATLAS-EMP-003",
+            "ATLAS-GAP-001",
+            "ATLAS-GAP-004",
+            "ATLAS-HYP-002",
+            "ATLAS-LIT-003",
+            "ATLAS-LIT-004",
+            "ATLAS-LIT-006"
+          ]
+        },
+        {
+          "number": 6,
+          "title": "Plausible favourable, unfavourable and null pathways",
+          "heading": "6. Plausible favourable, unfavourable and null pathways",
+          "anchor": "section-6",
+          "markdown": "| Pathway | R (develop-or-release) | E (exclusivity restriction) |\n|---------|------------------------|-----------------------------|\n| **Favourable** | Forces productive use or frees control where **M1c holding** was the binding block; rivals obtain released sites and open (**O1→O2**) | Removes contractual blocks while landlord still develops; rivals enter centres previously locked (**O1**) |\n| **Unfavourable** | Destroys efficient **option value**; premature/low-productivity development; incumbent **self-develops** after release and still excludes rivals; planning (**M1b**) remains binding so release changes little | Landlord willingness to support development falls where exclusivity was an inducement; **Idle** capacity; substitution into ownership/option holding if E bans contracts but not fee-simple vacant control |\n| **Null** | Sites were never commercially viable for rivals (scarcity/planning); release auctions won by incumbents; no change in fascia counts or prices | Exclusivity was not the binding constraint; CCA already constrained the worst clauses; centres redesign around other barriers |\n",
+          "explicitClaimIds": []
+        },
+        {
+          "number": 7,
+          "title": "Which O1–O6 outcomes can be assessed",
+          "heading": "7. Which O1–O6 outcomes can be assessed",
+          "anchor": "section-7",
+          "markdown": "| Outcome | Assessable now? | Basis |\n|---------|-----------------|-------|\n| **O1** | Partially (qualitative) | Pipeline facts; notification coverage of *new* major acquisitions; covenant text largely non-public |\n| **O2** | Weakly | Release/develop rules speak to whether capacity appears; who operates is unidentified |\n| **O3–O4** | Not from instrument text alone | Need demand and rivalry evidence |\n| **O5–O6** | **Not** | No AU diversion/welfare estimates; forbid inference from site counts (**ATLAS-CON-003**) |\n",
+          "explicitClaimIds": [
+            "ATLAS-CON-003"
+          ]
+        },
+        {
+          "number": 8,
+          "title": "What cannot currently be inferred",
+          "heading": "8. What cannot currently be inferred",
+          "anchor": "section-8",
+          "markdown": "- That unused Coles/Woolworths sites are predominantly strategic foreclosure.  \n- That R or E would raise consumer welfare.  \n- That R outperforms E (or the reverse) in Australian grocery — Phase 0D.2 explored related substitution in a stylised game and **rejected** it as an original contribution; those propositions are **not** treated here as established equilibrium results (**ATLAS-HYP-002**).  \n- That UK controlled-land remedies “worked” in a welfare sense.  \n- Constitutional/administrative feasibility of compulsory release or numeric caps.\n",
+          "explicitClaimIds": [
+            "ATLAS-HYP-002"
+          ]
+        },
+        {
+          "number": 9,
+          "title": "Evidence that would materially change the answer",
+          "heading": "9. Evidence that would materially change the answer",
+          "anchor": "section-9",
+          "markdown": "1. Parcel-level findings (ACCC/court) establishing exclusionary intent in a material share of long-held sites — or systematic rejection of that characterisation.  \n2. Observed assignment of released sites to non-incumbents with subsequent openings.  \n3. AU quasi-experiment decomposing planning delay vs holding vs exclusivity.  \n4. Credible evaluation of exclusivity bans’ effects on *developed* grocery capacity (inducement channel).  \n5. Specialist confirmation of a lawful, administrable release regime.\n",
+          "explicitClaimIds": []
+        },
+        {
+          "number": 10,
+          "title": "Carefully qualified conclusion",
+          "heading": "10. Carefully qualified conclusion",
+          "anchor": "section-10",
+          "markdown": "**On existing evidence, neither R nor E can be ranked as a welfare-improving reform.** Current law already scrutinises many major-supermarket *acquisitions* of qualifying land and applies foreign vacant-land development conditions where FIRB is triggered. The ACCC pipeline shows **many undeveloped sites** without proving **why** they are undeveloped. A serious reader can therefore evaluate site policies only by keeping **M1a / M1b / M1c / option value** as competing explanations, treating R and E as **additional** instruments with **sign-reversal risk** (premature development; re-acquisition after release; inducement failure under exclusivity bans), and refusing any claim that “releasing sites improves competition” without evidence on **who obtains the site** and **what consumers pay**.\n",
+          "explicitClaimIds": []
+        }
+      ],
+      "bodyClaimIds": [
+        "ATLAS-ADM-002",
+        "ATLAS-ASM-001",
+        "ATLAS-CON-003",
+        "ATLAS-EMP-001",
+        "ATLAS-EMP-002",
+        "ATLAS-EMP-003",
+        "ATLAS-GAP-001",
+        "ATLAS-GAP-004",
+        "ATLAS-HYP-001",
+        "ATLAS-HYP-002",
+        "ATLAS-LEG-003",
+        "ATLAS-LEG-006",
+        "ATLAS-LEG-007",
+        "ATLAS-LIT-003",
+        "ATLAS-LIT-004",
+        "ATLAS-LIT-006",
+        "ATLAS-POL-001",
+        "ATLAS-POL-002",
+        "ATLAS-POL-004"
+      ],
+      "membershipClaimIds": [
+        "ATLAS-ADM-002",
+        "ATLAS-ASM-001",
+        "ATLAS-ASM-002",
+        "ATLAS-CON-003",
+        "ATLAS-EMP-001",
+        "ATLAS-EMP-002",
+        "ATLAS-EMP-003",
+        "ATLAS-GAP-001",
+        "ATLAS-GAP-004",
+        "ATLAS-HYP-001",
+        "ATLAS-HYP-002",
+        "ATLAS-LEG-003",
+        "ATLAS-LEG-006",
+        "ATLAS-LEG-007",
+        "ATLAS-LIT-003",
+        "ATLAS-LIT-004",
+        "ATLAS-LIT-006",
+        "ATLAS-POL-001",
+        "ATLAS-POL-002",
+        "ATLAS-POL-004"
+      ]
+    },
+    {
+      "id": "Case2",
+      "title": "Foreign greenfield grocery investment",
+      "heading": "Case 2 — Foreign greenfield grocery investment",
+      "markdown": "## Case 2 — Foreign greenfield grocery investment\n\n### 1. Precise policy question\n\nFor a **private** foreign grocery retailer seeking **greenfield** Australian capacity (new stores/DCs rather than buying an incumbent chain): **which FIRB/FATA requirements apply, and when could a truly binding requirement change entry timing or cost** — without inventing a uniform multi-year screening obstacle?\n\n### 2. Legally accurate baseline\n\nTransaction pathways must be branched (**ATLAS-CON-002**). Using the Phase 0B decision table (private non-FGI; Japanese-formed private acquirer eligible for certain FTA thresholds unless stated):\n\n| Pathway | FIRB / FATA character (Layer A summary) | Atlas |\n|---------|------------------------------------------|-------|\n| **T1** Start Australian grocery business without land/business acquisition | **Not** generally notifiable under s 47; **is** reviewable NS action under s 55E(2) (call-in / voluntary notification) | ATLAS-LEG-001 |\n| **T2** Acquire freehold **vacant** commercial land | Generally **$0** notifiable; typical productive-use / ~5-year construction **conditions** are a separate Guidance Note 4 practice point | ATLAS-LEG-003 |\n| **T3** Acquire freehold **developed** non-sensitive commercial land | Certain FTA private: threshold **>$1,498m** (1 Jan 2026 summary) — many store-level sites may fall below | ATLAS-LEG-004 |\n| **T5/T6** Long lease / AFL / option | May be land interest if >5-year limb (s 12) / agreement-option rules (s 15); then vacant vs developed thresholds apply | ATLAS-LEG-005 |\n| **T8/T9** Acquire existing retailer (shares/assets) | Different pathways; **not** greenfield capacity addition | ATLAS-LIT-005 |\n| **FGI contrast** | Start-business **must notify** (FATR s 56(1)(b)); land generally **$0** | ATLAS-LEG-002 |\n\n**Administrative performance (Layer B):** For approved commercial proposals in Apr–Jun 2026, Treasury reports a **31-day median** and that **50%** were decided in 30 days or less — approval-cohort statistics, not guarantees (**ATLAS-ADM-001**; PDF: https://foreigninvestment.gov.au/sites/foreigninvestment.gov.au/files/2026-10/quarterly-report-apr-jun-2026.pdf). This rejects the MVP **60–240 month** baseline (**ATLAS-CON-001**).\n\n**ACCC:** Part 3 supermarket rules apply to **major supermarket** acquirers (Coles/Woolworths connected entities), **not** automatically to a foreign entrant (**ATLAS-LEG-006**). General merger thresholds may still apply to large acquisitions.\n\n**Planning:** Commonwealth FIRB/ACCC clearance **does not** substitute for State/local development consent.\n\n**Institutional framing:** comparisons are against the post-2026 baseline, not a regulatory vacuum (**ATLAS-ASM-001**).\n\n### 3. Counterfactual intervention\n\nDefine the intervention as one of the following **actual** relaxations (choose explicitly; do not blend) (**ATLAS-POL-003**):\n\n| Counterfactual | What is relaxed | What is **not** relaxed |\n|----------------|-----------------|-------------------------|\n| **CF-A** | Lower scrutiny / faster process for **private** vacant-commercial **notifications**, or milder productive-use **conditions** | Planning clocks; site scarcity; DC investment |\n| **CF-B** | Statutory or policy assurance reducing **s 55E call-in residual** anxiety for ordinary grocery start-business | Land notifications where thresholds bite |\n| **CF-C** | Competition-purposive **greenfield preference** relative to acquisitions (Layer D; overlaps announced low-risk streamlining Layer C but is not identical) | National-security review; FGI rules |\n| **CF-D** | Treating an **FGI** like a private investor for start-business notification | Broader national-interest/security tools |\n\n**Rejected counterfactual:** “Turn off FIRB for all foreign grocery entry for 5–20 years.” That restates the corrected MVP myth (**ATLAS-CON-001**).\n\n### 4. Affected causal mechanisms\n\n- **M6a** transaction-specific FDI frictions (only if notifiable or called in).  \n- **M6b** greenfield vs acquisition mode (ownership transfer ≠ new capacity).  \n- **M1a/M1b** site and planning — often still bind after FDI clearance.  \n- **M2a/M2b** scale and distribution — ACCC: capital unlikely binding for large internationals; sites/time-to-scale material (**ATLAS-EMP-003**).  \n- **M5a-1** irreversible investment remains distinct from financing scarcity (**M5a-2** weakened for large internationals).\n\n### 5. What existing evidence supports or contradicts\n\n**Supports transaction-specific screening narrative**\n\n- Phase 0B primary-text verification of ss 8B, 55E(2), FATR ss 17/56, land limbs (**ATLAS-LEG-001**–**005**).  \n- Davies et al. (2018): greenfield and M&A FDI are not interchangeable (**ATLAS-LIT-005**).  \n- ACCC: large-scale new chain entry unlikely short/medium term; ALDI >20 years (**ATLAS-EMP-003**).\n\n**Contradicts uniform FIRB-as-main-barrier folklore**\n\n- Private start-business not generally notifiable (**ATLAS-LEG-001**).  \n- Approved-commercial median ~1 month in Q2 2026 (**ATLAS-ADM-001**).  \n- MVP months-delay baseline unusable (**ATLAS-CON-001**).\n\n**Does not establish**\n\n- Approval *probabilities* by pathway.  \n- That FDI liberalisation alone produces durable competition (**ATLAS-HYP-003** open).  \n- Deal-specific critical-path effects of any single requirement.\n\n### 6. Plausible favourable, unfavourable and null pathways\n\n| Pathway | Content |\n|---------|---------|\n| **Favourable** | CF-A speeds vacant-land approvals where FIRB notification/conditions were on the critical path; CF-C shifts marginal foreign capital from acquiring incumbents to building stores/DCs (**O2**); FGI-specific CF-D unlocks state-linked capital that was notification-blocked |\n| **Unfavourable** | Faster vacant-land approval without planning reform produces land banking under weak conditions; greenfield preference gamed via nominal restructuring; acquisition of a failing independent is blocked while the independent exits anyway |\n| **Null** | Binding constraints were sites, planning, or DC MES; FIRB was not on the critical path for the private entrant’s actual deal structure; call-in was never used for ordinary grocery starts |\n\n### 7. Which O1–O6 outcomes can be assessed\n\n| Outcome | Assessable? | Notes |\n|---------|-------------|-------|\n| **O1** | Qualitatively for notification incidence by pathway | Deal-structure dependent |\n| **O2** | Only if greenfield capacity is the mode | Acquisition pathways may leave fascia counts unchanged |\n| **O3–O6** | **Not** from FIRB relaxation alone | Format substitution and local rivalry unidentified in AU (**ATLAS-GAP-002**) |\n\n### 8. What cannot currently be inferred\n\n- A single “FIRB delay” parameter for foreign grocery entry.  \n- That Japan-private and FGI entrants face the same screen.  \n- That relaxing developed-land thresholds matters for typical store sites already below the FTA threshold.  \n- Welfare gains from any CF-A–D.  \n- That announced 1 Jan 2027 low-risk 30-day **performance targets** (Layer C) are already binding entitlements.\n\n### 9. Evidence that would materially change the answer\n\n1. Grocery-specific FIRB processing distributions by vacant land / lease / start-business / FGI.  \n2. Documented call-in (or routine voluntary notification) of ordinary private grocery starts.  \n3. Case studies where FIRB conditions were the marginal cause of abandonment after sites/planning were secured.  \n4. Mode-specific AU evidence on greenfield vs acquisition competitive effects.  \n5. Confirmation of Layer C streamlining commencement dates on the Federal Register.\n\n### 10. Carefully qualified conclusion\n\n**A serious FDI counterfactual must name the transaction class.** For a private greenfield grocer, incorporating and starting business is not the same legal object as buying vacant land, taking a long lease, or purchasing an incumbent. Existing evidence supports **mapping which requirements apply**, **separating notification triggers from typical conditions**, and **rejecting multi-year uniform FIRB delay** as the baseline story. It does **not** support claiming that “loosening FIRB” will deliver durable grocery competition unless site access, planning, and distribution scale are also feasible. Relaxation helps only where a **binding, correctly identified** requirement is removed — and even then **O5/O6 remain unidentified**.\n",
+      "sections": [
+        {
+          "number": 1,
+          "title": "Precise policy question",
+          "heading": "1. Precise policy question",
+          "anchor": "section-1",
+          "markdown": "For a **private** foreign grocery retailer seeking **greenfield** Australian capacity (new stores/DCs rather than buying an incumbent chain): **which FIRB/FATA requirements apply, and when could a truly binding requirement change entry timing or cost** — without inventing a uniform multi-year screening obstacle?\n",
+          "explicitClaimIds": []
+        },
+        {
+          "number": 2,
+          "title": "Legally accurate baseline",
+          "heading": "2. Legally accurate baseline",
+          "anchor": "section-2",
+          "markdown": "Transaction pathways must be branched (**ATLAS-CON-002**). Using the Phase 0B decision table (private non-FGI; Japanese-formed private acquirer eligible for certain FTA thresholds unless stated):\n\n| Pathway | FIRB / FATA character (Layer A summary) | Atlas |\n|---------|------------------------------------------|-------|\n| **T1** Start Australian grocery business without land/business acquisition | **Not** generally notifiable under s 47; **is** reviewable NS action under s 55E(2) (call-in / voluntary notification) | ATLAS-LEG-001 |\n| **T2** Acquire freehold **vacant** commercial land | Generally **$0** notifiable; typical productive-use / ~5-year construction **conditions** are a separate Guidance Note 4 practice point | ATLAS-LEG-003 |\n| **T3** Acquire freehold **developed** non-sensitive commercial land | Certain FTA private: threshold **>$1,498m** (1 Jan 2026 summary) — many store-level sites may fall below | ATLAS-LEG-004 |\n| **T5/T6** Long lease / AFL / option | May be land interest if >5-year limb (s 12) / agreement-option rules (s 15); then vacant vs developed thresholds apply | ATLAS-LEG-005 |\n| **T8/T9** Acquire existing retailer (shares/assets) | Different pathways; **not** greenfield capacity addition | ATLAS-LIT-005 |\n| **FGI contrast** | Start-business **must notify** (FATR s 56(1)(b)); land generally **$0** | ATLAS-LEG-002 |\n\n**Administrative performance (Layer B):** For approved commercial proposals in Apr–Jun 2026, Treasury reports a **31-day median** and that **50%** were decided in 30 days or less — approval-cohort statistics, not guarantees (**ATLAS-ADM-001**; PDF: https://foreigninvestment.gov.au/sites/foreigninvestment.gov.au/files/2026-10/quarterly-report-apr-jun-2026.pdf). This rejects the MVP **60–240 month** baseline (**ATLAS-CON-001**).\n\n**ACCC:** Part 3 supermarket rules apply to **major supermarket** acquirers (Coles/Woolworths connected entities), **not** automatically to a foreign entrant (**ATLAS-LEG-006**). General merger thresholds may still apply to large acquisitions.\n\n**Planning:** Commonwealth FIRB/ACCC clearance **does not** substitute for State/local development consent.\n\n**Institutional framing:** comparisons are against the post-2026 baseline, not a regulatory vacuum (**ATLAS-ASM-001**).\n",
+          "explicitClaimIds": [
+            "ATLAS-ADM-001",
+            "ATLAS-ASM-001",
+            "ATLAS-CON-001",
+            "ATLAS-CON-002",
+            "ATLAS-LEG-001",
+            "ATLAS-LEG-002",
+            "ATLAS-LEG-003",
+            "ATLAS-LEG-004",
+            "ATLAS-LEG-005",
+            "ATLAS-LEG-006",
+            "ATLAS-LIT-005"
+          ]
+        },
+        {
+          "number": 3,
+          "title": "Counterfactual intervention",
+          "heading": "3. Counterfactual intervention",
+          "anchor": "section-3",
+          "markdown": "Define the intervention as one of the following **actual** relaxations (choose explicitly; do not blend) (**ATLAS-POL-003**):\n\n| Counterfactual | What is relaxed | What is **not** relaxed |\n|----------------|-----------------|-------------------------|\n| **CF-A** | Lower scrutiny / faster process for **private** vacant-commercial **notifications**, or milder productive-use **conditions** | Planning clocks; site scarcity; DC investment |\n| **CF-B** | Statutory or policy assurance reducing **s 55E call-in residual** anxiety for ordinary grocery start-business | Land notifications where thresholds bite |\n| **CF-C** | Competition-purposive **greenfield preference** relative to acquisitions (Layer D; overlaps announced low-risk streamlining Layer C but is not identical) | National-security review; FGI rules |\n| **CF-D** | Treating an **FGI** like a private investor for start-business notification | Broader national-interest/security tools |\n\n**Rejected counterfactual:** “Turn off FIRB for all foreign grocery entry for 5–20 years.” That restates the corrected MVP myth (**ATLAS-CON-001**).\n",
+          "explicitClaimIds": [
+            "ATLAS-CON-001",
+            "ATLAS-POL-003"
+          ]
+        },
+        {
+          "number": 4,
+          "title": "Affected causal mechanisms",
+          "heading": "4. Affected causal mechanisms",
+          "anchor": "section-4",
+          "markdown": "- **M6a** transaction-specific FDI frictions (only if notifiable or called in).  \n- **M6b** greenfield vs acquisition mode (ownership transfer ≠ new capacity).  \n- **M1a/M1b** site and planning — often still bind after FDI clearance.  \n- **M2a/M2b** scale and distribution — ACCC: capital unlikely binding for large internationals; sites/time-to-scale material (**ATLAS-EMP-003**).  \n- **M5a-1** irreversible investment remains distinct from financing scarcity (**M5a-2** weakened for large internationals).\n",
+          "explicitClaimIds": [
+            "ATLAS-EMP-003"
+          ]
+        },
+        {
+          "number": 5,
+          "title": "What existing evidence supports or contradicts",
+          "heading": "5. What existing evidence supports or contradicts",
+          "anchor": "section-5",
+          "markdown": "**Supports transaction-specific screening narrative**\n\n- Phase 0B primary-text verification of ss 8B, 55E(2), FATR ss 17/56, land limbs (**ATLAS-LEG-001**–**005**).  \n- Davies et al. (2018): greenfield and M&A FDI are not interchangeable (**ATLAS-LIT-005**).  \n- ACCC: large-scale new chain entry unlikely short/medium term; ALDI >20 years (**ATLAS-EMP-003**).\n\n**Contradicts uniform FIRB-as-main-barrier folklore**\n\n- Private start-business not generally notifiable (**ATLAS-LEG-001**).  \n- Approved-commercial median ~1 month in Q2 2026 (**ATLAS-ADM-001**).  \n- MVP months-delay baseline unusable (**ATLAS-CON-001**).\n\n**Does not establish**\n\n- Approval *probabilities* by pathway.  \n- That FDI liberalisation alone produces durable competition (**ATLAS-HYP-003** open).  \n- Deal-specific critical-path effects of any single requirement.\n",
+          "explicitClaimIds": [
+            "ATLAS-ADM-001",
+            "ATLAS-CON-001",
+            "ATLAS-EMP-003",
+            "ATLAS-HYP-003",
+            "ATLAS-LEG-001",
+            "ATLAS-LEG-002",
+            "ATLAS-LEG-003",
+            "ATLAS-LEG-004",
+            "ATLAS-LEG-005",
+            "ATLAS-LIT-005"
+          ]
+        },
+        {
+          "number": 6,
+          "title": "Plausible favourable, unfavourable and null pathways",
+          "heading": "6. Plausible favourable, unfavourable and null pathways",
+          "anchor": "section-6",
+          "markdown": "| Pathway | Content |\n|---------|---------|\n| **Favourable** | CF-A speeds vacant-land approvals where FIRB notification/conditions were on the critical path; CF-C shifts marginal foreign capital from acquiring incumbents to building stores/DCs (**O2**); FGI-specific CF-D unlocks state-linked capital that was notification-blocked |\n| **Unfavourable** | Faster vacant-land approval without planning reform produces land banking under weak conditions; greenfield preference gamed via nominal restructuring; acquisition of a failing independent is blocked while the independent exits anyway |\n| **Null** | Binding constraints were sites, planning, or DC MES; FIRB was not on the critical path for the private entrant’s actual deal structure; call-in was never used for ordinary grocery starts |\n",
+          "explicitClaimIds": []
+        },
+        {
+          "number": 7,
+          "title": "Which O1–O6 outcomes can be assessed",
+          "heading": "7. Which O1–O6 outcomes can be assessed",
+          "anchor": "section-7",
+          "markdown": "| Outcome | Assessable? | Notes |\n|---------|-------------|-------|\n| **O1** | Qualitatively for notification incidence by pathway | Deal-structure dependent |\n| **O2** | Only if greenfield capacity is the mode | Acquisition pathways may leave fascia counts unchanged |\n| **O3–O6** | **Not** from FIRB relaxation alone | Format substitution and local rivalry unidentified in AU (**ATLAS-GAP-002**) |\n",
+          "explicitClaimIds": [
+            "ATLAS-GAP-002"
+          ]
+        },
+        {
+          "number": 8,
+          "title": "What cannot currently be inferred",
+          "heading": "8. What cannot currently be inferred",
+          "anchor": "section-8",
+          "markdown": "- A single “FIRB delay” parameter for foreign grocery entry.  \n- That Japan-private and FGI entrants face the same screen.  \n- That relaxing developed-land thresholds matters for typical store sites already below the FTA threshold.  \n- Welfare gains from any CF-A–D.  \n- That announced 1 Jan 2027 low-risk 30-day **performance targets** (Layer C) are already binding entitlements.\n",
+          "explicitClaimIds": []
+        },
+        {
+          "number": 9,
+          "title": "Evidence that would materially change the answer",
+          "heading": "9. Evidence that would materially change the answer",
+          "anchor": "section-9",
+          "markdown": "1. Grocery-specific FIRB processing distributions by vacant land / lease / start-business / FGI.  \n2. Documented call-in (or routine voluntary notification) of ordinary private grocery starts.  \n3. Case studies where FIRB conditions were the marginal cause of abandonment after sites/planning were secured.  \n4. Mode-specific AU evidence on greenfield vs acquisition competitive effects.  \n5. Confirmation of Layer C streamlining commencement dates on the Federal Register.\n",
+          "explicitClaimIds": []
+        },
+        {
+          "number": 10,
+          "title": "Carefully qualified conclusion",
+          "heading": "10. Carefully qualified conclusion",
+          "anchor": "section-10",
+          "markdown": "**A serious FDI counterfactual must name the transaction class.** For a private greenfield grocer, incorporating and starting business is not the same legal object as buying vacant land, taking a long lease, or purchasing an incumbent. Existing evidence supports **mapping which requirements apply**, **separating notification triggers from typical conditions**, and **rejecting multi-year uniform FIRB delay** as the baseline story. It does **not** support claiming that “loosening FIRB” will deliver durable grocery competition unless site access, planning, and distribution scale are also feasible. Relaxation helps only where a **binding, correctly identified** requirement is removed — and even then **O5/O6 remain unidentified**.\n",
+          "explicitClaimIds": []
+        }
+      ],
+      "bodyClaimIds": [
+        "ATLAS-ADM-001",
+        "ATLAS-ASM-001",
+        "ATLAS-CON-001",
+        "ATLAS-CON-002",
+        "ATLAS-EMP-003",
+        "ATLAS-GAP-002",
+        "ATLAS-HYP-003",
+        "ATLAS-LEG-001",
+        "ATLAS-LEG-002",
+        "ATLAS-LEG-003",
+        "ATLAS-LEG-004",
+        "ATLAS-LEG-005",
+        "ATLAS-LEG-006",
+        "ATLAS-LIT-005",
+        "ATLAS-POL-003"
+      ],
+      "membershipClaimIds": [
+        "ATLAS-ADM-001",
+        "ATLAS-ASM-001",
+        "ATLAS-ASM-002",
+        "ATLAS-CON-001",
+        "ATLAS-CON-002",
+        "ATLAS-CON-003",
+        "ATLAS-EMP-003",
+        "ATLAS-GAP-002",
+        "ATLAS-HYP-003",
+        "ATLAS-LEG-001",
+        "ATLAS-LEG-002",
+        "ATLAS-LEG-003",
+        "ATLAS-LEG-004",
+        "ATLAS-LEG-005",
+        "ATLAS-LEG-006",
+        "ATLAS-LIT-005",
+        "ATLAS-POL-003"
+      ]
+    },
+    {
+      "id": "Case3",
+      "title": "Differentiated entry and scale-up",
+      "heading": "Case 3 — Differentiated entry and scale-up",
+      "markdown": "## Case 3 — Differentiated entry and scale-up\n\n### 1. Precise policy question\n\nUsing **ALDI’s Australian history** and **established entry literature**, what can be said — without new causal identification — about how a differentiated foreign grocer moves from entry to scale-up, and which outcomes (**O1–O6**) that history can and cannot discipline when evaluating pro-entry policy?\n\n### 2. Legally accurate baseline\n\nALDI’s SA/WA expansion (announce 2013; openings 2016) occurred under **pre-2026** merger settings. The assessment uses that episode as a **historical mechanism test**, not as a description of today’s Determination Part 3.\n\nRelevant **current** baseline for any *new* differentiated entrant:\n\n- Private FDI branching as in Case 2.  \n- Entrant is **not** a Determination s 1-7 major supermarket by default (**ATLAS-ASM-001**).  \n- From 1 July 2026, very large retailers (covered revenue >$30b prior FY) are subject to the Code’s excessive-pricing **prohibition** under s 45B’s “in all the circumstances” standard (**ATLAS-LEG-009**) — a conduct rule, not a measured price effect.  \n- ACCC inquiry characterisation of ALDI as important but limited-range constraint remains the AU institutional reading (**ATLAS-EMP-004**).\n\n### 3. Counterfactual intervention\n\nNot a single statute. The workable counterfactual class is:\n\n> Policies that lower **site-access** or **FDI** frictions for a differentiated foreign format, holding constant the need to build **distribution capacity**, relative to a world that only liberalises FDI or only tightens merger notification.\n\nPhase 0E already closed Strategy B as an **original-result programme**. This case uses the chronology as an **external-validity / falsification** object for that policy class.\n\n### 4. Affected causal mechanisms\n\n| Mechanism | ALDI-relevant content |\n|-----------|----------------------|\n| **M2a/M2b** | State DC projects completed/delivered in sequence with first openings — observed O2 order |\n| **M1a/M1b/M1c** | Sites/planning/exclusivity appear in ALDI submissions nationally; **not identified** as the binding SA/WA timing cause |\n| **M3b** | Limited-assortment hard discount — direct consumer benefits possible; incomplete incumbent price constraint |\n| **M4a** | Incumbent price response **not** measured for SA/WA 2016–18 in PolisLab evidence |\n| **M5a** | Multi-year irreversible investment; capital scarcity weakened for large internationals per ACCC |\n| **M6b** | Foreign **greenfield** network addition (not acquisition of a major) — modes are not interchangeable (**ATLAS-LIT-005**) |\n\n### 5. What existing evidence supports or contradicts\n\n**Established chronology (O2 benchmark)**\n\n| Milestone | Evidence |\n|-----------|----------|\n| Regency Park (SA) DC | BADGE project sheet: design-and-construct; **contract completion November 2015**; programme driven by early-2016 store rollout stocking (https://badge.net.au/wp-content/uploads/2016/05/ALDI-Distribution-Centre-1.pdf) |\n| Jandakot (WA) DC | Georgiou project page: design-and-construct; duration **late 2014 – early 2016**; supports WA expansion (https://www.georgiou.com.au/project/aldi-distribution-centre/) |\n| First SA stores | 3 Feb 2016 (contemporaneous news; Phase 0E) |\n| First WA stores | 8 Jun 2016 (contemporaneous news; Phase 0E) |\n| End-2018 aggregates | ALDI Economic Impact Report: **29** SA, **41** WA, **526** nationally (https://www.aldiunpacked.com.au/storage/2020/07/Economic-Impact-Report-May-2019.pdf) |\n\n(**ATLAS-EMP-005**; **ATLAS-EMP-006**)\n\n**ACCC descriptive anchors:** sites/planning material; capital unlikely binding for large internationals; ALDI >20 years nationally; limited-dimensional constraint (**ATLAS-EMP-003**; **ATLAS-EMP-004**).\n\n**International format lessons (transfer mechanism only, not AU magnitudes)**\n\n- Revenue diversion ≠ incumbent price cuts (**ATLAS-LIT-001**).  \n- Warehouse-club/format entry can raise, null, or lower incumbent prices depending on format (**ATLAS-LIT-002**).  \n\n**What Phase 0E could *not* discriminate:** H1 (distribution) vs H4 (ordinary sequencing); H2 (site access) not shown as the binding SA/WA timing constraint (**ATLAS-HYP-004**). Planning-approval storytelling is also cautioned by the Phase 0C.3A pilot (**ATLAS-PILOT-001**).\n\n### 6. Plausible favourable, unfavourable and null pathways\n\n| Pathway | Content |\n|---------|---------|\n| **Favourable** | Differentiated entrant obtains sites, builds DC, opens stores, delivers **direct O6** via own prices/variety even if majors’ basket prices barely move; eventually constrains overlapping SKUs (**partial O5**) |\n| **Unfavourable** | Site rules intended to help entrants trigger Sadun-style incumbent format shifts; entrant scale-up stalls without DC MES; majors’ local price response null while revenue diversion weakens independents |\n| **Null** | FDI/site liberalisation does not change DC economics; announce-to-open still takes years; store growth without detectable incumbent price or welfare metrics |\n\n### 7. Which O1–O6 outcomes can be assessed\n\n| Outcome | From ALDI SA/WA + literature? |\n|---------|-------------------------------|\n| **O1** | Only narratively nationally; **not** identified for SA/WA timing |\n| **O2** | **Yes — best-supported:** observed DC-project / opening order; post-opening densification to 2018 aggregates |\n| **O3** | Weakly (queues; survival of format) — not structural demand |\n| **O4** | Observed persistence through 2018 aggregates — not a causal survival model |\n| **O5** | **No** causal AU price constraint estimate; ACCC limited-range characterisation only |\n| **O6** | **No** — forbid inference from store counts (**ATLAS-CON-003**) |\n\n### 8. What cannot currently be inferred\n\n- That 2009–10 exclusivity undertakings *caused* SA/WA entry.  \n- That Sunday trading caused WA entry.  \n- Any O5/O6 number from 29/41 store counts.  \n- That a specialty format would replicate ALDI’s diversion pattern.  \n- US mile radii or Costco price elasticities as Australian forecasts.  \n- That logistics **bound** SA/WA timing (as opposed to appearing in the observed order of investment).\n\n### 9. Evidence that would materially change the answer\n\n1. Store-level opening panel linked to local revenue **and** prices (AEMS-style) around ALDI (or other) openings.  \n2. Documented announced-vs-opened catchment census with refusal/exclusivity reasons.  \n3. AU diversion ratios between majors and hard-discount / specialty formats (**ATLAS-GAP-002**).  \n4. Evidence of sustainable multi-store state presence *without* local DCs (would weaken H1).  \n\n### 10. Carefully qualified conclusion\n\n**ALDI’s SA/WA episode is a strong O2 scale-up benchmark and a weak O5/O6 guide.** Public contractor and company records show state distribution projects completed/delivered in sequence with first openings, followed by densification to 29 SA / 41 WA stores by end-2018. That is the **observed order of investment and openings**. Public evidence does **not** identify whether logistics, site assembly, or ordinary sequencing was the binding constraint, and does **not** isolate exclusivity or FDI liberalisation as the cause of timing. Literature warns that **format determines** whether incumbents cut prices. Policy propositions that equate “more ALDI-like stores” with “more consumer welfare” or “tighter incumbent price discipline” overclaim.\n",
+      "sections": [
+        {
+          "number": 1,
+          "title": "Precise policy question",
+          "heading": "1. Precise policy question",
+          "anchor": "section-1",
+          "markdown": "Using **ALDI’s Australian history** and **established entry literature**, what can be said — without new causal identification — about how a differentiated foreign grocer moves from entry to scale-up, and which outcomes (**O1–O6**) that history can and cannot discipline when evaluating pro-entry policy?\n",
+          "explicitClaimIds": []
+        },
+        {
+          "number": 2,
+          "title": "Legally accurate baseline",
+          "heading": "2. Legally accurate baseline",
+          "anchor": "section-2",
+          "markdown": "ALDI’s SA/WA expansion (announce 2013; openings 2016) occurred under **pre-2026** merger settings. The assessment uses that episode as a **historical mechanism test**, not as a description of today’s Determination Part 3.\n\nRelevant **current** baseline for any *new* differentiated entrant:\n\n- Private FDI branching as in Case 2.  \n- Entrant is **not** a Determination s 1-7 major supermarket by default (**ATLAS-ASM-001**).  \n- From 1 July 2026, very large retailers (covered revenue >$30b prior FY) are subject to the Code’s excessive-pricing **prohibition** under s 45B’s “in all the circumstances” standard (**ATLAS-LEG-009**) — a conduct rule, not a measured price effect.  \n- ACCC inquiry characterisation of ALDI as important but limited-range constraint remains the AU institutional reading (**ATLAS-EMP-004**).\n",
+          "explicitClaimIds": [
+            "ATLAS-ASM-001",
+            "ATLAS-EMP-004",
+            "ATLAS-LEG-009"
+          ]
+        },
+        {
+          "number": 3,
+          "title": "Counterfactual intervention",
+          "heading": "3. Counterfactual intervention",
+          "anchor": "section-3",
+          "markdown": "Not a single statute. The workable counterfactual class is:\n\n> Policies that lower **site-access** or **FDI** frictions for a differentiated foreign format, holding constant the need to build **distribution capacity**, relative to a world that only liberalises FDI or only tightens merger notification.\n\nPhase 0E already closed Strategy B as an **original-result programme**. This case uses the chronology as an **external-validity / falsification** object for that policy class.\n",
+          "explicitClaimIds": []
+        },
+        {
+          "number": 4,
+          "title": "Affected causal mechanisms",
+          "heading": "4. Affected causal mechanisms",
+          "anchor": "section-4",
+          "markdown": "| Mechanism | ALDI-relevant content |\n|-----------|----------------------|\n| **M2a/M2b** | State DC projects completed/delivered in sequence with first openings — observed O2 order |\n| **M1a/M1b/M1c** | Sites/planning/exclusivity appear in ALDI submissions nationally; **not identified** as the binding SA/WA timing cause |\n| **M3b** | Limited-assortment hard discount — direct consumer benefits possible; incomplete incumbent price constraint |\n| **M4a** | Incumbent price response **not** measured for SA/WA 2016–18 in PolisLab evidence |\n| **M5a** | Multi-year irreversible investment; capital scarcity weakened for large internationals per ACCC |\n| **M6b** | Foreign **greenfield** network addition (not acquisition of a major) — modes are not interchangeable (**ATLAS-LIT-005**) |\n",
+          "explicitClaimIds": [
+            "ATLAS-LIT-005"
+          ]
+        },
+        {
+          "number": 5,
+          "title": "What existing evidence supports or contradicts",
+          "heading": "5. What existing evidence supports or contradicts",
+          "anchor": "section-5",
+          "markdown": "**Established chronology (O2 benchmark)**\n\n| Milestone | Evidence |\n|-----------|----------|\n| Regency Park (SA) DC | BADGE project sheet: design-and-construct; **contract completion November 2015**; programme driven by early-2016 store rollout stocking (https://badge.net.au/wp-content/uploads/2016/05/ALDI-Distribution-Centre-1.pdf) |\n| Jandakot (WA) DC | Georgiou project page: design-and-construct; duration **late 2014 – early 2016**; supports WA expansion (https://www.georgiou.com.au/project/aldi-distribution-centre/) |\n| First SA stores | 3 Feb 2016 (contemporaneous news; Phase 0E) |\n| First WA stores | 8 Jun 2016 (contemporaneous news; Phase 0E) |\n| End-2018 aggregates | ALDI Economic Impact Report: **29** SA, **41** WA, **526** nationally (https://www.aldiunpacked.com.au/storage/2020/07/Economic-Impact-Report-May-2019.pdf) |\n\n(**ATLAS-EMP-005**; **ATLAS-EMP-006**)\n\n**ACCC descriptive anchors:** sites/planning material; capital unlikely binding for large internationals; ALDI >20 years nationally; limited-dimensional constraint (**ATLAS-EMP-003**; **ATLAS-EMP-004**).\n\n**International format lessons (transfer mechanism only, not AU magnitudes)**\n\n- Revenue diversion ≠ incumbent price cuts (**ATLAS-LIT-001**).  \n- Warehouse-club/format entry can raise, null, or lower incumbent prices depending on format (**ATLAS-LIT-002**).  \n\n**What Phase 0E could *not* discriminate:** H1 (distribution) vs H4 (ordinary sequencing); H2 (site access) not shown as the binding SA/WA timing constraint (**ATLAS-HYP-004**). Planning-approval storytelling is also cautioned by the Phase 0C.3A pilot (**ATLAS-PILOT-001**).\n",
+          "explicitClaimIds": [
+            "ATLAS-EMP-003",
+            "ATLAS-EMP-004",
+            "ATLAS-EMP-005",
+            "ATLAS-EMP-006",
+            "ATLAS-HYP-004",
+            "ATLAS-LIT-001",
+            "ATLAS-LIT-002",
+            "ATLAS-PILOT-001"
+          ]
+        },
+        {
+          "number": 6,
+          "title": "Plausible favourable, unfavourable and null pathways",
+          "heading": "6. Plausible favourable, unfavourable and null pathways",
+          "anchor": "section-6",
+          "markdown": "| Pathway | Content |\n|---------|---------|\n| **Favourable** | Differentiated entrant obtains sites, builds DC, opens stores, delivers **direct O6** via own prices/variety even if majors’ basket prices barely move; eventually constrains overlapping SKUs (**partial O5**) |\n| **Unfavourable** | Site rules intended to help entrants trigger Sadun-style incumbent format shifts; entrant scale-up stalls without DC MES; majors’ local price response null while revenue diversion weakens independents |\n| **Null** | FDI/site liberalisation does not change DC economics; announce-to-open still takes years; store growth without detectable incumbent price or welfare metrics |\n",
+          "explicitClaimIds": []
+        },
+        {
+          "number": 7,
+          "title": "Which O1–O6 outcomes can be assessed",
+          "heading": "7. Which O1–O6 outcomes can be assessed",
+          "anchor": "section-7",
+          "markdown": "| Outcome | From ALDI SA/WA + literature? |\n|---------|-------------------------------|\n| **O1** | Only narratively nationally; **not** identified for SA/WA timing |\n| **O2** | **Yes — best-supported:** observed DC-project / opening order; post-opening densification to 2018 aggregates |\n| **O3** | Weakly (queues; survival of format) — not structural demand |\n| **O4** | Observed persistence through 2018 aggregates — not a causal survival model |\n| **O5** | **No** causal AU price constraint estimate; ACCC limited-range characterisation only |\n| **O6** | **No** — forbid inference from store counts (**ATLAS-CON-003**) |\n",
+          "explicitClaimIds": [
+            "ATLAS-CON-003"
+          ]
+        },
+        {
+          "number": 8,
+          "title": "What cannot currently be inferred",
+          "heading": "8. What cannot currently be inferred",
+          "anchor": "section-8",
+          "markdown": "- That 2009–10 exclusivity undertakings *caused* SA/WA entry.  \n- That Sunday trading caused WA entry.  \n- Any O5/O6 number from 29/41 store counts.  \n- That a specialty format would replicate ALDI’s diversion pattern.  \n- US mile radii or Costco price elasticities as Australian forecasts.  \n- That logistics **bound** SA/WA timing (as opposed to appearing in the observed order of investment).\n",
+          "explicitClaimIds": []
+        },
+        {
+          "number": 9,
+          "title": "Evidence that would materially change the answer",
+          "heading": "9. Evidence that would materially change the answer",
+          "anchor": "section-9",
+          "markdown": "1. Store-level opening panel linked to local revenue **and** prices (AEMS-style) around ALDI (or other) openings.  \n2. Documented announced-vs-opened catchment census with refusal/exclusivity reasons.  \n3. AU diversion ratios between majors and hard-discount / specialty formats (**ATLAS-GAP-002**).  \n4. Evidence of sustainable multi-store state presence *without* local DCs (would weaken H1).  \n",
+          "explicitClaimIds": [
+            "ATLAS-GAP-002"
+          ]
+        },
+        {
+          "number": 10,
+          "title": "Carefully qualified conclusion",
+          "heading": "10. Carefully qualified conclusion",
+          "anchor": "section-10",
+          "markdown": "**ALDI’s SA/WA episode is a strong O2 scale-up benchmark and a weak O5/O6 guide.** Public contractor and company records show state distribution projects completed/delivered in sequence with first openings, followed by densification to 29 SA / 41 WA stores by end-2018. That is the **observed order of investment and openings**. Public evidence does **not** identify whether logistics, site assembly, or ordinary sequencing was the binding constraint, and does **not** isolate exclusivity or FDI liberalisation as the cause of timing. Literature warns that **format determines** whether incumbents cut prices. Policy propositions that equate “more ALDI-like stores” with “more consumer welfare” or “tighter incumbent price discipline” overclaim.\n",
+          "explicitClaimIds": []
+        }
+      ],
+      "bodyClaimIds": [
+        "ATLAS-ASM-001",
+        "ATLAS-CON-003",
+        "ATLAS-EMP-003",
+        "ATLAS-EMP-004",
+        "ATLAS-EMP-005",
+        "ATLAS-EMP-006",
+        "ATLAS-GAP-002",
+        "ATLAS-HYP-004",
+        "ATLAS-LEG-009",
+        "ATLAS-LIT-001",
+        "ATLAS-LIT-002",
+        "ATLAS-LIT-005",
+        "ATLAS-PILOT-001"
+      ],
+      "membershipClaimIds": [
+        "ATLAS-ASM-001",
+        "ATLAS-ASM-002",
+        "ATLAS-CON-003",
+        "ATLAS-EMP-003",
+        "ATLAS-EMP-004",
+        "ATLAS-EMP-005",
+        "ATLAS-EMP-006",
+        "ATLAS-GAP-002",
+        "ATLAS-HYP-004",
+        "ATLAS-LEG-009",
+        "ATLAS-LIT-001",
+        "ATLAS-LIT-002",
+        "ATLAS-LIT-005",
+        "ATLAS-PILOT-001"
+      ]
+    },
+    {
+      "id": "Case4",
+      "title": "Supermarket acquisition oversight",
+      "heading": "Case 4 — Supermarket acquisition oversight",
+      "markdown": "## Case 4 — Supermarket acquisition oversight\n\n### 1. Precise policy question\n\nWhat do the **ACCC notification regime**, **acquisition determinations**, and **notification waivers** establish about major-supermarket site control — and what are the limits of using merger enforcement as evidence for **market-wide** competitive outcomes?\n\n### 2. Legally accurate baseline\n\n| Instrument | Establishes | Does not establish |\n|------------|-------------|--------------------|\n| **Determination Part 3** (ss 1-7, 3-1–3-3) | Extra notification duties for Coles/Woolworths connected entities acquiring supermarket businesses or qualifying land/lease interests | That notified deals are blocked; that entrants face the same duties |\n| **General Part 2 thresholds** | Broad mandatory suspensory notification when revenue/value tests met | Automatic SLC finding |\n| **Notification determination** | Whether a **notified acquisition** may / must not be put into effect | Settlement, construction, or opening |\n| **Notification waiver** | Whether notification is **required**; grant removes need to notify; **s 50 still applies**; refusal leaves any applicable notification and standstill obligations in place | Substantive “cleared as pro-competitive”; completed site control; prohibition of the deal |\n| **Kalgoorlie Phase 2** | ACCC refusal of a **voluntarily notified** (27 Nov 2025) Coles leasehold; ACCC prospective SLC via independent asset-exit risk | Final Tribunal law; nationwide foreclosure doctrine; an example of *compulsory* Part 3 notification |\n\nSources: **ATLAS-LEG-005**; **ATLAS-LEG-006**; **ATLAS-LEG-007**; **ATLAS-LEG-008**; **ATLAS-ADM-002**; **ATLAS-ADM-003**. Baseline framing: **ATLAS-ASM-001**.\n\n### 3. Counterfactual intervention\n\nCompare:\n\n- **Baseline B0:** post-1 Jan 2026 mandatory notification + Part 3 supermarket land/business rules + case-by-case SLC (**ATLAS-ASM-001**).  \n- **CF-stronger:** Layer D presumptions against incumbent acquisition of challengers/sites, numeric caps, or automatic release (beyond SLC).  \n- **CF-weaker:** sunset/non-renewal of Part 3 after 30 Jun 2030 without replacement; or treating waiver grants as sufficient competition assurance.\n\n### 4. Affected causal mechanisms\n\n- **M4b / M1c:** notification may deter or reshape preemptive site acquisitions (hypothesised; effects unidentified — **ATLAS-GAP-003**).  \n- **M4a:** ordinary expansion via leasehold can be refused when the ACCC assesses diversion that threatens independent **asset** exit (Kalgoorlie) — **not** classified as land banking (**ATLAS-ADM-002**).  \n- **M1a/M1b:** oversight of *acquisitions* does not create zoned sites or shorten planning clocks.  \n- **O1 vs O2:** notification concerns control transactions; productive capacity requires later development.\n\n### 5. What existing evidence supports or contradicts\n\n**Institutional facts**\n\n- Waiver page: grant removes notification need; s 50 continues; refusal leaves notification/standstill obligations if thresholds apply (**ATLAS-LEG-008**; https://www.accc.gov.au/business/mergers-and-acquisitions/notification-waivers).  \n- **Kalgoorlie pathway:** Coles notified on **27 November 2025**, when notification under the new regime was permitted but **voluntary**; ACCC media release states it was therefore subject to the new regime’s requirements. Determination **30 June 2026** / public **1 July 2026**: acquisition must not be put into effect. The ACCC attributes a prospective independent-exit theory of harm (https://www.accc.gov.au/media-release/accc-opposes-coles%E2%80%99-acquisition-of-a-supermarket-and-liquor-site-in-kalgoorlie-0; public reasons PDF on the acquisitions register).  \n- **Tribunal status (official listing):** ACT 1 of 2026 listed for hearing **9–12 and 16–19 November 2026** (https://competitiontribunal.gov.au/current-matters/listings). Final merits orders/reasons not located for this release pass. A separate **24 September 2026** Tribunal determination addresses interim evidentiary applications under s 100S(2) (https://www.competitiontribunal.gov.au/__data/assets/pdf_file/0006/607641/Determination.pdf) — **not** final disposition of the ACCC refusal (**ATLAS-ADM-003**).  \n- **Nine-event pilot (process illustration only):** Under documented filters (Coles or Woolworths party; event date 1 Jul–30 Sep 2026; supermarket land/lease inclusion; MN-65028 Paydock excluded as non-site), Phase 0C.2B coded nine events with public register URLs in `research/04_pilot_sample.csv`. Mix of notification determinations and waiver decisions; anticipated openings mostly **2027–2033**; completion/opening **not independently established**. Identified sample, not a census; MN and WA must never be pooled (**ATLAS-EMP-007**; `research/04_empirical_pilot_findings.md` §§5–6).\n\n**Limits**\n\n- No causal evaluation of Part 3 on foreclosure or prices (**ATLAS-GAP-003**).  \n- Kalgoorlie illustrates refusal power after voluntary notification; it should not be narrated as if it were a compulsory Part 3 filing example.  \n- Diversion/welfare magnitudes remain unidentified (**ATLAS-GAP-002**).\n\n### 6. Plausible favourable, unfavourable and null pathways\n\n| Pathway | Content |\n|---------|---------|\n| **Favourable** | Notification catches anticompetitive site/lease grabs; Kalgoorlie-type refusals preserve differentiated local constraints (**O5** locally); transparency enables scrutiny |\n| **Unfavourable** | Parties shift earlier to non-notifiable structures; waiver pathway used for deals that still raise concerns (s 50 residual costly to enforce); refusal preserves a local independent but forgoes short-run capacity/consumer gains the ACCC itself acknowledged |\n| **Null** | Most notified deals would have been cleared anyway; pipelines and openings unchanged; market-wide concentration driven by M2a sunk costs / M1b planning rather than acquirable sites |\n\n### 7. Which O1–O6 outcomes can be assessed\n\n| Outcome | From merger oversight evidence? |\n|---------|----------------------------------|\n| **O1** | **Process O1 only:** attempts to acquire control that enter the register |\n| **O2** | **Not yet** for 2026 land/lease cohort — openings largely future-dated |\n| **O3–O4** | Case-specific in Kalgoorlie *prospective ACCC* reasoning only |\n| **O5** | Local prospective SLC assessments possible; **market-wide O5 not identified** |\n| **O6** | **Not** from notification counts |\n\n### 8. What cannot currently be inferred\n\n- Market-wide improvement in grocery competition from Part 3’s existence.  \n- That waiver grants mean acquisitions are competitively harmless.  \n- That notification approvals mean stores will open.  \n- That Kalgoorlie settles Australian law on independent-exit theories while final Tribunal merits reasons are unpublished.  \n- That merger enforcement substitutes for planning reform or greenfield FDI policy.\n\n### 9. Evidence that would materially change the answer\n\n1. Final Tribunal merits reasons in ACT 1 of 2026.  \n2. Matured realisation study: notified/waiver sites → verified open / not open by date *T*.  \n3. Causal design on Part 3’s effect on site preemption (hard on public data).  \n4. Systematic covenant/exclusivity discovery beyond notification registers.  \n5. Remake or repeal decisions around the 2030 sunset.\n\n### 10. Carefully qualified conclusion\n\n**Merger oversight is real, transaction-shaped, and outcome-incomplete.** From 1 January 2026, Coles/Woolworths qualifying land and supermarket-business deals face **compulsory** Part 3 notification (or waiver). Separately, Kalgoorlie shows that a **voluntarily notified** pre-commencement leasehold can still be **refused** under the new regime on an ACCC prospective SLC theory. Neither fact, nor the Jul–Sep 2026 pilot’s pathway mix, proves market-wide foreclosure reduction, measures consumer welfare, or shows that approved notifications become stores. A reader evaluating “stronger supermarket merger rules” should separate **(i)** process coverage, **(ii)** case-level ACCC theories, **(iii)** Tribunal finality, and **(iv)** unrealised development — and should not treat the public register as a competition scoreboard.\n",
+      "sections": [
+        {
+          "number": 1,
+          "title": "Precise policy question",
+          "heading": "1. Precise policy question",
+          "anchor": "section-1",
+          "markdown": "What do the **ACCC notification regime**, **acquisition determinations**, and **notification waivers** establish about major-supermarket site control — and what are the limits of using merger enforcement as evidence for **market-wide** competitive outcomes?\n",
+          "explicitClaimIds": []
+        },
+        {
+          "number": 2,
+          "title": "Legally accurate baseline",
+          "heading": "2. Legally accurate baseline",
+          "anchor": "section-2",
+          "markdown": "| Instrument | Establishes | Does not establish |\n|------------|-------------|--------------------|\n| **Determination Part 3** (ss 1-7, 3-1–3-3) | Extra notification duties for Coles/Woolworths connected entities acquiring supermarket businesses or qualifying land/lease interests | That notified deals are blocked; that entrants face the same duties |\n| **General Part 2 thresholds** | Broad mandatory suspensory notification when revenue/value tests met | Automatic SLC finding |\n| **Notification determination** | Whether a **notified acquisition** may / must not be put into effect | Settlement, construction, or opening |\n| **Notification waiver** | Whether notification is **required**; grant removes need to notify; **s 50 still applies**; refusal leaves any applicable notification and standstill obligations in place | Substantive “cleared as pro-competitive”; completed site control; prohibition of the deal |\n| **Kalgoorlie Phase 2** | ACCC refusal of a **voluntarily notified** (27 Nov 2025) Coles leasehold; ACCC prospective SLC via independent asset-exit risk | Final Tribunal law; nationwide foreclosure doctrine; an example of *compulsory* Part 3 notification |\n\nSources: **ATLAS-LEG-005**; **ATLAS-LEG-006**; **ATLAS-LEG-007**; **ATLAS-LEG-008**; **ATLAS-ADM-002**; **ATLAS-ADM-003**. Baseline framing: **ATLAS-ASM-001**.\n",
+          "explicitClaimIds": [
+            "ATLAS-ADM-002",
+            "ATLAS-ADM-003",
+            "ATLAS-ASM-001",
+            "ATLAS-LEG-005",
+            "ATLAS-LEG-006",
+            "ATLAS-LEG-007",
+            "ATLAS-LEG-008"
+          ]
+        },
+        {
+          "number": 3,
+          "title": "Counterfactual intervention",
+          "heading": "3. Counterfactual intervention",
+          "anchor": "section-3",
+          "markdown": "Compare:\n\n- **Baseline B0:** post-1 Jan 2026 mandatory notification + Part 3 supermarket land/business rules + case-by-case SLC (**ATLAS-ASM-001**).  \n- **CF-stronger:** Layer D presumptions against incumbent acquisition of challengers/sites, numeric caps, or automatic release (beyond SLC).  \n- **CF-weaker:** sunset/non-renewal of Part 3 after 30 Jun 2030 without replacement; or treating waiver grants as sufficient competition assurance.\n",
+          "explicitClaimIds": [
+            "ATLAS-ASM-001"
+          ]
+        },
+        {
+          "number": 4,
+          "title": "Affected causal mechanisms",
+          "heading": "4. Affected causal mechanisms",
+          "anchor": "section-4",
+          "markdown": "- **M4b / M1c:** notification may deter or reshape preemptive site acquisitions (hypothesised; effects unidentified — **ATLAS-GAP-003**).  \n- **M4a:** ordinary expansion via leasehold can be refused when the ACCC assesses diversion that threatens independent **asset** exit (Kalgoorlie) — **not** classified as land banking (**ATLAS-ADM-002**).  \n- **M1a/M1b:** oversight of *acquisitions* does not create zoned sites or shorten planning clocks.  \n- **O1 vs O2:** notification concerns control transactions; productive capacity requires later development.\n",
+          "explicitClaimIds": [
+            "ATLAS-ADM-002",
+            "ATLAS-GAP-003"
+          ]
+        },
+        {
+          "number": 5,
+          "title": "What existing evidence supports or contradicts",
+          "heading": "5. What existing evidence supports or contradicts",
+          "anchor": "section-5",
+          "markdown": "**Institutional facts**\n\n- Waiver page: grant removes notification need; s 50 continues; refusal leaves notification/standstill obligations if thresholds apply (**ATLAS-LEG-008**; https://www.accc.gov.au/business/mergers-and-acquisitions/notification-waivers).  \n- **Kalgoorlie pathway:** Coles notified on **27 November 2025**, when notification under the new regime was permitted but **voluntary**; ACCC media release states it was therefore subject to the new regime’s requirements. Determination **30 June 2026** / public **1 July 2026**: acquisition must not be put into effect. The ACCC attributes a prospective independent-exit theory of harm (https://www.accc.gov.au/media-release/accc-opposes-coles%E2%80%99-acquisition-of-a-supermarket-and-liquor-site-in-kalgoorlie-0; public reasons PDF on the acquisitions register).  \n- **Tribunal status (official listing):** ACT 1 of 2026 listed for hearing **9–12 and 16–19 November 2026** (https://competitiontribunal.gov.au/current-matters/listings). Final merits orders/reasons not located for this release pass. A separate **24 September 2026** Tribunal determination addresses interim evidentiary applications under s 100S(2) (https://www.competitiontribunal.gov.au/__data/assets/pdf_file/0006/607641/Determination.pdf) — **not** final disposition of the ACCC refusal (**ATLAS-ADM-003**).  \n- **Nine-event pilot (process illustration only):** Under documented filters (Coles or Woolworths party; event date 1 Jul–30 Sep 2026; supermarket land/lease inclusion; MN-65028 Paydock excluded as non-site), Phase 0C.2B coded nine events with public register URLs in `research/04_pilot_sample.csv`. Mix of notification determinations and waiver decisions; anticipated openings mostly **2027–2033**; completion/opening **not independently established**. Identified sample, not a census; MN and WA must never be pooled (**ATLAS-EMP-007**; `research/04_empirical_pilot_findings.md` §§5–6).\n\n**Limits**\n\n- No causal evaluation of Part 3 on foreclosure or prices (**ATLAS-GAP-003**).  \n- Kalgoorlie illustrates refusal power after voluntary notification; it should not be narrated as if it were a compulsory Part 3 filing example.  \n- Diversion/welfare magnitudes remain unidentified (**ATLAS-GAP-002**).\n",
+          "explicitClaimIds": [
+            "ATLAS-ADM-003",
+            "ATLAS-EMP-007",
+            "ATLAS-GAP-002",
+            "ATLAS-GAP-003",
+            "ATLAS-LEG-008"
+          ]
+        },
+        {
+          "number": 6,
+          "title": "Plausible favourable, unfavourable and null pathways",
+          "heading": "6. Plausible favourable, unfavourable and null pathways",
+          "anchor": "section-6",
+          "markdown": "| Pathway | Content |\n|---------|---------|\n| **Favourable** | Notification catches anticompetitive site/lease grabs; Kalgoorlie-type refusals preserve differentiated local constraints (**O5** locally); transparency enables scrutiny |\n| **Unfavourable** | Parties shift earlier to non-notifiable structures; waiver pathway used for deals that still raise concerns (s 50 residual costly to enforce); refusal preserves a local independent but forgoes short-run capacity/consumer gains the ACCC itself acknowledged |\n| **Null** | Most notified deals would have been cleared anyway; pipelines and openings unchanged; market-wide concentration driven by M2a sunk costs / M1b planning rather than acquirable sites |\n",
+          "explicitClaimIds": []
+        },
+        {
+          "number": 7,
+          "title": "Which O1–O6 outcomes can be assessed",
+          "heading": "7. Which O1–O6 outcomes can be assessed",
+          "anchor": "section-7",
+          "markdown": "| Outcome | From merger oversight evidence? |\n|---------|----------------------------------|\n| **O1** | **Process O1 only:** attempts to acquire control that enter the register |\n| **O2** | **Not yet** for 2026 land/lease cohort — openings largely future-dated |\n| **O3–O4** | Case-specific in Kalgoorlie *prospective ACCC* reasoning only |\n| **O5** | Local prospective SLC assessments possible; **market-wide O5 not identified** |\n| **O6** | **Not** from notification counts |\n",
+          "explicitClaimIds": []
+        },
+        {
+          "number": 8,
+          "title": "What cannot currently be inferred",
+          "heading": "8. What cannot currently be inferred",
+          "anchor": "section-8",
+          "markdown": "- Market-wide improvement in grocery competition from Part 3’s existence.  \n- That waiver grants mean acquisitions are competitively harmless.  \n- That notification approvals mean stores will open.  \n- That Kalgoorlie settles Australian law on independent-exit theories while final Tribunal merits reasons are unpublished.  \n- That merger enforcement substitutes for planning reform or greenfield FDI policy.\n",
+          "explicitClaimIds": []
+        },
+        {
+          "number": 9,
+          "title": "Evidence that would materially change the answer",
+          "heading": "9. Evidence that would materially change the answer",
+          "anchor": "section-9",
+          "markdown": "1. Final Tribunal merits reasons in ACT 1 of 2026.  \n2. Matured realisation study: notified/waiver sites → verified open / not open by date *T*.  \n3. Causal design on Part 3’s effect on site preemption (hard on public data).  \n4. Systematic covenant/exclusivity discovery beyond notification registers.  \n5. Remake or repeal decisions around the 2030 sunset.\n",
+          "explicitClaimIds": []
+        },
+        {
+          "number": 10,
+          "title": "Carefully qualified conclusion",
+          "heading": "10. Carefully qualified conclusion",
+          "anchor": "section-10",
+          "markdown": "**Merger oversight is real, transaction-shaped, and outcome-incomplete.** From 1 January 2026, Coles/Woolworths qualifying land and supermarket-business deals face **compulsory** Part 3 notification (or waiver). Separately, Kalgoorlie shows that a **voluntarily notified** pre-commencement leasehold can still be **refused** under the new regime on an ACCC prospective SLC theory. Neither fact, nor the Jul–Sep 2026 pilot’s pathway mix, proves market-wide foreclosure reduction, measures consumer welfare, or shows that approved notifications become stores. A reader evaluating “stronger supermarket merger rules” should separate **(i)** process coverage, **(ii)** case-level ACCC theories, **(iii)** Tribunal finality, and **(iv)** unrealised development — and should not treat the public register as a competition scoreboard.\n",
+          "explicitClaimIds": []
+        }
+      ],
+      "bodyClaimIds": [
+        "ATLAS-ADM-002",
+        "ATLAS-ADM-003",
+        "ATLAS-ASM-001",
+        "ATLAS-EMP-007",
+        "ATLAS-GAP-002",
+        "ATLAS-GAP-003",
+        "ATLAS-LEG-005",
+        "ATLAS-LEG-006",
+        "ATLAS-LEG-007",
+        "ATLAS-LEG-008"
+      ],
+      "membershipClaimIds": [
+        "ATLAS-ADM-002",
+        "ATLAS-ADM-003",
+        "ATLAS-ASM-001",
+        "ATLAS-ASM-002",
+        "ATLAS-CON-003",
+        "ATLAS-EMP-007",
+        "ATLAS-GAP-002",
+        "ATLAS-GAP-003",
+        "ATLAS-LEG-005",
+        "ATLAS-LEG-006",
+        "ATLAS-LEG-007",
+        "ATLAS-LEG-008"
+      ]
+    }
+  ],
+  "closingParts": [
+    {
+      "id": "source-to-claim-cross-reference-compact",
+      "title": "Source-to-claim cross-reference (compact)",
+      "markdown": "## Source-to-claim cross-reference (compact)\n\n**Membership rule:** IDs listed for a case are those **directly cited** in that case (matching CSV `casebook_cases`).\n\n| Atlas ID | Primary public pin | Cases (direct citation) |\n|----------|--------------------|-------------------------|\n| ATLAS-LEG-001–002 | FATA / FATR start-business & FGI | Case2 |\n| ATLAS-LEG-003 | Guidance Note 4 + vacant $0 (trigger ≠ conditions) | Case1; Case2 |\n| ATLAS-LEG-004 | Thresholds PDF | Case2 |\n| ATLAS-LEG-005 | FATA ss 12, 15 | Case2; Case4 |\n| ATLAS-LEG-006 | Determination s 1-7 | Case1; Case2; Case4 |\n| ATLAS-LEG-007 | Determination ss 3-1–3-4 | Case1; Case4 |\n| ATLAS-LEG-008 | ACCC waiver page | Case4 |\n| ATLAS-LEG-009 | Food and Grocery Code ss 8, 45A–45C | Case3 |\n| ATLAS-ADM-001 | Treasury Q2 2026 PDF (31-day median; 50% ≤30 days) | Case2 |\n| ATLAS-ADM-002 | ACCC Kalgoorlie media + reasons (voluntary notify 27 Nov 2025) | Case1; Case4 |\n| ATLAS-ADM-003 | Tribunal listings + interim 24 Sep 2026 PDF | Case4 |\n| ATLAS-EMP-001–002 | ACCC inquiry Table 3.3 / pp 160–165 | Case1 |\n| ATLAS-EMP-003 | ACCC barriers / ALDI time-to-scale | Case1; Case2; Case3 |\n| ATLAS-EMP-004 | ACCC ALDI limited constraint | Case3 |\n| ATLAS-EMP-005–006 | BADGE; Georgiou; ALDI Economic Impact Report | Case3 |\n| ATLAS-EMP-007 | ACCC register + pilot CSV/rules | Case4 |\n| ATLAS-LIT-001–002 | AEMS2020; Courtemanche–Carden | Case3 |\n| ATLAS-LIT-003–004 | Sadun; UK CC | Case1 |\n| ATLAS-LIT-005 | Davies et al. | Case2; Case3 |\n| ATLAS-LIT-006 | Griffith & Harmgart + CHK DOI | Case1 |\n| ATLAS-ASM-001–002 | Post-2026 baseline; O1–O6 separation | All (front matter / baselines) |\n| ATLAS-HYP-001–002 | M1c live; R/E qualitative cautions (Schneier) | Case1 |\n| ATLAS-HYP-003 | Open thesis Q | Case2 |\n| ATLAS-HYP-004 | SA/WA non-identification | Case3 |\n| ATLAS-CON-001–002 | MVP FIRB myths | Case2 |\n| ATLAS-CON-003 | No welfare-from-counts | All |\n| ATLAS-POL-001–002; POL-004 | Layer D site instruments | Case1 |\n| ATLAS-POL-003 | Binding-requirement discipline | Case2 |\n| ATLAS-GAP-001; GAP-004 | AU M1 gap; CLO effectiveness | Case1 |\n| ATLAS-GAP-002 | No AU diversion ratios | Case2; Case3; Case4 |\n| ATLAS-GAP-003 | No Part 3 causal eval | Case4 |\n| ATLAS-PILOT-001 | Planning applications ≠ projects | Case3 |\n\nFull field-level detail: `research/10_policy_claims_atlas.csv`.\n\n---\n"
+    },
+    {
+      "id": "four-case-comparison-table",
+      "title": "Four-case comparison table",
+      "markdown": "## Four-case comparison table\n\n| Dimension | Case 1 Undeveloped sites | Case 2 Foreign greenfield FDI | Case 3 Differentiated scale-up | Case 4 Acquisition oversight |\n|-----------|--------------------------|-------------------------------|--------------------------------|------------------------------|\n| **Core question** | Do develop-or-release or exclusivity bans improve rival access? | Which FIRB requirements apply, and when could a binding one matter? | What does ALDI history + entry literature discipline? | What do notification/waiver/determinations prove? |\n| **Baseline accuracy hinge** | Not a site-control vacuum post-2026 | Transaction-class FIRB tree; private ≠ FGI; trigger ≠ conditions | Pre-2026 history vs today’s entrant rules | MN ≠ WA ≠ opening; Kalgoorlie was voluntary notify |\n| **Lead mechanisms** | M1a/M1b/M1c; option value; M4a vs M4b | M6a/M6b; then M1/M2 | M2; M3b; M5a | M4a/M4b; process O1 |\n| **Best-supported finding** | Large unused pipelines exist; exclusionary intent unproven | Uniform multi-year FIRB barrier is false for many private steps | Observed DC-project / opening order; 29/41/526 end-2018 counts | Part 3 covers majors; waiver ≠ clearance; Kalgoorlie shows leasehold refusal power after voluntary notification |\n| **Sign-reversal risks** | Release ≠ rival access; exclusivity ban may cut development inducement; Sadun adaptation | Liberalising wrong pathway; gaming greenfield labels | Store growth without price discipline | Blocking expansion forgoes short-run capacity; waiver complacency |\n| **Assessable now** | Qualitative O1 competing explanations | Qualitative O1 by pathway | **O2** chronology | Process O1; case-level prospective ACCC SLC (local) |\n| **Not inferable** | Welfare ranking of R vs E | Welfare from “loosen FIRB” | O5/O6 from store counts; bindingness of logistics | Market-wide competition from notification volumes |\n| **Policy winner?** | **None declared** | **None declared** | **None declared** | **None declared** |\n\n---\n"
+    },
+    {
+      "id": "what-a-reader-can-now-evaluate-more-rigorously",
+      "title": "What a reader can now evaluate more rigorously",
+      "markdown": "## What a reader can now evaluate more rigorously\n\n1. **Whether a proposal attacks a real Layer A gap or restates existing tools** (Part 3 notification; foreign vacant-land conditions; Code excessive pricing).  \n2. **Which mechanism a reform assumes** (foreclosure vs planning vs scarcity vs logistics vs FDI mode) and what evidence would defeat that assumption.  \n3. **Whether FDI liberalisation is even aimed at a binding notification** for the contemplated deal.  \n4. **Why ALDI-like success stories do not license welfare claims** from fascia counts.  \n5. **Why ACCC register activity is not a competition KPI** without realisation and local outcome evidence — and why Kalgoorlie’s voluntary pathway must not be collapsed into compulsory Part 3 coverage.\n"
+    },
+    {
+      "id": "what-remains-out-of-reach",
+      "title": "What remains out of reach",
+      "markdown": "## What remains out of reach\n\n- Australian diversion ratios and structural welfare (O6).  \n- Causal Part 3 or land-release effectiveness.  \n- Nationwide proof or disproof of exclusionary land banking.  \n- Ranked, quantified comparison of Layer D packages.  \n- Final Kalgoorlie Tribunal merits reasons (not located as of this release pass).  \n\n---\n"
+    },
+    {
+      "id": "completeness-correction-notes-and-unresolved-citations",
+      "title": "Completeness, correction notes, and unresolved citations",
+      "markdown": "## Completeness, correction notes, and unresolved citations\n\n| Criterion | Assessment |\n|-----------|------------|\n| Two artefacts corrected for release | **Yes** — atlas CSV + casebook v0.1.1 |\n| CSV integrity | **43** unique IDs; **18** fields/row (csv.writer validated) |\n| Cross-ref consistency | Case membership = direct citation; compact table aligned to CSV |\n| HYP-002 / Phase 0D.2 | Reclassified as qualitative hypothesis; Schneier public PDF attached; no “established equilibrium” language |\n| Kalgoorlie | Voluntary notify **27 Nov 2025**; ACCC determination vs ACCC theory separated; Tribunal status dated from official listing; interim 24 Sep reasons distinguished |\n| Treasury / Code / ALDI wording | Approval-cohort median + verified 50%≤30 days; covered-revenue / in-all-the-circumstances Code text; contract completion / observed opening order |\n| Public URL coverage | **42/43** atlas rows have `http(s)` primary URLs; **ATLAS-HYP-003** remains project-internal thesis framing (explicitly labelled) |\n\n**Unresolved / limited citations (transparent)**\n\n1. **ATLAS-HYP-003** — no public URL; project thesis text only.  \n2. **Final ACT 1 of 2026 merits reasons** — not located; listing and interim evidentiary PDF only.  \n3. **Georgiou Jandakot** — project duration late 2014–early 2016 confirmed; a single “opened on [date]” operational stamp is not claimed beyond that.  \n4. **Nine-event pilot** — public via per-row ACCC register URLs in `04_pilot_sample.csv`; completeness still “identified sample under filters,” not a census.  \n5. **Schneier** — author PDF / working-paper status; US Chicago setting; used only for qualitative inducement caution.  \n6. Several `maintained_assumption` / gap rows remain **PolisLab syntheses** of verified externals; each now points to at least one public anchor where available.\n\n**Verdict:** v0.1.1 clears the audited release blockers for a dated policy synthesis. Operationalisation remains deferred until readers can rely on the CSV field boundaries and reproduce the evidence trail above.\n\n**End of Phase 0F release correction.**\n"
+    }
+  ]
+}

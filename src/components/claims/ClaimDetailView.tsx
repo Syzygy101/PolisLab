@@ -86,6 +86,16 @@ export function ClaimDetailView({
           >
             Compare with another claim
           </Link>
+          {claim.cases.map((caseId) => (
+            <Link
+              key={`casebook-${caseId}`}
+              to={`/casebook/${caseId}`}
+              className="border border-accent/40 bg-accent-soft px-3 py-1.5 text-sm text-accent no-underline hover:bg-accent-soft"
+              data-testid={`claim-casebook-link-${caseId}`}
+            >
+              Open {caseId} investigation
+            </Link>
+          ))}
           {claim.cases[0] ? (
             <Link
               to={claimsExplorerHref({ cases: [claim.cases[0]] })}

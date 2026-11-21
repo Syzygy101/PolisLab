@@ -39,6 +39,14 @@ Established safeguards for the interactive application. These constrain Build 01
 
 - Case filters match claims that list the selected casebook case identifier.
 - Claims Explorer mechanism/outcome/case controls are **exact-tag** filters over parsed identifiers (not silent family expansion).
+- Casebook Explorer membership is the same direct-citation set (case body citations plus common front-matter rules that explicitly apply to all four cases). Do not equate section-explicit citation, case-body citation, common rules, atlas membership, and merely related metadata.
+
+## Casebook source fidelity
+
+- The published Markdown casebook is the authoritative case narrative.
+- Application views must preserve all four cases, all ten analytical sections per case, tables, qualifications, and closing methodology/comparison material.
+- Derived orientation summaries must remain explicitly separate from original source Markdown.
+- Case-specific methodological distinctions (Case 1 R/E; Case 2 transaction pathways; Case 3 chronology vs identification; Case 4 waiver vs clearance / voluntary Kalgoorlie / release-dated Tribunal status) must not be collapsed into a single modelling template.
 
 ## No imported foreign magnitudes as calibrated Australian parameters
 

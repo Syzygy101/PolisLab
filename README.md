@@ -43,9 +43,9 @@ Third-party materials cited or linked here are **not** relicensed. External prim
 
 ---
 
-## Application (development v0.2 — Build 03)
+## Application (development v0.2 — Build 04)
 
-Interactive research laboratory with a **Research Overview**, an evidence **Claims Explorer** (search, status/admissibility/case/mechanism/outcome/literature filters, shareable URLs), full claim inspection, **two-claim comparison** (`/claims/compare`), and related-evidence navigation over the authentic v0.1.1 atlas. Casebook Explorer, Mechanism Explorer, Policy Comparison Laboratory, Evidence Gaps, and the Analytical Sandbox remain deferred navigation stubs only.
+Interactive research laboratory with a **Research Overview**, an evidence **Claims Explorer** (search, status/admissibility/case/mechanism/outcome/literature filters, shareable URLs), full claim inspection, **two-claim comparison** (`/claims/compare`), related-evidence navigation, and an interactive **Casebook Explorer** over the authentic v0.1.1 atlas and published casebook Markdown. Mechanism Explorer, Policy Comparison Laboratory, Evidence Gaps, and the Analytical Sandbox remain deferred navigation stubs only.
 
 **Software licensing:** the research artefacts remain under CC BY 4.0 as above. A separate licence decision is still required for the application/software layer; this build does not choose one.
 
@@ -61,19 +61,31 @@ Interactive research laboratory with a **Research Overview**, an evidence **Clai
 ```bash
 npm install
 npx playwright install chromium   # once, for end-to-end tests
-npm run ingest                    # regenerate src/data/claims.generated.json from the CSV
-npm run validate                  # fail nonzero on atlas integrity violations
+npm run ingest                    # regenerate claims + casebook generated JSON from published research
+npm run validate                  # fail nonzero on atlas/casebook integrity violations
 npm run dev                       # http://127.0.0.1:5173
 npm run typecheck
 npm run test                      # Vitest unit / component tests
-npm run test:e2e                  # Playwright smoke
+npm run test:e2e                  # Playwright (serial workers; dedicated port 4173)
 npm run build
+npm run verify:research           # independent atlas + casebook Python verifiers
 ```
 
-The published CSV at `research/10_policy_claims_atlas.csv` remains the source of truth. Generated JSON is a reproducible consumer artefact and must not be edited by hand.
+End-to-end tests use a **dedicated Vite server on port 4173** with `reuseExistingServer: false` and `--workers=1`. Do not treat intermittent parallel runs on port 5173 as reliable.
 
-`npm run validate` re-ingests the CSV **and** fails if `src/data/claims.generated.json` is missing or drifts from the atlas (stale or hand-edited generated data cannot silently pass).
+The published CSV at `research/10_policy_claims_atlas.csv` and Markdown casebook at `research/10_policy_assessment_casebook.md` remain the sources of truth. Generated JSON under `src/data/` is a reproducible consumer artefact and must not be edited by hand.
 
+`npm run validate` parses both published sources freshly **and** fails if generated JSON is missing or drifts (stale or hand-edited generated data cannot silently pass). It does not rewrite generated artefacts — run `npm run ingest` to regenerate.
+
+### Casebook Explorer routes
+
+| Route | Meaning |
+| --- | --- |
+| `/casebook` | Directory of the four published investigations |
+| `/casebook/:caseId` | Individual case investigation (`Case1`…`Case4`) with `#section-1`…`#section-10` anchors |
+| `/casebook/source` | Front matter, cross-case comparison table, and closing methodological sections |
+
+Cited-claim membership is the atlas `casebook_cases` field (direct citation, including common front-matter rules). Memberships overlap and are not evidence-quality or policy-performance scores. Inline `ATLAS-*` IDs in case text link to claim detail. Two cited claims can be selected for the existing `/claims/compare` workspace — there is no second comparison engine.
 ### Claims Explorer filter semantics
 
 - Free-text search is case-insensitive substring match; whitespace-only search is ignored. Searched fields include claim ID, exact claim, source title, what the source establishes, limitations, competing mechanisms, admissibility conditions, literature IDs, plus related discoverability fields (see `CLAIM_SEARCH_FIELDS` in `src/research/queries.ts`). No fuzzy or semantic search.

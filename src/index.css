@@ -53,3 +53,14 @@
     outline-offset: 2px;
   }
 }
+
+@layer components {
+  .casebook-table th,
+  .casebook-table td {
+    max-width: 28rem;
+  }
+
+  .casebook-prose > :first-child {
+    margin-top: 0;
+  }
+}

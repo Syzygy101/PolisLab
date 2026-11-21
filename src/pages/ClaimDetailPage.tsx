@@ -2,6 +2,9 @@ import { Link, useLocation, useParams } from 'react-router-dom';
 import { findClaimById } from '@/data/researchDataset';
 import { ClaimDetailView } from '@/components/claims/ClaimDetailView';
 import type { ExplorerReturnState } from '@/components/claims/ClaimsTable';
+import type { CaseClaimReturnState } from '@/components/casebook/CasebookMarkdown';
+import { caseSectionAnchor } from '@/research/casebookConstants';
+import { isCaseId } from '@/research/taxonomy';
 
 function explorerHrefFromState(state: unknown): string {
   if (!state || typeof state !== 'object') {
@@ -14,11 +17,28 @@ function explorerHrefFromState(state: unknown): string {
   return explorerSearch.length > 0 ? `/claims?${explorerSearch}` : '/claims';
 }
 
+function caseReturnFromState(state: unknown): CaseClaimReturnState | null {
+  if (!state || typeof state !== 'object') {
+    return null;
+  }
+  const caseReturn = (state as { caseReturn?: CaseClaimReturnState }).caseReturn;
+  if (!caseReturn || !isCaseId(caseReturn.caseId)) {
+    return null;
+  }
+  return caseReturn;
+}
+
 export function ClaimDetailPage() {
   const { claimId } = useParams<{ claimId: string }>();
   const location = useLocation();
   const claim = claimId ? findClaimById(claimId) : undefined;
   const explorerHref = explorerHrefFromState(location.state);
+  const caseReturn = caseReturnFromState(location.state);
+  const caseReturnHref = caseReturn
+    ? `/casebook/${caseReturn.caseId}${
+        caseReturn.section ? `#${caseSectionAnchor(caseReturn.section)}` : ''
+      }`
+    : null;
 
   if (!claim) {
     return (
@@ -38,12 +58,25 @@ export function ClaimDetailPage() {
 
   return (
     <div className="space-y-4">
-      <nav aria-label="Breadcrumb" className="text-sm text-ink-muted">
+      <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-x-2 text-sm text-ink-muted">
         <Link to={explorerHref} className="no-underline hover:underline">
           Claims Explorer
         </Link>
-        <span className="mx-2">/</span>
+        <span>/</span>
         <span className="font-mono text-ink">{claim.claim_id}</span>
+        {caseReturnHref ? (
+          <>
+            <span className="text-ink-subtle">·</span>
+            <Link
+              to={caseReturnHref}
+              className="text-accent no-underline hover:underline"
+              data-testid="return-to-case-section"
+            >
+              Back to {caseReturn!.caseId}
+              {caseReturn!.section ? ` §${caseReturn!.section}` : ''}
+            </Link>
+          </>
+        ) : null}
       </nav>
       <ClaimDetailView claim={claim} explorerReturnState={location.state as ExplorerReturnState | null} />
     </div>

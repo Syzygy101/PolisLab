@@ -59,9 +59,15 @@ export function OverviewPage() {
           >
             Open Claims Explorer
           </Link>
+          <Link
+            to="/casebook"
+            className="inline-flex border border-accent/40 bg-paper-raised px-4 py-2 text-sm font-medium text-accent no-underline hover:bg-accent-soft"
+          >
+            Open Casebook Explorer
+          </Link>
           <a
             href="#policy-investigations"
-            className="inline-flex border border-accent/40 bg-paper-raised px-4 py-2 text-sm font-medium text-accent no-underline hover:bg-accent-soft"
+            className="inline-flex border border-line bg-paper-raised px-4 py-2 text-sm font-medium text-ink no-underline hover:bg-neutral-soft"
           >
             Four policy investigations
           </a>
@@ -133,8 +139,8 @@ export function OverviewPage() {
           </h2>
           <p className="max-w-3xl text-sm text-ink-muted">
             Direct citation membership (including applicable common rules) — not exhaustive
-            relevance. Memberships overlap; do not sum them as unique claims. Full Casebook Explorer
-            deferred to Build 04.
+            relevance. Memberships overlap; do not sum them as unique claims. Open each complete
+            case investigation in the Casebook Explorer, or inspect its cited claims.
           </p>
         </div>
         <div className="grid gap-4 lg:grid-cols-2">
@@ -179,13 +185,22 @@ export function OverviewPage() {
                     </li>
                   ))}
                 </ul>
-                <Link
-                  to={claimsExplorerHref({ cases: [researchCase.id] })}
-                  className="inline-flex w-fit border border-accent bg-accent px-3 py-1.5 text-sm font-medium text-white no-underline hover:opacity-90"
-                  data-testid={`case-claims-link-${researchCase.id}`}
-                >
-                  Explore cited claims
-                </Link>
+                <div className="flex flex-wrap gap-2">
+                  <Link
+                    to={`/casebook/${researchCase.id}`}
+                    className="inline-flex w-fit border border-accent bg-accent px-3 py-1.5 text-sm font-medium text-white no-underline hover:opacity-90"
+                    data-testid={`case-investigate-link-${researchCase.id}`}
+                  >
+                    Open case investigation
+                  </Link>
+                  <Link
+                    to={claimsExplorerHref({ cases: [researchCase.id] })}
+                    className="inline-flex w-fit border border-accent/40 bg-accent-soft px-3 py-1.5 text-sm font-medium text-accent no-underline hover:bg-accent-soft"
+                    data-testid={`case-claims-link-${researchCase.id}`}
+                  >
+                    Inspect cited claims
+                  </Link>
+                </div>
               </article>
             );
           })}
@@ -370,7 +385,7 @@ export function OverviewPage() {
           <p>
             <span className="font-medium text-ink">Research release</span> {RESEARCH_RELEASE}
             {' · '}
-            <span className="font-medium text-ink">Application</span> development v0.2 (Build 03)
+            <span className="font-medium text-ink">Application</span> development v0.2 (Build 04)
           </p>
           <p>
             <span className="font-medium text-ink">Institutional/legal cutoff</span> {RESEARCH_CUTOFF}
@@ -408,8 +423,12 @@ export function OverviewPage() {
       <section className="space-y-1 border-t border-line pt-5 text-sm text-ink-muted">
         <h2 className="text-base font-semibold text-ink">Deferred modules</h2>
         <p>
-          Casebook Explorer, Mechanism Explorer, Policy Comparison Laboratory, Evidence Gaps, and
-          the gated Analytical Sandbox remain deferred (navigation labelled “later”).
+          Mechanism Explorer, Policy Comparison Laboratory, Evidence Gaps, and the gated Analytical
+          Sandbox remain deferred (navigation labelled “later”). Casebook Explorer is available at{' '}
+          <Link to="/casebook" className="text-accent">
+            /casebook
+          </Link>
+          .
         </p>
       </section>
     </div>

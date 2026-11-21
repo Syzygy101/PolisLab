@@ -9,7 +9,7 @@ import { researchDataset } from '@/data/researchDataset';
 const navItems = [
   { to: '/', label: 'Overview', end: true },
   { to: '/claims', label: 'Claims Explorer' },
-  { to: '/casebook', label: 'Casebook', deferred: true },
+  { to: '/casebook', label: 'Casebook' },
   { to: '/mechanisms', label: 'Mechanisms', deferred: true },
   { to: '/comparison', label: 'Comparison', deferred: true },
   { to: '/gaps', label: 'Evidence Gaps', deferred: true },
@@ -41,7 +41,7 @@ export function AppShell() {
             </div>
             <div className="text-right text-xs text-ink-subtle">
               <p>
-                Research {RESEARCH_RELEASE} · app development v0.2 · Build 03
+                Research {RESEARCH_RELEASE} · app development v0.2 · Build 04
               </p>
               <p>Evidence cutoff {RESEARCH_CUTOFF}</p>
               <p>Correction pass {RESEARCH_CORRECTION_PASS}</p>
