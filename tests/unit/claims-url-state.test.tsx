@@ -41,7 +41,7 @@ describe('Claims Explorer URL-driven filter state', () => {
     expect(screen.getByTestId('match-count')).toHaveTextContent(
       `${V011_EXPECTED_CASE_MEMBERSHIP.Case1} of ${allClaims.length} claims match filters`,
     );
-    await user.click(screen.getByRole('button', { name: /Clear filters/i }));
+    await user.click(screen.getByRole('button', { name: /Reset filters/i }));
     expect(screen.getByTestId('match-count')).toHaveTextContent(
       `${allClaims.length} of ${allClaims.length} claims shown`,
     );

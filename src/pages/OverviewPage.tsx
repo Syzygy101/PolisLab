@@ -370,7 +370,7 @@ export function OverviewPage() {
           <p>
             <span className="font-medium text-ink">Research release</span> {RESEARCH_RELEASE}
             {' · '}
-            <span className="font-medium text-ink">Application</span> development v0.2 (Build 02)
+            <span className="font-medium text-ink">Application</span> development v0.2 (Build 03)
           </p>
           <p>
             <span className="font-medium text-ink">Institutional/legal cutoff</span> {RESEARCH_CUTOFF}

@@ -38,7 +38,7 @@ describe('Claims Explorer routes', () => {
       /Inferring consumer welfare or durable competitive constraint/i,
     );
     expect(screen.getByText('All 18 source fields')).toBeInTheDocument();
-    expect(screen.getByText('limitations_external_validity')).toBeInTheDocument();
+    expect(screen.getAllByText('limitations_external_validity').length).toBeGreaterThan(0);
     expect(screen.getByRole('heading', { name: /Policy-comparison admissibility/i })).toBeInTheDocument();
   });
 
@@ -73,7 +73,7 @@ describe('Claims Explorer routes', () => {
     expect(screen.getByTestId('match-count')).toHaveTextContent('1 of 43 claims match filters');
     expect(screen.getByText('ATLAS-HYP-003')).toBeInTheDocument();
 
-    await user.click(screen.getByRole('button', { name: /Clear filters/i }));
+    await user.click(screen.getByRole('button', { name: /Reset filters/i }));
     expect(screen.getByTestId('match-count')).toHaveTextContent('43 of 43 claims shown');
     expect(within(screen.getByRole('table')).getByText('ATLAS-LEG-001')).toBeInTheDocument();
   });

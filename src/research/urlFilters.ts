@@ -1,19 +1,26 @@
 /**
- * URL-based Claims Explorer filter contract (Build 02 / 02R).
+ * URL-based Claims Explorer filter contract (Build 02 / 03).
  *
  * Query parameters on `/claims`:
- * - `q`         — free-text search (single string; whitespace-only ignored when matching)
- * - `status`    — claim status; repeatable (`?status=a&status=b`)
- * - `case`      — casebook case ID (Case1…Case4); repeatable
- * - `outcome`   — exact outcome tag (O1…O6); repeatable
- * - `mechanism` — exact mechanism tag (e.g. M1, M1a); repeatable
+ * - `q`           — free-text search (single string; whitespace-only ignored when matching)
+ * - `status`      — evidentiary status; repeatable (`?status=a&status=b`)
+ * - `admissibility` — policy-comparison admissibility (`yes`|`no`|`conditional`); repeatable
+ * - `case`        — casebook case ID (Case1…Case4); repeatable
+ * - `outcome`     — exact outcome tag (O1…O6); repeatable
+ * - `mechanism`   — exact mechanism tag (e.g. M1, M1a); repeatable
+ * - `literature`  — exact literature-source identifier; repeatable
+ * - `source_url`  — exact primary source URL match (single value)
+ * - `sort`        — `claim_id` (default) or `primary_source_title`
  *
  * Invalid-value semantics (predictable; documented):
  * - Unknown `status` values: **ignored** (not applied; listed in UI notice).
+ * - Unknown `admissibility` values: **ignored**.
  * - Unknown `case` values (not Case1–Case4): **ignored**.
  * - Unknown `outcome` values (not O1–O6): **ignored**.
- * - `mechanism` values: **retained and applied** as exact-tag filters even if no
- *   claim currently carries the tag (may yield zero matches). Empty strings ignored.
+ * - Unknown `sort` values: **ignored** (default `claim_id`).
+ * - `mechanism` / `literature` values: **retained and applied** as exact-tag
+ *   filters even if no claim currently carries the tag (may yield zero matches).
+ *   Empty strings ignored.
  * - Duplicate values within a dimension: **deduplicated** (first occurrence wins).
  * - Invalid values are **not rewritten out of the address bar** until the user
  *   changes filters; committed filter state uses only the accepted values.
@@ -21,14 +28,20 @@
  * Other semantics:
  * - Within a dimension, values combine with OR; across dimensions, with AND.
  * - Clearing filters removes corresponding parameters.
- * - Empty filters yield `/claims` with no query string.
+ * - Empty filters yield `/claims` with no query string (default sort omitted).
  * - Mechanism filtering remains exact-tag (no family expansion).
- * - Claim-detail paths `/claims/:claimId` are unaffected.
+ * - Claim-detail paths `/claims/:claimId` and compare `/claims/compare` are separate.
+ *
+ * Admissibility is not a truth verdict and is distinct from evidentiary status.
  */
 
-import type { ClaimStatus } from './constants';
-import { CLAIM_STATUSES } from './constants';
-import { EMPTY_FILTERS, type ClaimFilters } from './queries';
+import type { AdmissibilityValue, ClaimStatus } from './constants';
+import { ADMISSIBILITY_VALUES, CLAIM_STATUSES } from './constants';
+import {
+  EMPTY_FILTERS,
+  type ClaimFilters,
+  type ClaimSortKey,
+} from './queries';
 import {
   CASE_IDS,
   OUTCOME_STAGE_IDS,
@@ -39,17 +52,31 @@ import {
 export const URL_FILTER_PARAMS = {
   search: 'q',
   status: 'status',
+  admissibility: 'admissibility',
   case: 'case',
   outcome: 'outcome',
   mechanism: 'mechanism',
+  literature: 'literature',
+  sourceUrl: 'source_url',
+  sort: 'sort',
 } as const;
 
 const STATUS_SET = new Set<string>(CLAIM_STATUSES);
+const ADMISSIBILITY_SET = new Set<string>(ADMISSIBILITY_VALUES);
 const CASE_SET = new Set<string>(CASE_IDS);
 const OUTCOME_SET = new Set<string>(OUTCOME_STAGE_IDS);
+const SORT_VALUES = new Set<ClaimSortKey>(['claim_id', 'primary_source_title']);
 
 function isClaimStatus(value: string): value is ClaimStatus {
   return STATUS_SET.has(value);
+}
+
+function isAdmissibilityValue(value: string): value is AdmissibilityValue {
+  return ADMISSIBILITY_SET.has(value);
+}
+
+function isClaimSortKey(value: string): value is ClaimSortKey {
+  return SORT_VALUES.has(value as ClaimSortKey);
 }
 
 function uniquePreserveOrder(values: string[]): string[] {
@@ -66,7 +93,8 @@ function uniquePreserveOrder(values: string[]): string[] {
 
 /**
  * Parse committed Claims Explorer filters from URLSearchParams.
- * Invalid status/case/outcome values are dropped; mechanism tags are kept as exact tags.
+ * Invalid status/admissibility/case/outcome/sort values are dropped;
+ * mechanism and literature tags are kept as exact tags.
  */
 export function parseFiltersFromSearchParams(
   params: URLSearchParams,
@@ -75,6 +103,9 @@ export function parseFiltersFromSearchParams(
   const statuses = uniquePreserveOrder(
     params.getAll(URL_FILTER_PARAMS.status).filter(isClaimStatus),
   ) as ClaimStatus[];
+  const admissibilities = uniquePreserveOrder(
+    params.getAll(URL_FILTER_PARAMS.admissibility).filter(isAdmissibilityValue),
+  ) as AdmissibilityValue[];
   const cases = uniquePreserveOrder(
     params.getAll(URL_FILTER_PARAMS.case).filter(isCaseId),
   );
@@ -87,13 +118,27 @@ export function parseFiltersFromSearchParams(
       .map((value) => value.trim())
       .filter((value) => value.length > 0),
   );
+  const literatureSources = uniquePreserveOrder(
+    params
+      .getAll(URL_FILTER_PARAMS.literature)
+      .map((value) => value.trim())
+      .filter((value) => value.length > 0),
+  );
+  const sourceUrl = (params.get(URL_FILTER_PARAMS.sourceUrl) ?? '').trim();
+  const sortRaw = params.get(URL_FILTER_PARAMS.sort);
+  const sort: ClaimSortKey =
+    sortRaw && isClaimSortKey(sortRaw) ? sortRaw : 'claim_id';
 
   return {
     search: rawSearch,
     statuses,
+    admissibilities,
     cases,
     outcomes,
     mechanisms,
+    literatureSources,
+    sourceUrl,
+    sort,
   };
 }
 
@@ -109,6 +154,9 @@ export function serializeFiltersToSearchParams(
   for (const status of filters.statuses) {
     params.append(URL_FILTER_PARAMS.status, status);
   }
+  for (const value of filters.admissibilities) {
+    params.append(URL_FILTER_PARAMS.admissibility, value);
+  }
   for (const caseId of filters.cases) {
     params.append(URL_FILTER_PARAMS.case, caseId);
   }
@@ -118,10 +166,19 @@ export function serializeFiltersToSearchParams(
   for (const mechanism of filters.mechanisms) {
     params.append(URL_FILTER_PARAMS.mechanism, mechanism);
   }
+  for (const literature of filters.literatureSources) {
+    params.append(URL_FILTER_PARAMS.literature, literature);
+  }
+  if (filters.sourceUrl.trim()) {
+    params.set(URL_FILTER_PARAMS.sourceUrl, filters.sourceUrl.trim());
+  }
+  if (filters.sort !== 'claim_id') {
+    params.set(URL_FILTER_PARAMS.sort, filters.sort);
+  }
   return params;
 }
 
-/** Build a `/claims?...` path for Overview deep-links. */
+/** Build a `/claims?...` path for Overview deep-links and related navigation. */
 export function claimsExplorerHref(
   partial: Partial<ClaimFilters> = {},
 ): string {
@@ -133,19 +190,27 @@ export function claimsExplorerHref(
 
 export interface IgnoredFilterParams {
   statuses: string[];
+  admissibilities: string[];
   cases: string[];
   outcomes: string[];
+  sorts: string[];
 }
 
 /** Raw URL values ignored when building committed filter state. */
 export function collectIgnoredFilterParams(
   params: URLSearchParams,
 ): IgnoredFilterParams {
+  const sortRaw = params.get(URL_FILTER_PARAMS.sort);
   return {
     statuses: uniquePreserveOrder(
       params
         .getAll(URL_FILTER_PARAMS.status)
         .filter((value) => value.length > 0 && !isClaimStatus(value)),
+    ),
+    admissibilities: uniquePreserveOrder(
+      params
+        .getAll(URL_FILTER_PARAMS.admissibility)
+        .filter((value) => value.length > 0 && !isAdmissibilityValue(value)),
     ),
     cases: uniquePreserveOrder(
       params
@@ -157,6 +222,8 @@ export function collectIgnoredFilterParams(
         .getAll(URL_FILTER_PARAMS.outcome)
         .filter((value) => value.length > 0 && !OUTCOME_SET.has(value)),
     ),
+    sorts:
+      sortRaw && sortRaw.length > 0 && !isClaimSortKey(sortRaw) ? [sortRaw] : [],
   };
 }
 
@@ -170,8 +237,10 @@ export function ignoredFilterParamsAreEmpty(
 ): boolean {
   return (
     ignored.statuses.length === 0 &&
+    ignored.admissibilities.length === 0 &&
     ignored.cases.length === 0 &&
-    ignored.outcomes.length === 0
+    ignored.outcomes.length === 0 &&
+    ignored.sorts.length === 0
   );
 }
 
@@ -179,9 +248,13 @@ export function filtersEqual(a: ClaimFilters, b: ClaimFilters): boolean {
   return (
     a.search === b.search &&
     a.statuses.join('\0') === b.statuses.join('\0') &&
+    a.admissibilities.join('\0') === b.admissibilities.join('\0') &&
     a.mechanisms.join('\0') === b.mechanisms.join('\0') &&
     a.outcomes.join('\0') === b.outcomes.join('\0') &&
-    a.cases.join('\0') === b.cases.join('\0')
+    a.cases.join('\0') === b.cases.join('\0') &&
+    a.literatureSources.join('\0') === b.literatureSources.join('\0') &&
+    a.sourceUrl === b.sourceUrl &&
+    a.sort === b.sort
   );
 }
 
@@ -191,8 +264,12 @@ export function dimensionsEqualExceptSearch(
 ): boolean {
   return (
     a.statuses.join('\0') === b.statuses.join('\0') &&
+    a.admissibilities.join('\0') === b.admissibilities.join('\0') &&
     a.mechanisms.join('\0') === b.mechanisms.join('\0') &&
     a.outcomes.join('\0') === b.outcomes.join('\0') &&
-    a.cases.join('\0') === b.cases.join('\0')
+    a.cases.join('\0') === b.cases.join('\0') &&
+    a.literatureSources.join('\0') === b.literatureSources.join('\0') &&
+    a.sourceUrl === b.sourceUrl &&
+    a.sort === b.sort
   );
 }

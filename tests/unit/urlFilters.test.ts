@@ -47,10 +47,46 @@ describe('Claims Explorer URL filter contract', () => {
     expect(filters.mechanisms).toEqual(['M1']);
     expect(collectIgnoredFilterParams(params)).toEqual({
       statuses: ['not_a_real_status'],
+      admissibilities: [],
       cases: ['Case9'],
       outcomes: ['O9'],
+      sorts: [],
     });
   });
+
+  it('round-trips admissibility, literature, source_url, and sort', () => {
+    const filters = {
+      ...EMPTY_FILTERS,
+      admissibilities: ['conditional' as const],
+      literatureSources: ['SRC-ACCC-INQ'],
+      sourceUrl: 'https://example.test/source',
+      sort: 'primary_source_title' as const,
+    };
+    const params = serializeFiltersToSearchParams(filters);
+    expect(params.getAll('admissibility')).toEqual(['conditional']);
+    expect(params.getAll('literature')).toEqual(['SRC-ACCC-INQ']);
+    expect(params.get('source_url')).toBe('https://example.test/source');
+    expect(params.get('sort')).toBe('primary_source_title');
+    expect(parseFiltersFromSearchParams(params)).toEqual(filters);
+  });
+
+  it('ignores unknown admissibility and sort; retains unknown literature tags', () => {
+    const params = new URLSearchParams(
+      'admissibility=maybe&admissibility=yes&sort=by_strength&literature=SRC-UNKNOWN',
+    );
+    const filters = parseFiltersFromSearchParams(params);
+    expect(filters.admissibilities).toEqual(['yes']);
+    expect(filters.sort).toBe('claim_id');
+    expect(filters.literatureSources).toEqual(['SRC-UNKNOWN']);
+    expect(collectIgnoredFilterParams(params)).toEqual({
+      statuses: [],
+      admissibilities: ['maybe'],
+      cases: [],
+      outcomes: [],
+      sorts: ['by_strength'],
+    });
+  });
+
 
   it('retains unknown mechanism tags as exact-tag filters', () => {
     const params = new URLSearchParams('mechanism=M99z&mechanism=');

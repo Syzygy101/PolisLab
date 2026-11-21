@@ -1,6 +1,14 @@
+import { Link } from 'react-router-dom';
+import { allClaims } from '@/data/researchDataset';
 import type { Claim } from '@/research/schema';
 import { ATLAS_SOURCE_FIELDS } from '@/research/constants';
+import { compareHref } from '@/research/compareUrl';
+import { findClaimsSharingSourceUrl } from '@/research/relatedEvidence';
 import { isSafeHttpUrl } from '@/research/safeUrl';
+import { claimsExplorerHref } from '@/research/urlFilters';
+import { AdmissibilityBadge, admissibilityExpandedLabel } from './AdmissibilityBadge';
+import type { ExplorerReturnState } from './ClaimsTable';
+import { RelatedEvidencePanel } from './RelatedEvidencePanel';
 import { StatusBadge, statusTone } from './StatusBadge';
 import { IdChipList } from './IdChip';
 
@@ -25,13 +33,39 @@ const FIELD_LABELS: Record<(typeof ATLAS_SOURCE_FIELDS)[number], string> = {
   literature_src_ids: 'Literature source IDs (source)',
 };
 
-const ADMISSIBILITY_LABEL: Record<Claim['admissible_in_policy_comparison'], string> = {
-  yes: 'yes — may be used in policy comparison under the stated conditions',
-  no: 'no — not admissible as a validated analytical result',
-  conditional: 'conditional — only under the stated conditions',
-};
+function FieldBlock({
+  field,
+  claim,
+  heading,
+}: {
+  field: (typeof ATLAS_SOURCE_FIELDS)[number];
+  claim: Claim;
+  heading?: string;
+}) {
+  return (
+    <div className="space-y-1">
+      <h3 className="text-xs font-medium uppercase tracking-wide text-ink-muted">
+        {heading ?? FIELD_LABELS[field]}
+        <span className="ml-2 font-mono text-[10px] normal-case tracking-normal text-ink-subtle">
+          {field}
+        </span>
+      </h3>
+      <div className="whitespace-pre-wrap break-words text-sm text-ink">
+        <FieldValue claim={claim} field={field} />
+      </div>
+    </div>
+  );
+}
 
-export function ClaimDetailView({ claim }: { claim: Claim }) {
+export function ClaimDetailView({
+  claim,
+  explorerReturnState,
+}: {
+  claim: Claim;
+  explorerReturnState?: ExplorerReturnState | null;
+}) {
+  const sharedUrlClaims = findClaimsSharingSourceUrl(claim, allClaims);
+
   return (
     <article className="space-y-6">
       <header className="space-y-3 border border-line bg-paper-raised p-5">
@@ -41,8 +75,123 @@ export function ClaimDetailView({ claim }: { claim: Claim }) {
         </h1>
         <div className="flex flex-wrap items-center gap-3">
           <StatusBadge status={claim.status} />
-          <p className="text-sm text-ink-muted">{statusTone(claim.status)}</p>
+          <AdmissibilityBadge value={claim.admissible_in_policy_comparison} />
         </div>
+        <p className="text-sm text-ink-muted">{statusTone(claim.status)}</p>
+        <div className="flex flex-wrap gap-2">
+          <Link
+            to={compareHref({ a: claim.claim_id })}
+            state={explorerReturnState ?? undefined}
+            className="border border-line px-3 py-1.5 text-sm text-ink no-underline hover:bg-neutral-soft"
+          >
+            Compare with another claim
+          </Link>
+          {claim.cases[0] ? (
+            <Link
+              to={claimsExplorerHref({ cases: [claim.cases[0]] })}
+              className="border border-line px-3 py-1.5 text-sm text-ink no-underline hover:bg-neutral-soft"
+            >
+              {claim.cases[0]} evidence subset
+            </Link>
+          ) : null}
+        </div>
+      </header>
+
+      <section
+        aria-labelledby="establishes-heading"
+        className="space-y-3 border border-line bg-paper-raised p-5"
+      >
+        <h2 id="establishes-heading" className="text-sm font-semibold text-ink">
+          What the source establishes
+        </h2>
+        <FieldBlock field="what_source_establishes" claim={claim} heading="Source establishes" />
+      </section>
+
+      <section
+        aria-labelledby="provenance-heading"
+        className="space-y-3 border border-line bg-paper-raised p-5"
+      >
+        <h2 id="provenance-heading" className="text-sm font-semibold text-ink">
+          Source provenance and pinpoint
+        </h2>
+        <div className="grid gap-4 md:grid-cols-2">
+          <FieldBlock field="primary_source_title" claim={claim} />
+          <FieldBlock field="source_date_or_version" claim={claim} />
+          <FieldBlock field="primary_source_url" claim={claim} />
+          <FieldBlock field="pinpoint" claim={claim} />
+          <FieldBlock field="institutional_geographic_scope" claim={claim} />
+        </div>
+        <p className="text-xs text-ink-subtle">
+          Source types in the atlas include legislation, guidance, administrative determinations,
+          descriptive evidence, literature, and PolisLab synthesis. This build does not
+          auto-classify source type when the atlas does not state one.
+        </p>
+      </section>
+
+      <section
+        aria-labelledby="limitations-heading"
+        className="space-y-3 border border-line bg-paper-raised p-5"
+      >
+        <h2 id="limitations-heading" className="text-sm font-semibold text-ink">
+          Limitations and competing evidence
+        </h2>
+        <FieldBlock field="limitations_external_validity" claim={claim} />
+        <FieldBlock field="competing_mechanism_or_contrary_evidence" claim={claim} />
+      </section>
+
+      <aside
+        aria-labelledby="admissibility-heading"
+        className="space-y-2 border border-line-strong bg-neutral-soft px-4 py-3"
+      >
+        <h2 id="admissibility-heading" className="text-sm font-semibold text-ink">
+          Policy-comparison admissibility and conditions
+        </h2>
+        <div className="flex flex-wrap items-center gap-2">
+          <AdmissibilityBadge value={claim.admissible_in_policy_comparison} />
+          <span className="font-mono text-xs text-ink-muted">
+            admissible_in_policy_comparison = {claim.admissible_in_policy_comparison}
+          </span>
+        </div>
+        <p className="text-sm text-ink">
+          <span className="font-medium">{claim.admissible_in_policy_comparison}</span>
+          <span className="text-ink-muted">
+            {' '}
+            (
+            {claim.admissible_in_policy_comparison === 'yes'
+              ? 'yes — may be used in policy comparison under the stated conditions'
+              : claim.admissible_in_policy_comparison === 'no'
+                ? 'no — not admissible as a validated analytical result'
+                : 'conditional — only under the stated conditions'}
+            )
+          </span>
+        </p>
+        <p className="text-xs text-ink-muted">
+          Admissibility is not a truth verdict. <span className="font-medium">yes</span> does not
+          mean the claim is established fact; <span className="font-medium">no</span> does not mean
+          the claim is false. Status and admissibility remain distinct fields. Inadmissibility for
+          a validated analytical use does not necessarily prohibit a qualified qualitative
+          discussion. {admissibilityExpandedLabel(claim.admissible_in_policy_comparison)}.
+        </p>
+        <FieldBlock field="admissibility_conditions" claim={claim} />
+      </aside>
+
+      <section
+        aria-labelledby="alter-heading"
+        className="space-y-3 border border-line bg-paper-raised p-5"
+      >
+        <h2 id="alter-heading" className="text-sm font-semibold text-ink">
+          Observation that would alter the assessment
+        </h2>
+        <FieldBlock field="observation_that_would_alter_assessment" claim={claim} />
+      </section>
+
+      <section
+        aria-labelledby="tags-heading"
+        className="space-y-3 border border-line bg-paper-raised p-5"
+      >
+        <h2 id="tags-heading" className="text-sm font-semibold text-ink">
+          Mechanisms, outcomes, and case membership
+        </h2>
         <div className="grid gap-3 text-sm sm:grid-cols-3">
           <div>
             <p className="text-xs uppercase tracking-wide text-ink-subtle">Mechanisms</p>
@@ -63,43 +212,79 @@ export function ClaimDetailView({ claim }: { claim: Claim }) {
             </div>
           </div>
         </div>
-      </header>
+        <div className="grid gap-3 md:grid-cols-3">
+          <FieldBlock field="mechanism_ids" claim={claim} />
+          <FieldBlock field="outcome_ids" claim={claim} />
+          <FieldBlock field="casebook_cases" claim={claim} />
+        </div>
+      </section>
 
-      <aside
-        aria-labelledby="admissibility-heading"
-        className="space-y-2 border border-line-strong bg-neutral-soft px-4 py-3"
+      <section
+        aria-labelledby="literature-heading"
+        className="space-y-3 border border-line bg-paper-raised p-5"
       >
-        <h2 id="admissibility-heading" className="text-sm font-semibold text-ink">
-          Policy-comparison admissibility
+        <h2 id="literature-heading" className="text-sm font-semibold text-ink">
+          Literature-source identifiers and record metadata
         </h2>
-        <p className="text-sm text-ink">
-          <span className="font-mono text-xs uppercase tracking-wide text-ink-muted">
-            admissible_in_policy_comparison
-          </span>
-          <span className="mx-2 text-ink-subtle">=</span>
-          <span className="font-medium">{claim.admissible_in_policy_comparison}</span>
-          <span className="text-ink-muted">
-            {' '}
-            ({ADMISSIBILITY_LABEL[claim.admissible_in_policy_comparison]})
-          </span>
-        </p>
-        <p className="text-xs text-ink-muted">
-          Admissibility is not a truth verdict. <span className="font-medium">yes</span> does not
-          mean the claim is established fact; <span className="font-medium">no</span> does not mean
-          the claim is false. Status and admissibility remain distinct fields.
-        </p>
-        {claim.admissibility_conditions.trim() !== '' ? (
-          <p className="whitespace-pre-wrap text-sm text-ink">
-            <span className="font-medium text-ink-muted">Conditions: </span>
-            {claim.admissibility_conditions}
-          </p>
+        <FieldBlock field="literature_src_ids" claim={claim} />
+        <FieldBlock field="claim_id" claim={claim} />
+        <FieldBlock field="status" claim={claim} />
+        {claim.literatureSources.length > 0 ? (
+          <div className="flex flex-wrap gap-2">
+            {claim.literatureSources.map((id) => (
+              <Link
+                key={id}
+                to={claimsExplorerHref({ literatureSources: [id] })}
+                className="border border-line px-2 py-1 font-mono text-xs text-accent no-underline hover:bg-neutral-soft"
+              >
+                Filter by {id}
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm text-ink-subtle">No literature-source identifiers on this record.</p>
+        )}
+        {claim.primary_source_url.trim() ? (
+          <div className="space-y-2">
+            <p className="text-xs text-ink-muted">
+              Records sharing this exact primary source URL (titles alone do not merge documents;
+              shared URL does not imply the same proposition):
+            </p>
+            {sharedUrlClaims.length === 0 ? (
+              <p className="text-sm text-ink-subtle">No other claims share this URL.</p>
+            ) : (
+              <ul className="space-y-1 text-sm">
+                {sharedUrlClaims.map((other) => (
+                  <li key={other.claim_id}>
+                    <Link to={`/claims/${other.claim_id}`} className="font-mono text-xs">
+                      {other.claim_id}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <Link
+              to={claimsExplorerHref({ sourceUrl: claim.primary_source_url.trim() })}
+              className="inline-block text-sm text-accent"
+            >
+              Open research subset for this exact source URL
+            </Link>
+          </div>
         ) : null}
-      </aside>
+      </section>
+
+      <RelatedEvidencePanel claim={claim} claims={allClaims} />
 
       <section aria-labelledby="source-fields-heading" className="space-y-3">
-        <h2 id="source-fields-heading" className="text-sm font-semibold uppercase tracking-wide text-ink-muted">
+        <h2
+          id="source-fields-heading"
+          className="text-sm font-semibold uppercase tracking-wide text-ink-muted"
+        >
           All 18 source fields
         </h2>
+        <p className="text-xs text-ink-subtle">
+          Complete original atlas record. No independently generated summaries replace source text.
+        </p>
         <dl className="divide-y divide-line border border-line bg-paper-raised">
           {ATLAS_SOURCE_FIELDS.map((field) => (
             <div key={field} className="grid gap-1 px-4 py-3 sm:grid-cols-[14rem_1fr] sm:gap-4">
@@ -107,7 +292,7 @@ export function ClaimDetailView({ claim }: { claim: Claim }) {
                 <span className="block">{FIELD_LABELS[field]}</span>
                 <span className="mt-0.5 block font-mono text-[10px] text-ink-subtle">{field}</span>
               </dt>
-              <dd className="text-sm text-ink whitespace-pre-wrap break-words">
+              <dd className="break-words whitespace-pre-wrap text-sm text-ink">
                 <FieldValue claim={claim} field={field} />
               </dd>
             </div>
@@ -134,7 +319,7 @@ function FieldValue({
         <span className="text-ink-muted">
           No public primary URL in the published atlas
           {claim.claim_id === 'ATLAS-HYP-003'
-            ? ' (known internal thesis framing for ATLAS-HYP-003).'
+            ? ' (internal thesis / project framing for ATLAS-HYP-003; unpublished local materials are not exposed).'
             : '.'}
         </span>
       );

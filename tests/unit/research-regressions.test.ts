@@ -105,4 +105,34 @@ describe('research-specific regression checks', () => {
     expect(c.status).toBe('unresolved_hypothesis');
     expect(c.admissible_in_policy_comparison).toBe('no');
   });
+
+  it('Build 03 curated pairs preserve distinct evidentiary roles', () => {
+    const emp001 = claim('ATLAS-EMP-001');
+    const emp002 = claim('ATLAS-EMP-002');
+    expect(emp001.status).toBe('empirical_finding');
+    expect(emp002.status).toBe('absence_of_finding');
+    expect(emp001.cases).toContain('Case1');
+    expect(emp002.cases).toContain('Case1');
+
+    const emp005 = claim('ATLAS-EMP-005');
+    const hyp004 = claim('ATLAS-HYP-004');
+    expect(emp005.status).toBe('empirical_finding');
+    expect(hyp004.status).toBe('absence_of_finding');
+    expect(emp005.admissibility_conditions).toMatch(/chronology\/moment only/i);
+    expect(hyp004.exact_claim).toMatch(/ALDI chronology/i);
+
+    const leg001 = claim('ATLAS-LEG-001');
+    const leg002 = claim('ATLAS-LEG-002');
+    expect(leg001.status).toBe('verified_legal_fact');
+    expect(leg002.status).toBe('verified_legal_fact');
+    expect(leg001.exact_claim).toMatch(/Private foreign persons/i);
+    expect(leg002.exact_claim).toMatch(/Foreign government investors/i);
+
+    const hyp001 = claim('ATLAS-HYP-001');
+    const pol001 = claim('ATLAS-POL-001');
+    expect(hyp001.status).toBe('unresolved_hypothesis');
+    expect(pol001.status).toBe('maintained_assumption');
+    expect(hyp001.admissible_in_policy_comparison).toBe('conditional');
+    expect(pol001.admissible_in_policy_comparison).toBe('conditional');
+  });
 });

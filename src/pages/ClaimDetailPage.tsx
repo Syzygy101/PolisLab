@@ -1,10 +1,24 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { findClaimById } from '@/data/researchDataset';
 import { ClaimDetailView } from '@/components/claims/ClaimDetailView';
+import type { ExplorerReturnState } from '@/components/claims/ClaimsTable';
+
+function explorerHrefFromState(state: unknown): string {
+  if (!state || typeof state !== 'object') {
+    return '/claims';
+  }
+  const explorerSearch = (state as ExplorerReturnState).explorerSearch;
+  if (typeof explorerSearch !== 'string') {
+    return '/claims';
+  }
+  return explorerSearch.length > 0 ? `/claims?${explorerSearch}` : '/claims';
+}
 
 export function ClaimDetailPage() {
   const { claimId } = useParams<{ claimId: string }>();
+  const location = useLocation();
   const claim = claimId ? findClaimById(claimId) : undefined;
+  const explorerHref = explorerHrefFromState(location.state);
 
   if (!claim) {
     return (
@@ -15,7 +29,7 @@ export function ClaimDetailPage() {
           <span className="font-mono text-ink">{claimId ?? '(missing id)'}</span>. Check the claim
           ID or return to the explorer.
         </p>
-        <Link to="/claims" className="text-sm font-medium">
+        <Link to={explorerHref} className="text-sm font-medium">
           Back to Claims Explorer
         </Link>
       </div>
@@ -25,13 +39,13 @@ export function ClaimDetailPage() {
   return (
     <div className="space-y-4">
       <nav aria-label="Breadcrumb" className="text-sm text-ink-muted">
-        <Link to="/claims" className="no-underline hover:underline">
+        <Link to={explorerHref} className="no-underline hover:underline">
           Claims Explorer
         </Link>
         <span className="mx-2">/</span>
         <span className="font-mono text-ink">{claim.claim_id}</span>
       </nav>
-      <ClaimDetailView claim={claim} />
+      <ClaimDetailView claim={claim} explorerReturnState={location.state as ExplorerReturnState | null} />
     </div>
   );
 }

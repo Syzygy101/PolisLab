@@ -135,4 +135,103 @@ describe('claim filtering', () => {
     const ids = results.map((c) => c.claim_id);
     expect(ids).toEqual([...ids].sort((a, b) => a.localeCompare(b)));
   });
+
+  it('searches newly supported evidence fields including literature identifiers', () => {
+    const byLit = filterClaims(allClaims, {
+      ...EMPTY_FILTERS,
+      search: 'src-accc-inq',
+    });
+    expect(byLit.map((c) => c.claim_id).sort()).toEqual(
+      [
+        'ATLAS-EMP-001',
+        'ATLAS-EMP-002',
+        'ATLAS-EMP-003',
+        'ATLAS-EMP-004',
+        'ATLAS-EMP-005',
+        'ATLAS-HYP-001',
+      ].sort(),
+    );
+
+    const byConditions = filterClaims(allClaims, {
+      ...EMPTY_FILTERS,
+      search: 'labelled qualitative caution',
+    });
+    expect(byConditions.map((c) => c.claim_id)).toEqual(['ATLAS-HYP-002']);
+  });
+
+  it('filters by actual admissibility vocabulary without treating it as truth', () => {
+    const none = filterClaims(allClaims, {
+      ...EMPTY_FILTERS,
+      admissibilities: ['no'],
+    });
+    expect(none.map((c) => c.claim_id).sort()).toEqual(
+      ['ATLAS-HYP-002', 'ATLAS-HYP-003'].sort(),
+    );
+    expect(none.every((c) => c.admissible_in_policy_comparison === 'no')).toBe(true);
+
+    const conditional = filterClaims(allClaims, {
+      ...EMPTY_FILTERS,
+      admissibilities: ['conditional'],
+    });
+    expect(conditional.map((c) => c.claim_id).sort()).toEqual(
+      ['ATLAS-HYP-001', 'ATLAS-POL-001', 'ATLAS-POL-002', 'ATLAS-POL-004'].sort(),
+    );
+  });
+
+  it('combines status, admissibility, case, outcome, and mechanism with AND/OR semantics', () => {
+    const results = filterClaims(allClaims, {
+      ...EMPTY_FILTERS,
+      statuses: ['unresolved_hypothesis'],
+      admissibilities: ['no'],
+      cases: ['Case1', 'Case2'],
+      outcomes: ['O1', 'O5'],
+      mechanisms: ['M1c', 'M6a'],
+    });
+    // Within dimensions OR; across AND. Independent CSV expectation:
+    expect(results.map((c) => c.claim_id).sort()).toEqual(
+      ['ATLAS-HYP-002', 'ATLAS-HYP-003'].sort(),
+    );
+  });
+
+  it('filters by exact literature tag and exact source URL', () => {
+    const byLit = filterClaims(allClaims, {
+      ...EMPTY_FILTERS,
+      literatureSources: ['SRC-BASELINE'],
+    });
+    expect(byLit.length).toBe(16);
+    expect(byLit.every((c) => c.literatureSources.includes('SRC-BASELINE'))).toBe(true);
+
+    const url = allClaims.find((c) => c.claim_id === 'ATLAS-EMP-001')!.primary_source_url;
+    const byUrl = filterClaims(allClaims, {
+      ...EMPTY_FILTERS,
+      sourceUrl: url,
+    });
+    expect(byUrl.map((c) => c.claim_id).sort()).toEqual(
+      [
+        'ATLAS-EMP-001',
+        'ATLAS-EMP-002',
+        'ATLAS-EMP-003',
+        'ATLAS-EMP-004',
+        'ATLAS-GAP-001',
+        'ATLAS-POL-004',
+      ].sort(),
+    );
+  });
+
+  it('sorts by primary source title with claim_id tie-break', () => {
+    const results = filterClaims(allClaims, {
+      ...EMPTY_FILTERS,
+      sort: 'primary_source_title',
+    });
+    for (let i = 1; i < results.length; i += 1) {
+      const prev = results[i - 1]!;
+      const curr = results[i]!;
+      const cmp = prev.primary_source_title.localeCompare(curr.primary_source_title);
+      if (cmp === 0) {
+        expect(prev.claim_id.localeCompare(curr.claim_id)).toBeLessThanOrEqual(0);
+      } else {
+        expect(cmp).toBeLessThanOrEqual(0);
+      }
+    }
+  });
 });

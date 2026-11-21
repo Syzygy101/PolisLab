@@ -31,7 +31,7 @@ test.describe('Overview Build 02 journeys', () => {
     await page.getByTestId('case-claims-link-Case1').click();
     await expect(page).toHaveURL(/\/claims\?case=Case1/);
     await expect(page.getByText(/20 of 43 claims match filters/)).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Case1' })).toHaveAttribute(
+    await expect(page.getByRole('button', { name: 'Case1', exact: true })).toHaveAttribute(
       'aria-pressed',
       'true',
     );
@@ -55,7 +55,7 @@ test.describe('Overview Build 02 journeys', () => {
     await expect(page.getByText(/6 of 43 claims match filters/)).toBeVisible();
     await expect(page.getByText('ATLAS-HYP-004')).toBeVisible();
 
-    await page.getByRole('button', { name: 'Clear filters' }).click();
+    await page.getByRole('button', { name: 'Reset filters' }).click();
     await expect(page.getByText(/43 of 43 claims shown/)).toBeVisible();
     await expect(page).toHaveURL(/\/claims$/);
 
@@ -74,7 +74,10 @@ test.describe('Overview Build 02 journeys', () => {
 
     await page.getByTestId('outcome-claims-link-O6').click();
     await expect(page).toHaveURL(/outcome=O6/);
-    await expect(page.getByRole('button', { name: 'O6' })).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.getByRole('button', { name: 'O6', exact: true })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
     await expect(page.getByText(/of 43 claims match filters/)).toBeVisible();
 
     expect(consoleErrors, `Console errors: ${consoleErrors.join('\n')}`).toEqual([]);
@@ -88,7 +91,7 @@ test.describe('Overview Build 02 journeys', () => {
 
     await page.reload();
     await expect(page.getByText(/17 of 43 claims match filters/)).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Case2' })).toHaveAttribute(
+    await expect(page.getByRole('button', { name: 'Case2', exact: true })).toHaveAttribute(
       'aria-pressed',
       'true',
     );

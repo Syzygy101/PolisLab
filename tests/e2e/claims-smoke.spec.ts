@@ -25,26 +25,26 @@ test.describe('Claims Explorer smoke', () => {
 
     await page.getByLabel('Search').fill('ATLAS-CON-001');
     await expect(page.getByText(/1 of 43 claims/)).toBeVisible();
-    await expect(page.getByText('ATLAS-CON-001')).toBeVisible();
+    await expect(page.getByRole('link', { name: 'ATLAS-CON-001', exact: true })).toBeVisible();
 
-    await page.getByRole('button', { name: 'Clear filters' }).click();
+    await page.getByRole('button', { name: 'Reset filters' }).click();
     await expect(page.getByText(/43 of 43 claims/)).toBeVisible();
 
     await page.getByRole('button', { name: 'unresolved hypothesis' }).click();
     await expect(page.getByText(/4 of 43 claims match filters/)).toBeVisible();
     await expect(page.getByText('ATLAS-HYP-004')).toHaveCount(0);
 
-    await page.getByRole('button', { name: 'Clear filters' }).click();
+    await page.getByRole('button', { name: 'Reset filters' }).click();
     await page.getByRole('button', { name: 'absence of finding' }).click();
     await expect(page.getByText('ATLAS-HYP-004')).toBeVisible();
 
-    await page.getByRole('button', { name: 'Clear filters' }).click();
+    await page.getByRole('button', { name: 'Reset filters' }).click();
     await page.getByLabel('Search').fill('ATLAS-EMP-002');
     await page.getByRole('link', { name: /Open claim ATLAS-EMP-002/i }).click();
     await expect(page).toHaveURL(/\/claims\/ATLAS-EMP-002$/);
     await expect(page.getByRole('heading', { level: 1 })).toContainText(/land banking/i);
     await expect(page.getByText('All 18 source fields')).toBeVisible();
-    await expect(page.getByText('limitations_external_validity')).toBeVisible();
+    await expect(page.locator('dl').getByText('limitations_external_validity')).toBeVisible();
     await expect(page.getByRole('heading', { name: /Policy-comparison admissibility/i })).toBeVisible();
 
     expect(consoleErrors, `Console errors: ${consoleErrors.join('\n')}`).toEqual([]);
@@ -117,7 +117,7 @@ test.describe('Claims Explorer smoke', () => {
     await page.getByLabel('Search').focus();
     await page.keyboard.type('ATLAS-LEG-003');
     await expect(page.getByText(/1 of 43 claims/)).toBeVisible();
-    await expect(page.getByText('ATLAS-LEG-003')).toBeVisible();
+    await expect(page.getByRole('link', { name: 'ATLAS-LEG-003', exact: true })).toBeVisible();
 
     // Refresh claim detail (dev server SPA).
     await page.setViewportSize({ width: 1440, height: 900 });

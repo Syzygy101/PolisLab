@@ -43,9 +43,9 @@ Third-party materials cited or linked here are **not** relicensed. External prim
 
 ---
 
-## Application (development v0.2 — Build 02)
+## Application (development v0.2 — Build 03)
 
-Interactive research laboratory with a **Research Overview** orientation surface and a functional **Claims Explorer** over the authentic v0.1.1 atlas. Casebook Explorer, Mechanism Explorer, Policy Comparison, Evidence Gaps, and the Analytical Sandbox remain deferred navigation stubs only.
+Interactive research laboratory with a **Research Overview**, an evidence **Claims Explorer** (search, status/admissibility/case/mechanism/outcome/literature filters, shareable URLs), full claim inspection, **two-claim comparison** (`/claims/compare`), and related-evidence navigation over the authentic v0.1.1 atlas. Casebook Explorer, Mechanism Explorer, Policy Comparison Laboratory, Evidence Gaps, and the Analytical Sandbox remain deferred navigation stubs only.
 
 **Software licensing:** the research artefacts remain under CC BY 4.0 as above. A separate licence decision is still required for the application/software layer; this build does not choose one.
 
@@ -76,10 +76,13 @@ The published CSV at `research/10_policy_claims_atlas.csv` remains the source of
 
 ### Claims Explorer filter semantics
 
-- Free-text search is case-insensitive; whitespace-only search is ignored.
-- Status filters match the exact published status vocabulary.
-- Mechanism / outcome / case controls are **exact-tag** filters over parsed identifiers. Selecting `M1` matches records tagged `M1` only; it does **not** expand to `M1a` / `M1b` / `M1c`. Family-level expansion is intentionally not implemented.
+- Free-text search is case-insensitive substring match; whitespace-only search is ignored. Searched fields include claim ID, exact claim, source title, what the source establishes, limitations, competing mechanisms, admissibility conditions, literature IDs, plus related discoverability fields (see `CLAIM_SEARCH_FIELDS` in `src/research/queries.ts`). No fuzzy or semantic search.
+- Status filters match the exact published evidentiary-status vocabulary.
+- Admissibility filters match `yes` / `no` / `conditional` and are **not** truth scores.
+- Mechanism / outcome / case / literature controls are **exact-tag** filters over parsed identifiers. Selecting `M1` matches records tagged `M1` only; it does **not** expand to `M1a` / `M1b` / `M1c`. Family-level expansion is intentionally not implemented.
+- `source_url` requires an exact trimmed match against the stored primary source URL.
 - Within one dimension, selected tags combine with OR. Across dimensions (and with search), filters combine with AND.
+- Default sort is `claim_id`; optional `sort=primary_source_title` (claim ID tie-break).
 
 ### Claims Explorer URL filter contract
 
@@ -88,16 +91,29 @@ Filters on `/claims` are mirrored in the query string (shareable and history-fri
 | Parameter | Meaning | Example |
 | --- | --- | --- |
 | `q` | Free-text search | `/claims?q=land+banking` |
-| `status` | Published status (repeatable) | `/claims?status=absence_of_finding` |
+| `status` | Evidentiary status (repeatable) | `/claims?status=absence_of_finding` |
+| `admissibility` | Policy-comparison admissibility (repeatable) | `/claims?admissibility=no` |
 | `case` | Casebook case ID (repeatable) | `/claims?case=Case1` |
 | `outcome` | Exact outcome tag (repeatable) | `/claims?outcome=O6` |
 | `mechanism` | Exact mechanism tag (repeatable) | `/claims?mechanism=M1` |
+| `literature` | Exact literature-source ID (repeatable) | `/claims?literature=SRC-ACCC-INQ` |
+| `source_url` | Exact primary source URL | `/claims?source_url=https%3A%2F%2F…` |
+| `sort` | `claim_id` (default, omitted) or `primary_source_title` | `/claims?sort=primary_source_title` |
 
-- Clearing filters removes the corresponding parameters.
-- **Invalid values:** unknown `status`, `case`, and `outcome` values are **ignored** (not applied to results); an on-page notice lists them. Unknown `mechanism` tags are **retained and applied** as exact-tag filters (may match zero claims). Duplicates are deduplicated. Ignored values are not rewritten out of the address bar until the user changes filters.
-- Committed filter state is the URL. Search typing uses a short local draft then updates `q` (replace) so controls, URL, and results stay consistent without racing keystrokes.
+- Resetting filters removes the corresponding parameters.
+- **Invalid values:** unknown `status`, `admissibility`, `case`, `outcome`, and `sort` values are **ignored**; an on-page notice lists them. Unknown `mechanism` / `literature` tags are **retained and applied** as exact-tag filters (may match zero claims). Duplicates are deduplicated.
+- Committed filter state is the URL. Search typing uses a short local draft then updates `q` (replace).
 - Direct claim-detail routes `/claims/:claimId` are unchanged.
 - Overview case / status / outcome actions deep-link into this contract.
+
+### Two-claim comparison URL contract
+
+| Route / parameter | Meaning |
+| --- | --- |
+| `/claims/compare` | Evidence comparison workspace |
+| `a`, `b` | Claim IDs for slots A and B |
+
+Missing IDs leave a slot empty; invalid IDs show a not-found state for that slot; identical IDs show both records with a distinct-claims notice. Comparison presents original fields side by side and does not adjudicate truth or recommend policy.
 
 ### Production routing
 

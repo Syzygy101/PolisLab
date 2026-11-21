@@ -10,3 +10,5 @@ export * from './coverage';
 export * from './urlFilters';
 export * from './overviewContent';
 export * from './referenceExpectations';
+export * from './relatedEvidence';
+export * from './compareUrl';
