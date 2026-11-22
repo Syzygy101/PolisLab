@@ -2,17 +2,15 @@
 
 Local development record for the interactive application layer. Research artefacts remain authoritative in `research/10_*` and the published v0.1.1 release.
 
-**Checkpoint:** Build 07 accepted (Evidence Gaps and Falsification Laboratory)  
-**Branch:** `feat/v0.2-evidence-gaps`  
-**Acceptance commit:** local `feat: add source-grounded evidence gaps and falsification laboratory` (record SHA from `git rev-parse HEAD` after commit)  
-**Starting checkpoint (Builds 05–06 accepted):** `1bbe1a08ba2f8ce77a1dcb0685083194f24c007a`  
-**Starting checkpoint (Build 04F):** `c19ea5f660d7e6f008eea5b6157fface2fc633fa`  
-**Claims workspace checkpoint (Build 03F):** `4a502a41f964d08aef5298ac1fbf93550892a085`  
-**Overview checkpoint (Build 02F):** `e89735a7af6e4ed733a11365c32798a8421241b0`  
-**Foundation checkpoint:** `45d23a1d32547efe7d7d9139c2b5225937872ba0`  
+**Checkpoint:** Build 09AR — Clean publication branch for v0.2.0 release candidate  
+**Branch:** `release/v0.2.0-candidate`  
+**Parent (clean):** `78631d41b241c44af0a48736c5c372e9bf13e237`  
 **Research baseline:** v0.1.1 / commit `a1922f8a8d08f59749d34de306e1b7406f9fe10b`  
 **Evidence cutoff:** 20 November 2026 · **Correction pass:** 21 November 2026  
-**Application version:** development v0.2 (Build 07 accepted)
+**Application version:** v0.2.0 release candidate (publication branch; not final tagged release)  
+**Design authority:** refined Direction C (local design-exploration materials; not published) + independent 08D2 review (locally retained)  
+**Findings register:** `docs/08A_FINDINGS_REGISTER.md`  
+**Local preserved (not published):** `feat/v0.2-release-candidate` @ `91d89b73e51005267130fc7b77bdc60160c2e789` — excluded from public ancestry because the original freeze docs contained private machine paths
 
 ## Product purpose
 
@@ -27,102 +25,154 @@ PolisLab is an interactive research laboratory for examining competing instituti
 | **H2** | Research Overview as a durable orientation surface for the laboratory | Accepted (Build 02 / 02R → 02F) |
 | **H2.5** | Evidence investigation workspace (search, admissibility, compare, related evidence) | Accepted (Build 03 / 03R → 03F) |
 | **H3** | Interactive Casebook Explorer | Accepted (Build 04 / 04R → 04F) |
-| **H3b** | Mechanism Explorer | **Accepted (Build 05 + audit remediations)** |
-| **H4a** | Policy Comparison Laboratory | **Accepted (Build 06)** |
-| **H4b** | Evidence Gaps / falsification surfaces | **Accepted (Build 07 / 07R)** |
-| **H4b+** | Gated Analytical Sandbox | Deferred — next milestone Build 08 |
+| **H3b** | Mechanism Explorer | Accepted (Build 05 + audit remediations) |
+| **H4a** | Policy Comparison Laboratory | Accepted (Build 06) |
+| **H4b** | Evidence Gaps / falsification surfaces | Accepted (Build 07 / 07R) |
+| **H4b+** | Gated Analytical Sandbox | Deferred — not part of Build 08/08P |
 
-## Build 01–06 acceptance (summary)
+## Build 01–08 RC (summary)
 
-- Build 01–04: foundation through Casebook. Checkpoints `45d23a1` → `c19ea5f`.
-- Build 05–06: Mechanisms + Policy Comparison. Accepted at `1bbe1a0` on `feat/v0.2-mechanisms`.
+- Build 01–07: foundation through Evidence Gaps. Accepted at `78631d4`.
+- Build 08 RC: product integration on `feat/v0.2-release-candidate` (uncommitted working tree at HEAD `78631d4`).
+- Build 08D2: Direction C design exploration approved with targeted fixes (isolated prototype + review packet).
 
-## Build 07 — Evidence Gaps and Falsification Laboratory — ACCEPTED
+## Build 08P — Production Design Adoption — PENDING ACCEPTANCE
 
-### Scope delivered
+### Scope
 
-- Versioned research-requirements registry (`GAPS_REGISTRY`, `2026.11.22-b07`) preserving all **19** numbered casebook §9 source entries with exact wording verified against pinned Markdown
-- Distinction between source wording and curated labels / interpretive summaries
-- Requirement types and observation roles separating legal/institutional verification from empirical falsification
-- Optional organisational research-agenda programmes (not newly published findings)
-- Routes `/gaps` and `/gaps/:requirementId`; Evidence Gaps in primary nav
-- URL filter contract: `case`, `mechanism`, `mechanism_family`, `outcome`, `status`, `type`, `role`, `agenda`, `claim`
-- Cross-links from claims, casebook §9, mechanisms, comparison, Overview
-- Independent Python verifier with **content** checks (anchors + registry↔Markdown wording), not counts alone
-- Same-case comparison: shared case-wide §9 requirements once; variant-specific separately
+Apply the approved refined Direction C visual system and interaction architecture across the complete functional Build 08 release candidate. Preserve full research functionality and methodological safeguards. No new research modules, Horizon 2 sandbox, assumption engine, publish, deploy, commit, merge, or retag.
 
-### Build 07R acceptance corrections
+### Stages delivered (local)
 
-| Finding | Remediation |
+| Stage | Result |
 | --- | --- |
-| Independent verifier tested counts more than wording | Extended `independent_verify_gaps.py` to parse registry `sourceText`, soft-match Markdown, and check content anchors |
-| `REQ-C4-03` listed all Case4 variants (looked variant-assigned) | Set `comparisonVariantIds: null` (case-wide) |
-| `REQ-C2-04` cited `ATLAS-GAP-002` without §9 support | Replaced with `ATLAS-LIT-005` (mode non-interchangeability) |
-| `REQ-C4-01` cited `ATLAS-ADM-002` as if establishing tribunal merits | Cleared claim refs; qualification notes ADM-002 is not substituted |
-| Same-case comparison duplicated case-wide §9 on both sides | `partitionComparisonRequirements` + shared panel once |
-| Main bundle ~613 kB via ClaimDetail → gapsQueries → comparisonDataset | Removed comparison dataset from gapsQueries; thinned gapsUrl → gapsSchema; main ~558 kB |
+| **08P.1** Shared design system + shell | PASS — Direction C tokens/components in `src/index.css`; workspace rail; mobile drawer with focus return; brand lockup; nav: Research / Analysis / Evidence |
+| **08P.2A** Policy Comparison Laboratory | PASS — section-aligned bands; selectors above fold; orientation secondary; shared baseline/outcomes once; full RC qualifications retained |
+| **08P.2B** Evidence library | PASS — master–detail ≥1100px; compact toolbar + advanced filters; inspector; compare tray; all 43×18 fields; URL/debounce/history preserved |
+| **Search enhancement** | PASS — substring + same-field whole-word fallback in `queries.ts`; independent CSV-derived tests |
+| **08P.2C** Two-claim evidence comparison | PASS — aligned field bands; full original text; no automatic adjudication |
+| **08P.3A** Overview | PASS — editorial entrance + ProgrammeVisual; substantive insights/boundaries/provenance retained |
+| **08P.3B** Casebook | PASS — all four cases; section rail + mobile jump; 40 sections; published markdown unchanged |
+| **08P.3C** Mechanisms | PASS — families, 12 submechanisms, matrix states, profiles; no causal arrows |
+| **08P.3D** Research gaps | PASS — 19 requirements; filters; exact text; return links |
 
-### Classification semantics (v0.1.1, dynamic)
+### Licence decision (08P: approved; 08F: applied)
 
-| Group | Count |
-| --- | ---: |
-| Numbered §9 source entries | **19** |
-| GAP-prefixed atlas claims | **4** |
-| `absence_of_finding` | **6** |
-| `unresolved_hypothesis` | **4** |
+- **Research:** CC BY 4.0 retained (root `LICENSE` byte-identical to `a1922f8`; `research/10_*` unchanged).
+- **Application software:** Apache 2.0 applied in Build 08F — `LICENSE-SOFTWARE`, `NOTICE`, `CONTRIBUTING.md`, `docs/THIRD_PARTY_NOTICES.md`, README and in-app footer updates. See `docs/SOFTWARE_LICENCE_DECISION.md`.
 
-Preserved: `ATLAS-HYP-004` = `absence_of_finding`; `ATLAS-HYP-002` = unresolved + admissibility `no`. All 43 atlas rows carry `observation_that_would_alter_assessment`.
+## Build 09AR — Publication history remediation (clean branch)
 
-### Acceptance gates (Build 07R — final)
+**Completed:** 23 November 2026  
+**Context:** Build 09A stopped before push after detecting private machine paths in `docs/08A_FINDINGS_REGISTER.md` on the original freeze (`c594edd` / tip `91d89b7`). A forward redaction on that branch would leave the paths reachable in Git history. This clean branch is cut from verified parent `78631d4`, reapplies the accepted 08F freeze tree with sanitised audit references, and excludes `c594edd` and `91d89b7` from public ancestry. Original local RC branch preserved untouched. No merge of `feat/v0.2-release-candidate`, no final tag, no deploy.
+
+## Build 08F — Final audit remediation, licensing, local release freeze — COMPLETE (local)
+
+**Completed:** 22 November 2026  
+**Context:** Closed material 08A findings; Apache 2.0 applied; local freeze prepared. Research pin unchanged. Public publication deferred to Build 09AR clean branch (see above).
+
+### Material remediations
+
+| Finding | Result |
+| --- | --- |
+| F-01 CI artifact gate false positives | `scripts/check-artifact-safety.ts` + `npm run check:artifacts`; positive/negative fixtures |
+| F-02 Absence wording | Release-scoped language in `comparisonDataset.ts` |
+| F-03 Case 3 Sadun / LIT association | `C3-PATH-UNFAV-1` names LIT-003 comparatively; no LIT-002 as Sadun support |
+| F-04/F-05 Accessible names + dl | ClaimsTable / OutcomeStageExplorer / CoverageStat |
+| F-06 Semantics | Underlines, unique table regions, requirement heading levels |
+| F-07 Citation boundaries | Whole-token CLAIM_ID_RE / CLAIM_RANGE_RE |
+| F-08 Preview journeys | Real controls, required compare, exact CSV IDs |
+| F-09 Licence / staging | Apache applied; `.gitignore` hardened |
+
+### Licence / docs
+
+| Item | Result |
+| --- | --- |
+| `LICENSE-SOFTWARE` | Official Apache 2.0 (sha256 `cfc7749b…`; matches apache.org) |
+| Root `LICENSE` | CC BY 4.0 research — byte-identical to pin |
+| `NOTICE`, `CONTRIBUTING.md`, `docs/THIRD_PARTY_NOTICES.md` | Present |
+| Hosting | `docs/HOSTING_READINESS.md` — Build **09B** checklist only |
+
+### Acceptance gates (08F — local)
 
 | Gate | Result |
 | --- | --- |
-| Starting checkpoint | `1bbe1a0` → `feat/v0.2-evidence-gaps` |
+| Starting → clean publication parent | `78631d4` (accepted gaps laboratory; public ancestry root for this freeze) |
+| Clean publication branch | `release/v0.2.0-candidate` — 08F tree with sanitised findings-register references (Build 09AR) |
+| `research/10_*` / root `LICENSE` | Unmodified vs `a1922f8` |
+| Independent Python verifiers (4) | PASS |
+| `validate` / `validate:release` | PASS |
+| Typecheck | PASS |
+| Vitest | PASS (**289**; was 280 @ 08A) |
+| Playwright Chromium | PASS (**54**) |
+| Production-preview journeys | PASS (**7**) |
+| Production build + `check:artifacts` | PASS |
+| `npm audit --omit=dev` | 0 vulnerabilities |
+| Axe retest | label-content-name-mismatch **0**; definition-list **0**; heading-order **0**; residual link-in-text-block / landmark debt documented |
+| Remote CI / hosted origin / owner auth | **PENDING** (external) |
+
+**Local RC verdict:** PASS (conditional on documented residual a11y debt not blocking).  
+**Public-release readiness:** NOT READY (remote CI, 09B host verification, owner authorisation).
+
+### Acceptance gates (Build 08P — local)
+
+| Gate | Result |
+| --- | --- |
+| Starting HEAD | `78631d4` on `feat/v0.2-release-candidate` (uncommitted 08P work) |
 | Independent Python atlas / casebook / mechanisms / gaps | PASS |
 | Atlas / casebook / LICENSE | Unchanged vs `a1922f8` |
-| `validate` before regeneration | PASS |
-| `validate:release` | PASS |
+| `validate` / `validate:release` | PASS |
 | Typecheck | PASS |
-| Vitest | PASS (**241**) |
-| Playwright (port 4173, workers=1) | PASS (**38**) |
+| Vitest | PASS (**280**) |
+| Playwright Chromium (dev 4173) | PASS (**54**) |
+| Production-preview journeys A–E + stubs | PASS (**7**) |
 | Production build | PASS |
-| Screenshots (local, **unstaged**) | `docs/screenshots/build-07/` |
+| `npm audit` (omit dev) | 0 vulnerabilities |
+| Screenshots (unstaged) | `docs/screenshots/build-08p/` (45 native-resolution PNGs) |
 
-**Bundle (production):** main `index-*.js` ~558 kB / gzip ~161 kB (down from interim ~613 kB); Comparison ~84 kB lazy; Gaps pages lazy. Remaining main-bundle gaps registry (~via ClaimDetail cross-links) reserved for Build 08 optimisation if needed.
+**Bundle (08P vs Build 08 RC):**
 
-**Verdict:** Build 07 **accepted**.
+| Chunk | Build 08 RC | Build 08P |
+| --- | ---: | ---: |
+| Eager `index-*.js` | ~283 kB / ~85 gz | **333 kB / 97 gz** |
+| Shared vendor/research | ~224 / ~66 | **224 / 66** |
+| CSS | (smaller Tailwind-only) | **60 / 11** |
+| Initial `/` (index+shared) | ~507 / ~151 | **~557 / ~163** |
+| `ComparisonPage` lazy | ~86 / 22 | **22 / 6** (+ `comparisonQueries` 66 / 18) |
 
-## Remaining uncertainty
+Growth is from the adopted design-system CSS and denser shell/claims/overview on the eager path. No `chunkSizeWarningLimit` increase. Design-exploration artefacts are not in `dist/`.
 
-- Schema/structural validation ≠ substantive research review.
-- Curated associations are organisational aids; they do not expand public research claims.
-- Interactive assumption-testing remains deferred.
-- Application/software licence and SPA host fallback remain separate release decisions.
+**Verdict:** Build 08P local implementation complete — **pending independent release-candidate acceptance**. Not committed, merged, pushed, published or deployed.
+
+### Production differences from approved prototype (intentional)
+
+- Full RC research depth retained (evidence-use qualifications, gap partitioning, mechanism profiles, all Overview substantive sections) — prototype was a vertical slice.
+- Orientation matrix kept as complete `OrientationTable` inside secondary `<details>`, not a shortened list.
+- Page titles use human-readable labels (Evidence library, Investigations, Research gaps) while canonical routes are unchanged.
+- Overview keeps Build 08 research insights, boundaries, outcome explorer, and provenance below the editorial entrance.
+- Mechanisms/Gaps are full production modules, not prototype stubs.
+- Two-claim compare uses band layout with complete atlas fields (not the thin stub).
+
+### Remaining deficiencies / release blockers
+
+- **External hosting / SPA fallback** verification on chosen host (**Build 09B**).
+- **Owner release authorisation** / publish / deploy.
+- Playwright Firefox/WebKit not installed in this environment (Chromium only); Playwright WebKit ≠ Safari.
+- Developer inspection only — not formal WCAG certification or user testing.
+- Occasional Vitest fake-timer flake risk in `navigation-commit` under parallel load (assertion hardened with `waitFor`).
+- Remote GitHub Actions not executed in this session.
+
+### Deferred (explicit non-goals)
+
+- Horizon 2 Analytical Sandbox / assumption-evaluation engine
+- Further research modules
+- Exact pixel cloning of the limited prototype
 
 ## Technical architecture
 
 - **Source of truth:** `research/10_policy_claims_atlas.csv` + `research/10_policy_assessment_casebook.md`
-- **Gaps registry:** `src/research/gapsRequirements.ts` (+ schema / parse / queries / URL)
-- **Ingest / validate / verify:** `npm run ingest`, `validate`, `validate:release`, `verify:research` (includes gaps)
-- **UI:** Overview + Claims + Casebook/Mechanisms/Comparison/Gaps (lazy); Sandbox stub deferred
-
-## Outstanding technical debt
-
-- Main bundle still >500 kB; ClaimDetail eagerly loads gaps registry for cross-links — candidate for Build 08 code-splitting.
-- Application/software licence undecided (research remains CC BY 4.0).
-- Hosting SPA fallback not packaged.
-- Local screenshots under `docs/screenshots/` intentionally unstaged.
-- Invalid `#section-*` hashes soft-fail.
-- Interactive assumption-testing deferred.
-- Occasional Vitest fake-timer flake in `navigation-commit` when run in full parallel suite (passes in isolation / re-run).
-
-## Deferred features
-
-- Analytical Sandbox (gated) — **Build 08**
-- Interactive assumption-testing extension for comparison variants
-- Numerical simulation, policy rankings, composite scores (out of scope)
-- Automatic research ingestion / public deployment
-
-## Next milestone
-
-**Build 08 — gated Analytical Sandbox** (only when explicitly requested). Leave pushing, merging, deployment, retagging and publication for separate authorization.
+- **Gaps registry:** `src/research/gapsRequirements.ts` (version `2026.11.22-b08`)
+- **UI shell:** Direction C workspace rail (desktop) + dialog drawer (mobile); Overview editorial (no rail)
+- **Search:** substring + same-field whole-word fallback (`src/research/queries.ts`)
+- **Ingest / validate / verify:** `npm run ingest`, `validate`, `validate:release`, `verify:research`
+- **CI:** `.github/workflows/verify.yml` (no deploy)

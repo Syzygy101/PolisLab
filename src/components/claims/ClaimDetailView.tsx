@@ -14,7 +14,7 @@ import { RelatedEvidencePanel } from './RelatedEvidencePanel';
 import { StatusBadge, statusTone } from './StatusBadge';
 import { IdChipList } from './IdChip';
 
-const FIELD_LABELS: Record<(typeof ATLAS_SOURCE_FIELDS)[number], string> = {
+export const FIELD_LABELS: Record<(typeof ATLAS_SOURCE_FIELDS)[number], string> = {
   claim_id: 'Claim ID',
   exact_claim: 'Exact claim',
   mechanism_ids: 'Mechanism IDs (source)',
@@ -344,7 +344,7 @@ export function ClaimDetailView({
   );
 }
 
-function FieldValue({
+export function FieldValue({
   claim,
   field,
 }: {

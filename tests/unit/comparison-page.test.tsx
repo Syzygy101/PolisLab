@@ -36,24 +36,71 @@ function renderComparison(path: string) {
 }
 
 describe('ComparisonPage', () => {
-  it('renders orientation table and empty selection by default', () => {
+  it('renders selectors, prompt and open orientation details on empty selection', () => {
     renderComparison('/comparison');
     expect(
       screen.getByRole('heading', { name: /Policy Comparison Laboratory/i }),
     ).toBeInTheDocument();
-    expect(screen.getByTestId('comparison-orientation')).toBeInTheDocument();
+    expect(screen.getByTestId('comparison-selector')).toBeInTheDocument();
     expect(screen.getByTestId('comparison-select-a')).toHaveValue('');
-    expect(screen.getAllByText(/no variant selected/i).length).toBe(2);
+    expect(screen.getByTestId('comparison-select-b')).toHaveValue('');
+    expect(screen.getByTestId('comparison-empty-prompt')).toHaveTextContent(
+      /Select two policies/i,
+    );
+    const orientation = screen.getByTestId('comparison-orientation');
+    expect(orientation.tagName).toBe('DETAILS');
+    expect(orientation).toHaveAttribute('open');
+    expect(screen.queryByText(/no variant selected/i)).not.toBeInTheDocument();
+    expect(screen.queryByTestId('comparison-bands')).not.toBeInTheDocument();
   });
 
-  it('loads a shareable pair and shows both sides', () => {
+  it('shows selectors before orientation and keeps orientation secondary on a selected URL', () => {
     renderComparison('/comparison?a=C1-VAR-R&b=C1-VAR-E');
+    const selector = screen.getByTestId('comparison-selector');
+    const bands = screen.getByTestId('comparison-bands');
+    const orientation = screen.getByTestId('comparison-orientation');
+    expect(orientation.tagName).toBe('DETAILS');
+    expect(orientation).not.toHaveAttribute('open');
+    expect(
+      selector.compareDocumentPosition(orientation) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(
+      bands.compareDocumentPosition(orientation) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(screen.getByTestId('comparison-select-a')).toHaveValue('C1-VAR-R');
+    expect(screen.getByTestId('comparison-select-b')).toHaveValue('C1-VAR-E');
+  });
+
+  it('loads a shareable pair and shows both sides in aligned bands', () => {
+    renderComparison('/comparison?a=C1-VAR-R&b=C1-VAR-E');
+    expect(screen.getByTestId('comparison-bands')).toBeInTheDocument();
     expect(screen.getByTestId('comparison-side-C1-VAR-R')).toBeInTheDocument();
     expect(screen.getByTestId('comparison-side-C1-VAR-E')).toBeInTheDocument();
-    expect(screen.getByTestId('comparison-shared')).toBeInTheDocument();
+    expect(screen.getByTestId('pathways-band')).toBeInTheDocument();
+    expect(screen.getByTestId('outcomes-band')).toBeInTheDocument();
+    expect(screen.getByTestId('requirements-band')).toBeInTheDocument();
+    // Shared material renders once.
+    expect(screen.getAllByTestId('comparison-shared')).toHaveLength(1);
+    expect(screen.getAllByTestId('case-wide-outcomes')).toHaveLength(1);
+    expect(screen.getAllByTestId('comparison-gaps-shared')).toHaveLength(1);
+    expect(screen.getByTestId('comparison-gaps-C1-VAR-R')).toBeInTheDocument();
+    expect(screen.getByTestId('comparison-gaps-C1-VAR-E')).toBeInTheDocument();
     expect(screen.getByTestId('loc')).toHaveTextContent(
       '/comparison?a=C1-VAR-R&b=C1-VAR-E',
     );
+  });
+
+  it('renders each pathway polarity as its own aligned row', () => {
+    renderComparison('/comparison?a=C1-VAR-R&b=C1-VAR-E');
+    for (const key of ['favourable', 'unfavourable', 'null_path']) {
+      expect(screen.getByTestId(`pathways-${key}`)).toBeInTheDocument();
+    }
+  });
+
+  it('shows only one side and no twin empty column for a partial selection', () => {
+    renderComparison('/comparison?a=C1-VAR-R');
+    expect(screen.getByTestId('comparison-side-C1-VAR-R')).toBeInTheDocument();
+    expect(screen.queryByTestId('comparison-shared')).not.toBeInTheDocument();
   });
 
   it('surfaces invalid and duplicate URL notices', () => {

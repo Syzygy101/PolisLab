@@ -5,6 +5,7 @@ import {
   isKnownRequirementId,
 } from '@/research/gapsQueries';
 import { gapsOverviewReturnHref } from '@/research/gapsUrl';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 export type GapsReturnState = {
   gapsSearch?: string;
@@ -25,6 +26,7 @@ function gapsReturnHref(state: unknown, fromParam: string | null): string {
 
 export function GapRequirementPage() {
   const { requirementId } = useParams<{ requirementId: string }>();
+  useDocumentTitle(requirementId ? requirementId : 'Research requirement');
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const fromParam = searchParams.get('from');
@@ -32,19 +34,15 @@ export function GapRequirementPage() {
 
   if (!requirementId || !isKnownRequirementId(requirementId)) {
     return (
-      <div
-        className="space-y-4 border border-dashed border-line-strong bg-paper-raised p-6"
-        data-testid="requirement-not-found"
-      >
-        <h1 className="font-display text-2xl font-semibold text-ink">
-          Research requirement not found
-        </h1>
-        <p className="text-sm text-ink-muted">
+      <div data-testid="requirement-not-found">
+        <p className="page-kicker">Research gaps</p>
+        <h1 className="page-title">Research requirement not found</h1>
+        <p className="lede">
           No published §9 research requirement matches{' '}
-          <span className="font-mono text-ink">{requirementId ?? '(missing id)'}</span>.
+          <span className="mono">{requirementId ?? '(missing id)'}</span>.
         </p>
-        <Link to={returnHref} className="text-sm font-medium text-accent no-underline hover:underline">
-          Back to Evidence Gaps
+        <Link to={returnHref} className="btn btn--secondary">
+          Back to research gaps
         </Link>
       </div>
     );
@@ -53,20 +51,13 @@ export function GapRequirementPage() {
   const requirement = getResearchRequirement(requirementId)!;
 
   return (
-    <div className="space-y-4">
-      <nav
-        aria-label="Breadcrumb"
-        className="flex flex-wrap items-center gap-x-2 text-sm text-ink-muted"
-      >
-        <Link
-          to={returnHref}
-          className="no-underline hover:underline"
-          data-testid="return-to-gaps"
-        >
-          Evidence Gaps
+    <div>
+      <nav aria-label="Breadcrumb" className="breadcrumb">
+        <Link to={returnHref} data-testid="return-to-gaps">
+          Research gaps
         </Link>
-        <span>/</span>
-        <span className="font-mono text-ink">{requirement.id}</span>
+        <span aria-hidden="true">/</span>
+        <span className="mono">{requirement.id}</span>
       </nav>
       <RequirementDetailView requirement={requirement} />
     </div>

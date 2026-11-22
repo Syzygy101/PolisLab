@@ -17,7 +17,7 @@ export function StatusDistribution({ counts, total }: StatusDistributionProps) {
     <div className="space-y-3" data-testid="status-distribution">
       <p className="text-xs text-ink-subtle">
         Counts by published classification — not an evidence-strength scale. Each label opens the
-        Claims Explorer filtered to that status.
+        Evidence library filtered to that status.
       </p>
       <ul className="space-y-2" aria-label="Evidence status distribution">
         {CLAIM_STATUSES.map((status) => {
@@ -29,7 +29,7 @@ export function StatusDistribution({ counts, total }: StatusDistributionProps) {
               <Link
                 to={claimsExplorerHref({ statuses: [status] })}
                 className="truncate text-sm font-medium text-accent underline-offset-2 hover:underline"
-                aria-label={`Filter Claims Explorer by status ${label}`}
+                aria-label={`Filter Evidence library by status ${label}`}
                 title={status}
                 data-testid={`status-link-${status}`}
               >

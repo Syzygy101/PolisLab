@@ -675,7 +675,8 @@ const pathways: ComparisonPathway[] = [
     caseId: 'Case2',
     variantIds: SHARED,
     polarity: 'null_path',
-    summary: 'Call-in was never used for ordinary grocery starts.',
+    summary:
+      'Plausible null path (§6): ordinary private grocery starts are not generally notifiable under the private pathway (ATLAS-LEG-001). That institutional baseline does not establish that residual call-in was never used in practice.',
     sources: [sec('Case2', 6), claim('ATLAS-LEG-001')],
   },
 
@@ -713,16 +714,19 @@ const pathways: ComparisonPathway[] = [
     variantIds: SHARED,
     polarity: 'unfavourable',
     summary:
-      'Site rules intended to help entrants trigger Sadun-style incumbent format shifts.',
-    sources: [sec('Case3', 6), sec('Case3', 10), claim('ATLAS-LIT-002')],
+      'Site rules intended to help entrants trigger Sadun-style incumbent format shifts. Direct source: Case 3 §6. Comparative UK planning / retail-format substitution warning is ATLAS-LIT-003 (Case 1 atlas membership; UK effect sizes are not Australian parameters and are not imported into Case 3 calibration). Warehouse-club entry pricing (ATLAS-LIT-002) is a separate Case 3 format-contingency finding and is not cited as Sadun support.',
+    // Case 3 §6 is the pathway source. ATLAS-LIT-003 is named in prose as comparative
+    // UK context only — it must not be listed as a Case 3 claim source (atlas membership is Case1).
+    sources: [sec('Case3', 6), sec('Case3', 10)],
   },
   {
     id: 'C3-PATH-UNFAV-2',
     caseId: 'Case3',
     variantIds: SHARED,
     polarity: 'unfavourable',
-    summary: 'Entrant scale-up stalls without DC minimum efficient scale.',
-    sources: [sec('Case3', 6), claim('ATLAS-EMP-005')],
+    summary:
+      'Hypothetical (§6), not chronology: entrant scale-up stalls without DC minimum efficient scale. ATLAS-EMP-005 records observed DC-before-stores order only; binding logistics / stalling is not identified (ATLAS-HYP-004).',
+    sources: [sec('Case3', 6), claim('ATLAS-EMP-005'), claim('ATLAS-HYP-004')],
   },
   {
     id: 'C3-PATH-UNFAV-3',
@@ -758,7 +762,8 @@ const pathways: ComparisonPathway[] = [
     caseId: 'Case4',
     variantIds: SHARED,
     polarity: 'favourable',
-    summary: 'Notification catches anticompetitive site/lease grabs.',
+    summary:
+      'Plausible favourable path (§6): notification catches anticompetitive site/lease grabs. Effects of Part 3 notification are not established (ATLAS-GAP-003 limits inference).',
     sources: [sec('Case4', 6), claim('ATLAS-GAP-003')],
   },
   {
@@ -783,7 +788,8 @@ const pathways: ComparisonPathway[] = [
     caseId: 'Case4',
     variantIds: SHARED,
     polarity: 'unfavourable',
-    summary: 'Parties shift earlier to non-notifiable structures.',
+    summary:
+      'Plausible unfavourable path (§6): parties shift earlier to non-notifiable structures. Not an observed Part 3 effect (ATLAS-GAP-003).',
     sources: [sec('Case4', 6), claim('ATLAS-GAP-003')],
   },
   {
@@ -810,7 +816,7 @@ const pathways: ComparisonPathway[] = [
     variantIds: SHARED,
     polarity: 'null_path',
     summary:
-      'Most notified deals would have been cleared anyway; pipelines and openings are unchanged.',
+      'Plausible null path (§6): most notified deals would have been cleared anyway; pipelines and openings are unchanged. Not established by published evidence (ATLAS-GAP-003).',
     sources: [sec('Case4', 6), claim('ATLAS-GAP-003')],
   },
   {
@@ -840,7 +846,7 @@ const outcomeAssessments: OutcomeAssessment[] = [
     judgment:
       'Partially assessable, qualitatively: pipeline facts and notification coverage of new major acquisitions bear on rival market access; covenant text is largely non-public.',
     limitations:
-      'Pipeline counts are compatible with scarcity, planning, and foreclosure; no Australian decomposition exists. Release or exclusivity bans do not show who obtains the site. Release ≠ rival access.',
+      'Pipeline counts are compatible with scarcity, planning, and foreclosure; no Australian public causal decomposition of scarcity, planning, and foreclosure is registered in the published release (ATLAS-GAP-001). Release or exclusivity bans do not show who obtains the site. Release ≠ rival access.',
     changeEvidenceRefs: [sec('Case1', 9), claim('ATLAS-GAP-001')],
     sources: [
       sec('Case1', 7),
@@ -895,7 +901,7 @@ const outcomeAssessments: OutcomeAssessment[] = [
     assessability: 'not_assessable',
     scope: 'case_wide',
     judgment:
-      'Not assessable: there are no Australian diversion or welfare estimates, and inference from site counts is forbidden.',
+      'Not assessable: no verified Australian diversion or welfare estimates are registered in the published release, and inference from site counts is forbidden.',
     limitations:
       'US/UK magnitudes are not Australian parameters. R cannot be ranked against E.',
     changeEvidenceRefs: [],
@@ -911,7 +917,7 @@ const outcomeAssessments: OutcomeAssessment[] = [
     judgment:
       'Not assessable: it cannot be concluded that R or E would raise consumer welfare.',
     limitations:
-      'There are no Australian welfare estimates, and inference from site counts is forbidden.',
+      'No verified Australian welfare estimates are registered in the published release, and inference from site counts is forbidden.',
     changeEvidenceRefs: [],
     sources: [sec('Case1', 7), sec('Case1', 8), claim('ATLAS-CON-003')],
   },
@@ -958,7 +964,7 @@ const outcomeAssessments: OutcomeAssessment[] = [
           ? 'Not assessable from FIRB relaxation alone; O5/O6 remain unidentified and welfare gains from any of CF-A to CF-D cannot be inferred.'
           : 'Not assessable from FIRB relaxation alone.',
       limitations:
-        'Format substitution and local rivalry are unidentified in Australia; there are no Australian diversion ratios.',
+        'Format substitution and local rivalry are unidentified in Australia; no verified Australian household-level diversion ratios between majors and specialty/Asian/hard-discount formats are registered in the published release (ATLAS-GAP-002).',
       changeEvidenceRefs: [],
       sources: [
         sec('Case2', 7),
@@ -1036,9 +1042,9 @@ const outcomeAssessments: OutcomeAssessment[] = [
     assessability: 'not_assessable',
     scope: 'case_wide',
     judgment:
-      'No causal Australian price-constraint estimate; only the ACCC’s limited-range characterisation exists. The hypothetical O5 pathway in §6 is not part of the observed chronology.',
+      'No registered causal Australian price-constraint estimate; only the ACCC’s limited-range characterisation is available in the published release. The hypothetical O5 pathway in §6 is not part of the observed chronology.',
     limitations:
-      'No Australian diversion ratios between majors and hard-discount or specialty formats; incumbent price response was not measured for SA/WA 2016–18 in PolisLab evidence.',
+      'No verified Australian household-level diversion ratios between majors and hard-discount or specialty formats are registered in the published release (ATLAS-GAP-002); incumbent price response was not measured for SA/WA 2016–18 in PolisLab evidence.',
     changeEvidenceRefs: [sec('Case3', 9), claim('ATLAS-GAP-002')],
     sources: [
       sec('Case3', 7),
@@ -1161,7 +1167,7 @@ const outcomeAssessments: OutcomeAssessment[] = [
     scope: 'case_wide',
     judgment: 'Market-wide O5 is not identified.',
     limitations:
-      'No causal evaluation of Part 3 on foreclosure or prices exists; diversion and welfare magnitudes remain unidentified. Market-wide improvement from Part 3’s existence cannot be inferred.',
+      'No public qualifying causal evaluation of Part 3 on foreclosure, entry, prices, or welfare is registered in the published release (ATLAS-GAP-003); diversion and welfare magnitudes remain unidentified. Market-wide improvement from Part 3’s existence cannot be inferred.',
     changeEvidenceRefs: [sec('Case4', 9), claim('ATLAS-GAP-003')],
     sources: [
       sec('Case4', 7),
@@ -1558,7 +1564,7 @@ const evidenceUses: EvidenceUse[] = [
     id: 'C3-EVID-GAP-002',
     claimId: 'ATLAS-GAP-002',
     supportsProposition:
-      'No Australian diversion ratios between majors and hard-discount or specialty formats exist.',
+      'No verified Australian household-level diversion ratios between majors and specialty/Asian/hard-discount formats were registered in the published release (ATLAS-GAP-002). This is an absence-of-finding registration, not proof that such ratios do not exist outside the release.',
     caseId: 'Case3',
     variantId: null,
     sources: [claim('ATLAS-GAP-002'), sec('Case3', 9)],
@@ -1650,7 +1656,7 @@ const evidenceUses: EvidenceUse[] = [
     id: 'C4-EVID-GAP-003',
     claimId: 'ATLAS-GAP-003',
     supportsProposition:
-      'No causal evaluation of Part 3 on foreclosure or prices exists; effects of stronger or weaker rules on pre-emptive site acquisition are unidentified.',
+      'No public qualifying causal evaluation of post-2026 supermarket-targeted notification’s effect on site foreclosure, entry, prices, or welfare was registered in the published release (ATLAS-GAP-003). Effects of stronger or weaker rules on pre-emptive site acquisition remain unidentified; this is not an affirmative finding that Part 3 has no effect.',
     caseId: 'Case4',
     variantId: null,
     sources: [claim('ATLAS-GAP-003'), sec('Case4', 4), sec('Case4', 5)],

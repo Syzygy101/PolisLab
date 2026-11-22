@@ -46,3 +46,20 @@ npm-debug.log*
 /research/08_*
 /research/09_*
 /references/
+
+# Build 08 local acceptance screenshots (working artefacts; not publication staging)
+docs/screenshots/
+
+# Build 08D+ design exploration artefacts (local; not publication staging)
+design-exploration/baseline/
+design-exploration/prototypes/**/*.png
+design-exploration/prototypes/**/*.jpg
+design-exploration/review-packet-08d/screenshots/
+design-exploration/review-packet-08d2/screenshots/
+design-exploration/**/independent-review/
+design-exploration/**/AUDIT*.md
+design-exploration/**/*-audit*.md
+
+# Local audit / review packets (if generated outside design-exploration)
+**/AUDIT_REPORT*.md
+**/*_AUDIT.md

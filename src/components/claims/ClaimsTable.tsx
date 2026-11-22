@@ -9,32 +9,93 @@ export interface ExplorerReturnState {
   explorerSearch: string;
 }
 
-interface ClaimsTableProps {
-  claims: Claim[];
+interface CompareBarProps {
   selectedIds: string[];
-  onToggleSelect: (claimId: string) => void;
   compareHref: string | null;
   onClearSelection: () => void;
-  /** Current explorer query string (including pending search draft). */
   explorerReturnState: ExplorerReturnState;
-  /** Synchronously commit pending search into the address bar before leaving. */
   onBeforeNavigate: () => void;
 }
 
-export function ClaimsTable({
-  claims,
+/** Visible comparison selection tray (up to two distinct claims). */
+export function CompareBar({
   selectedIds,
-  onToggleSelect,
   compareHref,
   onClearSelection,
   explorerReturnState,
   onBeforeNavigate,
+}: CompareBarProps) {
+  return (
+    <div className="compare-bar" data-testid="compare-tray" role="region" aria-label="Comparison selection">
+      <p className="m-0">
+        Compare selection:{' '}
+        <span className="mono" data-testid="compare-selection">
+          {selectedIds.length === 0 ? 'none' : selectedIds.join(' · ')}
+        </span>
+        <span className="text-ink-subtle"> (up to two distinct claims)</span>
+      </p>
+      <span className="flex-1" />
+      {selectedIds.length > 0 ? (
+        <button type="button" onClick={onClearSelection} className="btn btn--ghost">
+          Clear selection
+        </button>
+      ) : null}
+      {compareHref ? (
+        <Link
+          to={compareHref}
+          className="btn btn--primary"
+          state={explorerReturnState}
+          onClick={onBeforeNavigate}
+          data-testid="claims-compare-action"
+        >
+          Open comparison
+        </Link>
+      ) : (
+        <span className="meta-line">Select two claims to compare</span>
+      )}
+    </div>
+  );
+}
+
+interface ClaimsTableProps {
+  claims: Claim[];
+  selectedIds: string[];
+  onToggleSelect: (claimId: string) => void;
+  /** Current explorer query string (including pending search draft). */
+  explorerReturnState: ExplorerReturnState;
+  /** Synchronously commit pending search into the address bar before leaving. */
+  onBeforeNavigate: () => void;
+  /** Wide (master-detail) layout: record text inspects instead of navigating. */
+  wide: boolean;
+  /** Claim currently shown in the inspector (wide layout only). */
+  inspectedId: string | null;
+  onInspect: (claimId: string) => void;
+}
+
+/**
+ * Evidence library result list (record rows).
+ *
+ * Controls are deliberately distinct:
+ * - checkbox            → add/remove the claim from the comparison selection
+ * - ID link             → open the stable `/claims/:claimId` page
+ * - record text (wide)  → inspect in the side inspector without leaving the list
+ * - record text (narrow)→ navigate to the full-page record (return state preserved)
+ */
+export function ClaimsTable({
+  claims,
+  selectedIds,
+  onToggleSelect,
+  explorerReturnState,
+  onBeforeNavigate,
+  wide,
+  inspectedId,
+  onInspect,
 }: ClaimsTableProps) {
   if (claims.length === 0) {
     return (
       <div
         role="status"
-        className="border border-dashed border-line-strong bg-paper-raised px-4 py-10 text-center"
+        className="inspector-empty border border-dashed border-line-strong bg-paper-raised px-4 py-10 text-center"
         data-testid="empty-results"
       >
         <p className="text-sm font-medium text-ink">No claims match the current research subset</p>
@@ -47,146 +108,89 @@ export function ClaimsTable({
   }
 
   return (
-    <div className="space-y-3">
-      <div
-        className="flex flex-wrap items-center justify-between gap-2 border border-line bg-paper-raised px-3 py-2 text-sm"
-        data-testid="compare-tray"
-      >
-        <p className="text-ink-muted">
-          Compare selection:{' '}
-          <span className="font-mono text-ink">
-            {selectedIds.length === 0 ? 'none' : selectedIds.join(' · ')}
-          </span>
-          <span className="text-ink-subtle"> (up to two distinct claims)</span>
-        </p>
-        <div className="flex flex-wrap gap-2">
-          {selectedIds.length > 0 ? (
-            <button
-              type="button"
-              onClick={onClearSelection}
-              className="border border-line px-2 py-1 text-xs text-ink-muted hover:bg-neutral-soft"
-            >
-              Clear selection
-            </button>
-          ) : null}
-          {compareHref ? (
-            <Link
-              to={compareHref}
-              className="border border-accent bg-accent-soft px-2 py-1 text-xs font-medium text-accent no-underline hover:underline"
-              state={explorerReturnState}
-              onClick={onBeforeNavigate}
-            >
-              Open comparison
-            </Link>
-          ) : (
-            <span className="px-2 py-1 text-xs text-ink-subtle">
-              Select two claims to compare
-            </span>
-          )}
-        </div>
-      </div>
-
-      <div className="overflow-x-auto border border-line bg-paper-raised">
-        <table className="min-w-full border-collapse text-left text-sm">
-          <thead className="bg-neutral-soft text-xs uppercase tracking-wide text-ink-muted">
-            <tr>
-              <th scope="col" className="border-b border-line px-3 py-2 font-medium">
-                Compare
-              </th>
-              <th scope="col" className="border-b border-line px-3 py-2 font-medium">
-                Claim ID
-              </th>
-              <th scope="col" className="border-b border-line px-3 py-2 font-medium">
-                Claim preview
-              </th>
-              <th scope="col" className="border-b border-line px-3 py-2 font-medium">
-                Status
-              </th>
-              <th scope="col" className="border-b border-line px-3 py-2 font-medium">
-                Admissibility
-              </th>
-              <th scope="col" className="border-b border-line px-3 py-2 font-medium">
-                Mechanisms
-              </th>
-              <th scope="col" className="border-b border-line px-3 py-2 font-medium">
-                Outcomes
-              </th>
-              <th scope="col" className="border-b border-line px-3 py-2 font-medium">
-                Cases
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {claims.map((claim) => {
-              const selected = selectedIds.includes(claim.claim_id);
-              const selectionFull =
-                selectedIds.length >= 2 && !selectedIds.includes(claim.claim_id);
-              return (
-                <tr
-                  key={claim.claim_id}
-                  className="border-b border-line last:border-b-0 hover:bg-accent-soft/40"
+    <div className="claims-list" role="list" aria-label="Matching claims" data-testid="claims-list">
+      {claims.map((claim) => {
+        const selected = selectedIds.includes(claim.claim_id);
+        const selectionFull = selectedIds.length >= 2 && !selected;
+        const inspecting = wide && inspectedId === claim.claim_id;
+        const snippet = (
+          <>
+            <span className="claim-snippet">{claim.exact_claim}</span>
+          </>
+        );
+        return (
+          <div
+            key={claim.claim_id}
+            role="listitem"
+            className={`record-row${inspecting ? ' is-selected' : ''}`}
+            data-claim-id={claim.claim_id}
+          >
+            <input
+              type="checkbox"
+              checked={selected}
+              disabled={selectionFull}
+              onChange={() => onToggleSelect(claim.claim_id)}
+              aria-label={`Select ${claim.claim_id} for comparison`}
+              style={{ marginTop: '0.2rem', width: '1.1rem', height: '1.1rem' }}
+            />
+            <div className="min-w-0 space-y-1.5">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                <Link
+                  to={`/claims/${claim.claim_id}`}
+                  className="claim-id text-accent no-underline hover:underline"
+                  state={explorerReturnState}
+                  onClick={onBeforeNavigate}
                 >
-                  <td className="px-3 py-2 align-top">
-                    <input
-                      type="checkbox"
-                      checked={selected}
-                      disabled={selectionFull}
-                      onChange={() => onToggleSelect(claim.claim_id)}
-                      aria-label={`Select ${claim.claim_id} for comparison`}
-                    />
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-2 align-top font-mono text-xs">
-                    <Link
-                      to={`/claims/${claim.claim_id}`}
-                      className="text-accent no-underline hover:underline"
-                      state={explorerReturnState}
-                      onClick={onBeforeNavigate}
-                    >
-                      {claim.claim_id}
-                    </Link>
-                  </td>
-                  <td className="max-w-xl px-3 py-2 align-top text-ink">
-                    <Link
-                      to={`/claims/${claim.claim_id}`}
-                      className="block text-sm text-ink no-underline hover:underline"
-                      aria-label={`Open claim ${claim.claim_id}`}
-                      state={explorerReturnState}
-                      onClick={onBeforeNavigate}
-                    >
-                      <span className="line-clamp-3">{claim.exact_claim}</span>
-                      {claim.limitations_external_validity.trim() ? (
-                        <span className="mt-1 block text-[11px] font-normal text-ink-subtle no-underline">
-                          Full claim and limitations on the detail page — preview is not a
-                          summary.
-                        </span>
-                      ) : (
-                        <span className="mt-1 block text-[11px] font-normal text-ink-subtle no-underline">
-                          Full claim on the detail page.
-                        </span>
-                      )}
-                    </Link>
-                  </td>
-                  <td className="px-3 py-2 align-top">
-                    <StatusBadge status={claim.status} />
-                  </td>
-                  <td className="px-3 py-2 align-top">
-                    <AdmissibilityBadge value={claim.admissible_in_policy_comparison} />
-                  </td>
-                  <td className="px-3 py-2 align-top">
-                    <IdChipList values={claim.mechanisms} linkMechanisms />
-                  </td>
-                  <td className="px-3 py-2 align-top">
-                    <IdChipList values={claim.outcomes} />
-                  </td>
-                  <td className="px-3 py-2 align-top">
-                    <IdChipList values={claim.cases} />
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+                  {claim.claim_id}
+                </Link>
+                <StatusBadge status={claim.status} />
+                <AdmissibilityBadge value={claim.admissible_in_policy_comparison} />
+              </div>
+
+              {wide ? (
+                <button
+                  type="button"
+                  className="record-open"
+                  onClick={() => onInspect(claim.claim_id)}
+                  aria-describedby={`claim-row-desc-${claim.claim_id}`}
+                  aria-pressed={inspecting}
+                >
+                  {snippet}
+                </button>
+              ) : (
+                <Link
+                  to={`/claims/${claim.claim_id}`}
+                  className="record-open underline-offset-2 hover:underline"
+                  aria-describedby={`claim-row-desc-${claim.claim_id}`}
+                  state={explorerReturnState}
+                  onClick={onBeforeNavigate}
+                >
+                  {snippet}
+                </Link>
+              )}
+              <span id={`claim-row-desc-${claim.claim_id}`} className="sr-only">
+                Claim {claim.claim_id}
+              </span>
+
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-ink-muted">
+                <IdChipList values={claim.mechanisms} linkMechanisms />
+                <IdChipList values={claim.outcomes} />
+                <IdChipList values={claim.cases} />
+                {wide ? (
+                  <Link
+                    to={`/claims/${claim.claim_id}`}
+                    state={explorerReturnState}
+                    onClick={onBeforeNavigate}
+                    className="ml-auto text-accent underline underline-offset-2"
+                  >
+                    Open full page
+                  </Link>
+                ) : null}
+              </div>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }

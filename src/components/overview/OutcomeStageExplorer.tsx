@@ -41,7 +41,6 @@ export function OutcomeStageExplorer({ claims }: OutcomeStageExplorerProps) {
               key={item.id}
               type="button"
               aria-pressed={isSelected}
-              aria-label={`${item.id}: ${item.label}`}
               onClick={() => setSelected(item.id)}
               className={[
                 'border px-2.5 py-1.5 text-left text-sm transition-colors',
@@ -51,7 +50,8 @@ export function OutcomeStageExplorer({ claims }: OutcomeStageExplorerProps) {
               ].join(' ')}
             >
               <span className="font-mono text-xs">{item.id}</span>
-              <span className="ml-1.5">{item.label}</span>
+              {' '}
+              <span>{item.label}</span>
             </button>
           );
         })}

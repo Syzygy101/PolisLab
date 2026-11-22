@@ -26,11 +26,28 @@ import {
  * - mechanism_ids / outcome_ids / casebook_cases (raw identifier strings)
  * - primary_source_url (exact URL substring; for source-reference investigation)
  *
- * Matching behaviour:
- * - Case-insensitive `includes` over each field independently (OR across fields).
+ * Matching behaviour (deterministic; evaluated per field, OR across fields):
+ * 1. Literal mode (always checked first): case-insensitive substring match of
+ *    the trimmed query against the field value.
+ * 2. Whole-word fallback (Build 08P): for an ordinary multiword query, a field
+ *    also matches when EVERY query word occurs as a whole word in that SAME
+ *    field (order-independent; repeated query words are fine). Words are
+ *    runs of Unicode letters/numbers (`/[\p{L}\p{N}]+/gu`). The fallback is
+ *    enabled only when the trimmed, lower-cased query consists solely of
+ *    letters, numbers and whitespace (no punctuation or symbols such as
+ *    `/`, `-`, `"`, `,`) AND contains more than one word. Punctuated and
+ *    single-word queries therefore remain literal-substring only.
+ *    Words are never combined across different fields.
  * - Whitespace-only queries are ignored (treated as no search).
- * - Exact claim IDs remain retrievable because `claim_id` is searched.
- * - No fuzzy, semantic, or AI-powered matching.
+ * - Exact claim IDs remain retrievable because `claim_id` is searched
+ *   (substring mode).
+ * - No fuzzy matching, stemming, synonyms, spelling correction, or
+ *   semantic/AI/vector search; misspellings are not corrected.
+ *
+ * Compatibility note: because of the whole-word fallback, a multiword query may
+ * return a superset of the results produced by earlier application versions that
+ * used substring matching only (e.g. `undeveloped sites` now also finds records
+ * where the words are separated or reordered). Results are never fewer.
  */
 export const CLAIM_SEARCH_FIELDS = [
   'claim_id',
@@ -114,17 +131,30 @@ export function resolveMechanismFilterTags(filters: ClaimFilters): string[] {
   return [...tags];
 }
 
-function includesIgnoreCase(haystack: string, needle: string): boolean {
-  return haystack.toLowerCase().includes(needle.toLowerCase());
-}
-
+/**
+ * Search match for a single claim. See the documentation above
+ * `CLAIM_SEARCH_FIELDS` for the two modes (literal substring, then same-field
+ * whole-word fallback for plain multiword queries).
+ */
 function claimMatchesSearch(claim: Claim, search: string): boolean {
-  const q = search.trim();
-  if (!q) {
+  const phrase = search.trim().toLowerCase();
+  if (!phrase) {
     return true;
   }
 
-  return CLAIM_SEARCH_FIELDS.some((field) => includesIgnoreCase(claim[field], q));
+  const words = phrase.match(/[\p{L}\p{N}]+/gu) ?? [];
+  const allowWordMatch = words.length > 1 && /^[\p{L}\p{N}\s]+$/u.test(phrase);
+  return CLAIM_SEARCH_FIELDS.some((field) => {
+    const value = claim[field].toLowerCase();
+    if (value.includes(phrase)) {
+      return true;
+    }
+    if (!allowWordMatch) {
+      return false;
+    }
+    const fieldWords = new Set(value.match(/[\p{L}\p{N}]+/gu));
+    return words.every((word) => fieldWords.has(word));
+  });
 }
 
 function compareClaims(a: Claim, b: Claim, sort: ClaimSortKey): number {
@@ -141,6 +171,10 @@ function compareClaims(a: Claim, b: Claim, sort: ClaimSortKey): number {
  * Filter claims for the Claims Explorer.
  *
  * Semantics:
+ * - `search` uses literal case-insensitive substring matching, plus a same-field
+ *   whole-word fallback for plain multiword queries (see `CLAIM_SEARCH_FIELDS`).
+ *   Multiword results may therefore be a superset of earlier substring-only
+ *   versions.
  * - Within each multi-select dimension, match if the claim includes at least one
  *   selected value (OR).
  * - Across dimensions (and with search / source URL), filters combine with AND.

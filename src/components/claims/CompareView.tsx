@@ -33,6 +33,17 @@ const COMPARE_FIELDS: {
   { key: 'pinpoint', label: 'Pinpoint' },
 ];
 
+const TAG_BANDS: {
+  label: string;
+  values: (claim: Claim) => string[];
+  linkMechanisms?: boolean;
+}[] = [
+  { label: 'Mechanisms', values: (c) => c.mechanisms, linkMechanisms: true },
+  { label: 'Outcomes', values: (c) => c.outcomes },
+  { label: 'Cases', values: (c) => c.cases },
+  { label: 'Literature sources', values: (c) => c.literatureSources },
+];
+
 interface CompareViewProps {
   state: CompareState;
   onSetSlot: (param: 'a' | 'b', claimId: string | null) => void;
@@ -42,23 +53,21 @@ export function CompareView({ state, onSetSlot }: CompareViewProps) {
   const { slotA, slotB, identicalIds, isCompleteDistinctPair } = state;
 
   return (
-    <div className="space-y-5">
-      <header className="space-y-2">
-        <h1 className="font-display text-3xl font-semibold text-ink">
-          Two-claim evidence comparison
-        </h1>
-        <p className="max-w-3xl text-sm text-ink-muted">
-          Side-by-side inspection of original atlas fields for human comparison. This view does
-          not adjudicate truth, detect contradictions, score confidence, or recommend policy.
+    <div data-testid="compare-claims-view">
+      <header>
+        <h1 className="page-title">Two-claim evidence comparison</h1>
+        <p className="lede">
+          Aligned inspection of original atlas fields for human comparison. This view does not
+          adjudicate truth, detect contradictions, score confidence, or recommend policy.
         </p>
         {identicalIds ? (
-          <p className="text-sm text-warn" role="status" data-testid="compare-identical-notice">
+          <p className="notice" role="status" data-testid="compare-identical-notice">
             Both slots use the same claim ID. Comparison requires two distinct claims — replace or
             clear one slot.
           </p>
         ) : null}
         {!isCompleteDistinctPair && !identicalIds ? (
-          <p className="text-sm text-ink-muted" role="status">
+          <p className="meta-line" role="status">
             Select up to two distinct claim IDs. Shareable URL uses{' '}
             <span className="font-mono">a</span> and <span className="font-mono">b</span>{' '}
             parameters.
@@ -66,51 +75,73 @@ export function CompareView({ state, onSetSlot }: CompareViewProps) {
         ) : null}
       </header>
 
-      <div className="grid gap-4 lg:grid-cols-2">
-        <CompareSlotPanel
-          slot={slotA}
-          otherClaimId={slotB.rawId}
-          onClear={() => onSetSlot('a', null)}
-          onReplace={(id) => onSetSlot('a', id)}
-        />
-        <CompareSlotPanel
-          slot={slotB}
-          otherClaimId={slotA.rawId}
-          onClear={() => onSetSlot('b', null)}
-          onReplace={(id) => onSetSlot('b', id)}
-        />
+      <div className="compare-sticky" data-testid="compare-selector">
+        <div className="compare-selectors">
+          <CompareSlotPanel
+            slot={slotA}
+            otherClaimId={slotB.rawId}
+            onClear={() => onSetSlot('a', null)}
+            onReplace={(id) => onSetSlot('a', id)}
+          />
+          <CompareSlotPanel
+            slot={slotB}
+            otherClaimId={slotA.rawId}
+            onClear={() => onSetSlot('b', null)}
+            onReplace={(id) => onSetSlot('b', id)}
+          />
+        </div>
       </div>
 
       {slotA.claim || slotB.claim ? (
-        <div className="space-y-3" data-testid="compare-fields">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-muted">
-            Field-by-field comparison
-          </h2>
-          <div className="space-y-3">
-            {COMPARE_FIELDS.map((field) => (
-              <div
-                key={field.key}
-                className="grid gap-3 border border-line bg-paper-raised p-3 lg:grid-cols-[10rem_1fr_1fr]"
-              >
-                <p className="text-xs font-medium text-ink-muted">{field.label}</p>
-                <CompareFieldValue claim={slotA.claim} field={field.key} />
-                <CompareFieldValue claim={slotB.claim} field={field.key} />
-              </div>
-            ))}
-            <div className="grid gap-3 border border-line bg-paper-raised p-3 lg:grid-cols-[10rem_1fr_1fr]">
-              <p className="text-xs font-medium text-ink-muted">Mechanisms / outcomes / cases</p>
-              <TagBundle claim={slotA.claim} />
-              <TagBundle claim={slotB.claim} />
+        <div data-testid="compare-fields">
+          <h2 className="section-title">Aligned fields</h2>
+          {COMPARE_FIELDS.map((field) => (
+            <div key={field.key} className="band">
+              <div className="band-label">{field.label}</div>
+              {([slotA, slotB] as const).map((slot) => (
+                <div key={slot.param} className="band-side">
+                  <SlotIdentity slot={slot} />
+                  <CompareFieldValue claim={slot.claim} field={field.key} />
+                </div>
+              ))}
             </div>
-          </div>
+          ))}
+          {TAG_BANDS.map((tag) => (
+            <div key={tag.label} className="band">
+              <div className="band-label">{tag.label}</div>
+              {([slotA, slotB] as const).map((slot) => (
+                <div key={slot.param} className="band-side">
+                  <SlotIdentity slot={slot} />
+                  {slot.claim ? (
+                    <IdChipList
+                      values={tag.values(slot.claim)}
+                      linkMechanisms={tag.linkMechanisms}
+                    />
+                  ) : (
+                    <p className="text-sm text-ink-subtle">—</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          ))}
         </div>
       ) : null}
 
-      <p className="text-xs text-ink-subtle">
+      <p className="meta-line" style={{ marginTop: '1rem' }}>
         Curated research pairs for acceptance testing (not hardcoded contradictions): EMP-001 vs
         EMP-002; EMP-005 vs HYP-004; LEG-001 vs LEG-002; HYP-001 vs POL-001.
       </p>
     </div>
+  );
+}
+
+/** Mobile-only identity label (shown below 900px via `.band-policy`). */
+function SlotIdentity({ slot }: { slot: CompareSlot }) {
+  return (
+    <p className="band-policy meta-line font-mono text-xs">
+      Claim {slot.param.toUpperCase()}
+      {slot.rawId ? ` · ${slot.rawId}` : ' · empty'}
+    </p>
   );
 }
 
@@ -128,7 +159,7 @@ function CompareSlotPanel({
   return (
     <section
       aria-label={`Comparison slot ${slot.param.toUpperCase()}`}
-      className="space-y-3 border border-line bg-paper-raised p-4"
+      className="space-y-2"
       data-testid={`compare-slot-${slot.param}`}
     >
       <div className="flex flex-wrap items-center justify-between gap-2">
@@ -172,16 +203,11 @@ function CompareSlotPanel({
       ) : null}
 
       {slot.claim ? (
-        <div className="space-y-2">
-          <p className="font-mono text-xs text-accent">
-            <Link to={`/claims/${slot.claim.claim_id}`}>{slot.claim.claim_id}</Link>
-          </p>
-          <p className="text-sm leading-snug text-ink">{slot.claim.exact_claim}</p>
-          <div className="flex flex-wrap gap-2">
-            <StatusBadge status={slot.claim.status} />
-            <AdmissibilityBadge value={slot.claim.admissible_in_policy_comparison} />
-          </div>
-        </div>
+        <p className="text-xs">
+          <Link to={`/claims/${slot.claim.claim_id}`} className="text-accent">
+            Open research record {slot.claim.claim_id}
+          </Link>
+        </p>
       ) : null}
     </section>
   );
@@ -308,30 +334,4 @@ function CompareFieldValue({
     return <p className="text-sm text-ink-subtle">(empty)</p>;
   }
   return <p className="whitespace-pre-wrap break-words text-sm text-ink">{value}</p>;
-}
-
-function TagBundle({ claim }: { claim: Claim | undefined }) {
-  if (!claim) {
-    return <p className="text-sm text-ink-subtle">—</p>;
-  }
-  return (
-    <div className="space-y-2 text-sm">
-      <div>
-        <span className="text-xs text-ink-subtle">Mechanisms </span>
-        <IdChipList values={claim.mechanisms} linkMechanisms />
-      </div>
-      <div>
-        <span className="text-xs text-ink-subtle">Outcomes </span>
-        <IdChipList values={claim.outcomes} />
-      </div>
-      <div>
-        <span className="text-xs text-ink-subtle">Cases </span>
-        <IdChipList values={claim.cases} />
-      </div>
-      <div>
-        <span className="text-xs text-ink-subtle">Literature </span>
-        <IdChipList values={claim.literatureSources} />
-      </div>
-    </div>
-  );
 }

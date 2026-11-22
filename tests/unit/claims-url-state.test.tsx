@@ -80,7 +80,7 @@ describe('Claims Explorer URL-driven filter state', () => {
     const { router } = renderApp(['/claims?case=Case1']);
     expect(screen.getByTestId('match-count')).toHaveTextContent('20 of 43');
 
-    await user.click(screen.getByRole('link', { name: /Open claim ATLAS-ASM-001/i }));
+    await user.click(screen.getByRole('link', { name: 'ATLAS-ASM-001', exact: true }));
     await waitFor(() => {
       expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
         /Post-2026 Australian baseline/i,
@@ -89,7 +89,7 @@ describe('Claims Explorer URL-driven filter state', () => {
 
     await router.navigate(-1);
     await waitFor(() => {
-      expect(screen.getByRole('heading', { name: /Claims Explorer/i })).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: /Evidence library/i })).toBeInTheDocument();
     });
     expect(screen.getByRole('button', { name: 'Case1', pressed: true })).toBeInTheDocument();
     expect(screen.getByTestId('match-count')).toHaveTextContent('20 of 43');

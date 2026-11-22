@@ -19,16 +19,18 @@ export function CaseInterventionFocus({
 
   return (
     <div
-      className="space-y-2 border border-line bg-neutral-soft px-3 py-2"
+      className="panel panel--muted stack--tight"
+      style={{ display: 'grid', gap: '0.75rem' }}
       data-testid="case1-re-focus"
       role="group"
       aria-label="Focus develop-or-release or exclusivity pathways"
     >
-      <p className="text-xs font-medium text-ink">
-        Optional focus: R (develop-or-release) and E (exclusivity restriction) are distinct Layer D
-        instruments. Pathway colour does not imply probability or desirability.
+      <p className="small-note" style={{ color: 'var(--color-ink)' }}>
+        <strong>Optional focus.</strong> R (develop-or-release) and E (exclusivity restriction)
+        are distinct Layer D instruments. Pathway colour does not imply probability or
+        desirability.
       </p>
-      <div className="flex flex-wrap gap-2">
+      <div className="action-row">
         {(
           [
             ['both', 'Show both R and E'],
@@ -39,12 +41,7 @@ export function CaseInterventionFocus({
           <button
             key={value}
             type="button"
-            className={[
-              'border px-2.5 py-1 text-xs',
-              focus === value
-                ? 'border-accent bg-accent-soft text-accent'
-                : 'border-line bg-paper-raised text-ink-muted hover:bg-paper-raised',
-            ].join(' ')}
+            className="filter-chip"
             aria-pressed={focus === value}
             onClick={() => select(value)}
           >
@@ -52,7 +49,7 @@ export function CaseInterventionFocus({
           </button>
         ))}
       </div>
-      <p className="text-[11px] text-ink-subtle">
+      <p className="small-note small-note--subtle" aria-live="polite">
         The original complete pathway comparison table remains in section 6 below.
         {focus === 'R'
           ? ' Focus note: R does not claim released sites go to rivals; constitutional feasibility is unverified.'

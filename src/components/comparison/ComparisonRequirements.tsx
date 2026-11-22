@@ -19,7 +19,7 @@ function RequirementItems({
         <li key={req.id}>
           <Link
             to={`/gaps/${req.id}`}
-            className="font-mono text-accent no-underline hover:underline"
+            className="font-mono text-accent underline underline-offset-2"
           >
             {req.id}
           </Link>
@@ -40,9 +40,9 @@ export function VariantSpecificRequirements({
 }) {
   return (
     <section className="space-y-2" data-testid={`comparison-gaps-${variantId}`}>
-      <h4 className="text-xs font-semibold uppercase tracking-wide text-ink-muted">
+      <h3 className="text-xs font-semibold uppercase tracking-wide text-ink-muted">
         Variant-specific research requirements
-      </h4>
+      </h3>
       <p className="text-[11px] text-ink-subtle">
         Shown only where the published source supports a variant link. Case-wide §9 items appear
         once in the shared panel when both variants are from the same case.
@@ -67,9 +67,9 @@ export function CrossCaseSideRequirements({
 }) {
   return (
     <section className="space-y-2" data-testid={`comparison-gaps-${variantId}`}>
-      <h4 className="text-xs font-semibold uppercase tracking-wide text-ink-muted">
+      <h3 className="text-xs font-semibold uppercase tracking-wide text-ink-muted">
         Research requirements ({caseId})
-      </h4>
+      </h3>
       <p className="text-[11px] text-ink-subtle">
         Cross-case comparison: each side keeps its original case scope. No mutual exclusivity or
         shared research agenda is implied.
@@ -80,7 +80,7 @@ export function CrossCaseSideRequirements({
       />
       <Link
         to={gapsHref({ cases: [caseId] })}
-        className="text-xs text-accent no-underline hover:underline"
+        className="text-xs text-accent underline underline-offset-2"
       >
         All {caseId} research requirements
       </Link>
@@ -98,9 +98,9 @@ export function SharedCaseWideRequirements({
 }) {
   return (
     <div className="space-y-2" data-testid="comparison-gaps-shared">
-      <h4 className="text-xs font-semibold uppercase tracking-wide text-ink-muted">
+      <h3 className="text-xs font-semibold uppercase tracking-wide text-ink-muted">
         Shared case-wide research requirements ({caseId})
-      </h4>
+      </h3>
       <p className="text-[11px] text-ink-subtle">
         Displayed once for this case. Not assigned to a single intervention unless separately listed
         as variant-specific.
@@ -111,7 +111,7 @@ export function SharedCaseWideRequirements({
       />
       <Link
         to={gapsHref({ cases: [caseId] })}
-        className="text-xs text-accent no-underline hover:underline"
+        className="text-xs text-accent underline underline-offset-2"
       >
         All {caseId} research requirements
       </Link>

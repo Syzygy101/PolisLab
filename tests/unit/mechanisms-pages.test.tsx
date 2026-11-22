@@ -28,16 +28,17 @@ function renderMechanisms(path = '/mechanisms') {
 describe('Mechanism Explorer pages', () => {
   it('renders overview coverage and activates Mechanisms nav', () => {
     renderMechanisms('/mechanisms');
-    expect(screen.getByRole('heading', { name: /Mechanism Explorer/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: 'Mechanisms' })).toBeInTheDocument();
     expect(screen.getByTestId('family-count-M1')).toHaveTextContent('24');
     expect(screen.getByTestId('exact-count-M1')).toHaveTextContent('2');
     const nav = screen.getByRole('navigation', { name: /Primary/i });
     const mechanismsLink = within(nav).getByRole('link', { name: /^Mechanisms$/i });
     expect(mechanismsLink).toBeInTheDocument();
     expect(mechanismsLink).not.toHaveTextContent(/later/i);
-    const comparisonLink = within(nav).getByRole('link', { name: /^Comparison$/i });
+    const comparisonLink = within(nav).getByRole('link', { name: /Compare policies/i });
     expect(comparisonLink).not.toHaveTextContent(/later/i);
-    expect(within(nav).getAllByText(/later/i).length).toBeGreaterThan(0);
+    expect(within(nav).queryByText(/later/i)).toBeNull();
+    expect(within(nav).queryByRole('link', { name: /Sandbox/i })).toBeNull();
   });
 
   it('navigates family card to M1 profile with family count 24', async () => {
@@ -79,5 +80,33 @@ describe('Mechanism Explorer pages', () => {
     expect(panel).toBeInTheDocument();
     expect(within(panel).getAllByText(/M5a-1/).length).toBeGreaterThan(0);
     expect(within(panel).getAllByText(/M5a-2/).length).toBeGreaterThan(0);
+  });
+
+  it('keeps six families, twelve exact submechanisms, and the 6×6 matrix', () => {
+    renderMechanisms('/mechanisms');
+    const overview = screen.getByTestId('mechanism-family-overview');
+    expect(within(overview).getAllByTestId(/^mechanism-family-card-M[1-6]$/)).toHaveLength(6);
+    expect(within(overview).getAllByTestId(/^submech-link-M\d[a-z]$/)).toHaveLength(12);
+    const matrix = screen.getByTestId('mechanism-outcome-matrix');
+    expect(within(matrix).getAllByTestId(/^matrix-cell-M[1-6]-O[1-6]$/)).toHaveLength(36);
+    // Interactive cells are buttons in a plain table, not an ARIA grid without grid keyboard support.
+    expect(within(matrix).queryByRole('grid')).toBeNull();
+    expect(within(matrix).getByTestId('matrix-cell-M1-O1')).toHaveAttribute('aria-pressed', 'true');
+  });
+
+  it('labels each relationship type distinctly and uses no universal arrows', () => {
+    renderMechanisms('/mechanisms');
+    const types = screen.getByTestId('mechanism-relation-types');
+    for (const label of [
+      /Taxonomy membership/,
+      /Metadata co-tagging/,
+      /Published casebook \/ claim citation/,
+      /Hypothesised mechanism/,
+      /Competing explanation/,
+    ]) {
+      expect(within(types).getByText(label)).toBeInTheDocument();
+    }
+    expect(types).toHaveTextContent(/Directed arrows are not used for generic metadata co-tagging/);
+    expect(screen.getByTestId('mechanism-outcome-matrix').textContent).not.toMatch(/[→↓↑←]/);
   });
 });

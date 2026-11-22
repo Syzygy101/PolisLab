@@ -34,7 +34,7 @@ function linkifyClaimText(
           return (
             <span
               key={index}
-              className="font-mono text-[0.9em] text-caution"
+              className="is-unknown-id"
               title="Unknown atlas ID"
               data-unknown-claim-id={part.id}
             >
@@ -47,7 +47,7 @@ function linkifyClaimText(
             key={index}
             to={`/claims/${part.id}`}
             state={claimReturn ? { caseReturn: claimReturn } : undefined}
-            className="font-mono text-[0.9em] text-accent no-underline hover:underline"
+            className="claim-link"
             data-claim-id={part.id}
           >
             {part.id}
@@ -59,21 +59,21 @@ function linkifyClaimText(
         return (
           <span
             key={index}
-            className="font-mono text-[0.9em]"
+            className="claim-range"
             data-claim-range={part.display}
           >
-            <span className="text-ink">{part.display}</span>
-            <span className="text-ink-subtle"> [</span>
+            <span>{part.display}</span>
+            <span className="claim-range-sep"> [</span>
             {part.ids.map((id, idIndex) => {
               const exists = Boolean(findClaimById(id));
               const sep =
                 idIndex < part.ids.length - 1 ? (
-                  <span className="text-ink-subtle">, </span>
+                  <span className="claim-range-sep">, </span>
                 ) : null;
               if (!exists) {
                 return (
                   <Fragment key={id}>
-                    <span className="text-caution" data-unknown-claim-id={id}>
+                    <span className="is-unknown-id" data-unknown-claim-id={id}>
                       {id}
                     </span>
                     {sep}
@@ -85,7 +85,7 @@ function linkifyClaimText(
                   <Link
                     to={`/claims/${id}`}
                     state={claimReturn ? { caseReturn: claimReturn } : undefined}
-                    className="text-accent no-underline hover:underline"
+                    className="claim-link"
                     data-claim-id={id}
                     data-claim-range-target={part.display}
                   >
@@ -95,7 +95,7 @@ function linkifyClaimText(
                 </Fragment>
               );
             })}
-            <span className="text-ink-subtle">]</span>
+            <span className="claim-range-end">]</span>
           </span>
         );
       }
@@ -104,7 +104,7 @@ function linkifyClaimText(
           <Link
             key={index}
             to={part.href}
-            className="font-mono text-[0.9em] text-ink-muted no-underline hover:underline"
+            className="contextual-id"
             title="Contextual subdivision — not an atlas tag"
             data-contextual-mechanism={part.id}
           >
@@ -116,7 +116,7 @@ function linkifyClaimText(
         <Link
           key={index}
           to={mechanismProfileHref(part.id)}
-          className="font-mono text-[0.9em] text-accent no-underline hover:underline"
+          className="claim-link"
           data-mechanism-id={part.id}
         >
           {part.id}
@@ -132,6 +132,9 @@ function linkifyClaimText(
   return children;
 }
 
+/** Monotonic across all casebook Markdown mounts so scrollable table regions stay unique. */
+let casebookTableRegionSerial = 0;
+
 function createComponents(claimReturn?: CaseClaimReturnState): Components {
   const L = (children: ReactNode) => linkifyClaimText(children, claimReturn);
   return {
@@ -139,57 +142,42 @@ function createComponents(claimReturn?: CaseClaimReturnState): Components {
       const url = href?.trim() ?? '';
       if (!url || !isSafeHttpUrl(url)) {
         return (
-          <span className="text-ink-muted" data-unsafe-href={url || undefined}>
+          <span data-unsafe-href={url || undefined}>
             {children}
           </span>
         );
       }
       return (
-        <a href={url} target="_blank" rel="noopener noreferrer">
+        <a className="link-external" href={url} target="_blank" rel="noopener noreferrer">
           {children}
         </a>
       );
     },
-    table: ({ children }) => (
-      <div className="casebook-table-wrap my-3 overflow-x-auto">
-        <table className="casebook-table w-full min-w-[28rem] border-collapse text-left text-sm">
-          {children}
-        </table>
-      </div>
-    ),
-    thead: ({ children }) => <thead className="border-b border-line-strong">{children}</thead>,
-    th: ({ children }) => (
-      <th className="bg-neutral-soft px-2 py-1.5 align-top font-medium text-ink">{L(children)}</th>
-    ),
-    td: ({ children }) => (
-      <td className="border-t border-line px-2 py-1.5 align-top text-ink">{L(children)}</td>
-    ),
-    h1: ({ children }) => (
-      <h3 className="font-display text-lg font-semibold text-ink">{L(children)}</h3>
-    ),
-    h2: ({ children }) => (
-      <h3 className="font-display text-base font-semibold text-ink">{L(children)}</h3>
-    ),
-    h3: ({ children }) => (
-      <h4 className="text-sm font-semibold text-ink">{L(children)}</h4>
-    ),
-    ul: ({ children }) => <ul className="list-disc space-y-1 pl-5 text-sm text-ink">{children}</ul>,
-    ol: ({ children }) => (
-      <ol className="list-decimal space-y-1 pl-5 text-sm text-ink">{children}</ol>
-    ),
-    li: ({ children }) => <li className="leading-relaxed">{L(children)}</li>,
-    p: ({ children }) => <p className="text-sm leading-relaxed text-ink">{L(children)}</p>,
-    strong: ({ children }) => <strong className="font-semibold">{L(children)}</strong>,
+    table: ({ children }) => {
+      casebookTableRegionSerial += 1;
+      const tableNumber = casebookTableRegionSerial;
+      return (
+        <div
+          className="case-table-wrap"
+          tabIndex={0}
+          role="region"
+          aria-label={`Casebook table ${tableNumber} (scrolls horizontally)`}
+        >
+          <table className="casebook-table">{children}</table>
+        </div>
+      );
+    },
+    th: ({ children }) => <th>{L(children)}</th>,
+    td: ({ children }) => <td>{L(children)}</td>,
+    // Published headings sit beneath the section <h2>, so they step down one level.
+    h1: ({ children }) => <h3>{L(children)}</h3>,
+    h2: ({ children }) => <h3>{L(children)}</h3>,
+    h3: ({ children }) => <h4>{L(children)}</h4>,
+    li: ({ children }) => <li>{L(children)}</li>,
+    p: ({ children }) => <p>{L(children)}</p>,
+    strong: ({ children }) => <strong>{L(children)}</strong>,
     em: ({ children }) => <em>{L(children)}</em>,
-    blockquote: ({ children }) => (
-      <blockquote className="border-l-2 border-accent/40 pl-3 text-sm text-ink-muted">
-        {L(children)}
-      </blockquote>
-    ),
-    hr: () => <hr className="my-4 border-line" />,
-    code: ({ children }) => (
-      <code className="rounded bg-neutral-soft px-1 font-mono text-[0.85em]">{children}</code>
-    ),
+    blockquote: ({ children }) => <blockquote>{L(children)}</blockquote>,
   };
 }
 
@@ -206,7 +194,7 @@ export function CasebookMarkdown({
     return null;
   }
   return (
-    <div className={['casebook-prose space-y-3', className].filter(Boolean).join(' ')}>
+    <div className={['case-md', className].filter(Boolean).join(' ')}>
       <ReactMarkdown remarkPlugins={[remarkGfm]} components={createComponents(claimReturn)}>
         {markdown}
       </ReactMarkdown>

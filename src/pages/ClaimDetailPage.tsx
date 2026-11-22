@@ -5,6 +5,7 @@ import type { ExplorerReturnState } from '@/components/claims/ClaimsTable';
 import type { CaseClaimReturnState } from '@/components/casebook/CasebookMarkdown';
 import { caseSectionAnchor } from '@/research/casebookConstants';
 import { isCaseId } from '@/research/taxonomy';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 function explorerHrefFromState(state: unknown): string {
   if (!state || typeof state !== 'object') {
@@ -30,6 +31,7 @@ function caseReturnFromState(state: unknown): CaseClaimReturnState | null {
 
 export function ClaimDetailPage() {
   const { claimId } = useParams<{ claimId: string }>();
+  useDocumentTitle(claimId ? `Claim ${claimId}` : 'Claim');
   const location = useLocation();
   const claim = claimId ? findClaimById(claimId) : undefined;
   const explorerHref = explorerHrefFromState(location.state);
@@ -47,10 +49,10 @@ export function ClaimDetailPage() {
         <p className="text-sm text-ink-muted">
           No atlas claim matches{' '}
           <span className="font-mono text-ink">{claimId ?? '(missing id)'}</span>. Check the claim
-          ID or return to the explorer.
+          ID or return to the evidence library.
         </p>
         <Link to={explorerHref} className="text-sm font-medium">
-          Back to Claims Explorer
+          Back to Evidence library
         </Link>
       </div>
     );
@@ -60,7 +62,7 @@ export function ClaimDetailPage() {
     <div className="space-y-4">
       <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-x-2 text-sm text-ink-muted">
         <Link to={explorerHref} className="no-underline hover:underline">
-          Claims Explorer
+          Evidence library
         </Link>
         <span>/</span>
         <span className="font-mono text-ink">{claim.claim_id}</span>

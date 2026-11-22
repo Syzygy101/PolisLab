@@ -73,7 +73,40 @@ describe('Casebook pages', () => {
   it('exposes source document methodology view', () => {
     renderApp('/casebook/source');
     expect(screen.getByTestId('casebook-source-page')).toBeInTheDocument();
-    expect(screen.getByText(/Four-case comparison table/i)).toBeInTheDocument();
+    // The comparison table heading is also listed in the on-page section rail, so
+    // assert the published heading itself and the retained table content.
+    expect(
+      screen.getByRole('heading', { level: 2, name: /Four-case comparison table/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('navigation', { name: 'Source document sections' })).toBeInTheDocument();
+    expect(document.querySelector('.case-table-wrap table')).not.toBeNull();
+  });
+
+  it('gives every case the same section rail, compact jump list, and 10 sections', () => {
+    for (const researchCase of RESEARCH_CASES) {
+      const { unmount } = renderApp(`/casebook/${researchCase.id}`);
+      const rail = screen.getByRole('navigation', { name: 'Case sections' });
+      // Ten numbered sections plus the cited-evidence index entry.
+      expect(within(rail).getAllByRole('link')).toHaveLength(11);
+      const jump = screen.getByTestId('case-section-jump');
+      expect(jump.tagName).toBe('DETAILS');
+      expect(within(jump).getAllByRole('link')).toHaveLength(11);
+      for (let n = 1; n <= 10; n += 1) {
+        expect(screen.getByTestId(`case-section-${n}`)).toHaveAttribute('id', `section-${n}`);
+      }
+      expect(screen.getByTestId('case-related')).toBeInTheDocument();
+      expect(screen.getByTestId('case-gaps-link').getAttribute('href')).toContain(
+        `case=${researchCase.id}`,
+      );
+      expect(screen.getByTestId('case-compare-policies')).toBeInTheDocument();
+      unmount();
+    }
+  });
+
+  it('retains the published comparison table in the closing source sections', () => {
+    renderApp('/casebook/source');
+    const wrappers = document.querySelectorAll('.case-table-wrap');
+    expect(wrappers.length).toBeGreaterThan(0);
   });
 
   it('Overview primary action opens case investigation', () => {

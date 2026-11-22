@@ -1,6 +1,10 @@
 import { Link } from 'react-router-dom';
 import type { Claim } from '@/research/schema';
-import { MECHANISM_FAMILIES, mechanismProfileHref } from '@/research/taxonomy';
+import {
+  MECHANISM_FAMILIES,
+  getMechanismSubmechanism,
+  mechanismProfileHref,
+} from '@/research/taxonomy';
 import {
   claimsExplorerHrefForMechanism,
   computeMechanismFamilyCoverage,
@@ -10,88 +14,88 @@ export function MechanismFamilyOverview({ claims }: { claims: Claim[] }) {
   const rows = computeMechanismFamilyCoverage(claims);
 
   return (
-    <section className="space-y-4" data-testid="mechanism-family-overview">
-      <div className="space-y-2">
-        <h2 className="font-display text-xl font-semibold text-ink">
+    <section
+      id="mechanism-families"
+      className="stack"
+      style={{ scrollMarginTop: '1.5rem' }}
+      aria-labelledby="mechanism-families-heading"
+      data-testid="mechanism-family-overview"
+    >
+      <div>
+        <h2 id="mechanism-families-heading" className="section-title">
           Mechanism families and research coverage
         </h2>
-        <p className="max-w-3xl text-sm text-ink-muted">
+        <p className="small-note">
           Counts are unique research-coverage tallies from validated atlas tags — not causal
           importance, policy effectiveness, or evidence strength. Exact family-tag counts include
-          only records tagged with the bare family ID; family-expanded counts include the family
-          ID and its registered submechanisms.
+          only records tagged with the bare family ID; family-expanded counts include the family ID
+          and its registered submechanisms.
         </p>
       </div>
 
-      <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+      <div className="family-list">
         {rows.map((row) => {
           const family = MECHANISM_FAMILIES.find((item) => item.id === row.id)!;
           return (
             <article
               key={row.id}
-              className="space-y-3 border border-line bg-paper-raised p-4"
+              className="family-card"
               data-testid={`mechanism-family-card-${row.id}`}
             >
-              <header className="space-y-1">
-                <h3 className="font-display text-lg font-semibold text-ink">
-                  <Link
-                    to={mechanismProfileHref(row.id)}
-                    className="text-ink no-underline hover:text-accent"
-                  >
-                    <span className="font-mono text-base">{row.id}</span>
-                    <span className="ml-2">{family.label}</span>
+              <header className="stack--tight" style={{ display: 'grid' }}>
+                <h3>
+                  <Link to={mechanismProfileHref(row.id)}>
+                    <span className="family-id">{row.id}</span>{' '}
+                    {family.label}
                   </Link>
                 </h3>
-                <p className="text-xs text-ink-muted">{family.definition}</p>
+                <p className="small-note">{family.definition}</p>
               </header>
 
-              <dl className="grid grid-cols-2 gap-2 text-sm">
+              <dl className="stat-row">
                 <div>
-                  <dt className="text-xs text-ink-subtle">Family-expanded</dt>
-                  <dd
-                    className="font-mono text-ink"
-                    data-testid={`family-count-${row.id}`}
-                  >
-                    {row.familyCount}
-                  </dd>
+                  <dt>Family-expanded claims</dt>
+                  <dd data-testid={`family-count-${row.id}`}>{row.familyCount}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-ink-subtle">Exact family tag</dt>
-                  <dd
-                    className="font-mono text-ink"
-                    data-testid={`exact-count-${row.id}`}
-                  >
-                    {row.exactCount}
-                  </dd>
+                  <dt>Exact family tag</dt>
+                  <dd data-testid={`exact-count-${row.id}`}>{row.exactCount}</dd>
                 </div>
               </dl>
 
-              <div className="flex flex-wrap gap-1.5">
-                {row.childIds.map((childId) => (
-                  <Link
-                    key={childId}
-                    to={mechanismProfileHref(childId)}
-                    className="inline-flex border border-line bg-paper px-2 py-1 font-mono text-[11px] text-ink-muted no-underline hover:border-accent hover:text-accent"
-                    data-testid={`submech-link-${childId}`}
-                  >
-                    {childId}
-                    <span className="ml-1 text-ink-subtle">
-                      ({row.childExactCounts[childId] ?? 0})
-                    </span>
-                  </Link>
-                ))}
+              <div>
+                <p className="eyebrow" style={{ marginBottom: '0.35rem' }}>
+                  Exact atlas submechanisms
+                </p>
+                <ul className="sub-list">
+                  {row.childIds.map((childId) => {
+                    const child = getMechanismSubmechanism(childId);
+                    return (
+                      <li key={childId}>
+                        <Link
+                          to={mechanismProfileHref(childId)}
+                          className="sub-id"
+                          data-testid={`submech-link-${childId}`}
+                        >
+                          {childId}
+                        </Link>
+                        <span>{child.label}</span>
+                        <span className="sub-count" title="Exact-tag claims">
+                          {row.childExactCounts[childId] ?? 0} exact
+                        </span>
+                      </li>
+                    );
+                  })}
+                </ul>
               </div>
 
-              <div className="flex flex-wrap gap-2 pt-1">
-                <Link
-                  to={mechanismProfileHref(row.id)}
-                  className="text-sm text-accent no-underline hover:underline"
-                >
+              <div className="action-row">
+                <Link to={mechanismProfileHref(row.id)} className="btn btn--secondary">
                   Open {row.id} profile
                 </Link>
                 <Link
                   to={claimsExplorerHrefForMechanism(row.id)}
-                  className="text-sm text-ink-muted no-underline hover:underline"
+                  className="btn btn--ghost"
                   data-testid={`family-claims-link-${row.id}`}
                 >
                   Family evidence subset

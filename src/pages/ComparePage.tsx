@@ -7,6 +7,7 @@ import {
   parseCompareState,
   serializeCompareSearchParams,
 } from '@/research/compareUrl';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 function explorerHrefFromState(state: unknown): string {
   if (!state || typeof state !== 'object') {
@@ -20,6 +21,8 @@ function explorerHrefFromState(state: unknown): string {
 }
 
 export function ComparePage() {
+  useDocumentTitle('Compare claims');
+
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
   const explorerHref = explorerHrefFromState(location.state);
@@ -41,7 +44,7 @@ export function ComparePage() {
     <div className="space-y-4">
       <nav aria-label="Breadcrumb" className="text-sm text-ink-muted">
         <Link to={explorerHref} className="no-underline hover:underline">
-          Claims Explorer
+          Evidence library
         </Link>
         <span className="mx-2">/</span>
         <span className="text-ink">Compare</span>

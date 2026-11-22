@@ -37,7 +37,7 @@ describe('search commit and investigation navigation', () => {
     const search = screen.getByRole('searchbox', { name: 'Search' });
     await user.type(search, 'EMP-001');
     // Navigate immediately — before debounce would normally flush.
-    await user.click(screen.getByRole('link', { name: /Open claim ATLAS-EMP-001/i }));
+    await user.click(screen.getByRole('link', { name: 'ATLAS-EMP-001', exact: true }));
 
     await waitFor(() => {
       expect(router.state.location.pathname).toBe('/claims/ATLAS-EMP-001');
@@ -51,7 +51,7 @@ describe('search commit and investigation navigation', () => {
 
     await user.click(
       within(screen.getByRole('navigation', { name: 'Breadcrumb' })).getByRole('link', {
-        name: 'Claims Explorer',
+        name: 'Evidence library',
       }),
     );
     await waitFor(() => {
@@ -116,7 +116,11 @@ describe('search commit and investigation navigation', () => {
 
     expect(router.state.location.search).toBe('?mechanism_family=M6');
     expect(router.state.location.search).not.toMatch(/planning|q=/);
-    expect(screen.getByTestId('match-count')).toHaveTextContent('14 of 43');
+    // Wait for React to apply the restored M6 filter set (parallel fake-timer races
+    // can briefly leave a stale match-count from the prior M1+planning draft).
+    await waitFor(() => {
+      expect(screen.getByTestId('match-count')).toHaveTextContent('14 of 43');
+    });
     vi.useRealTimers();
   });
 });

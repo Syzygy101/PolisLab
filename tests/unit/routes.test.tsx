@@ -24,7 +24,7 @@ function renderAt(path: string) {
 describe('Claims Explorer routes', () => {
   it('renders all authentic claims by default', () => {
     renderAt('/claims');
-    expect(screen.getByRole('heading', { name: /Claims Explorer/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Evidence library/i })).toBeInTheDocument();
     expect(screen.getByTestId('match-count')).toHaveTextContent(
       `${allClaims.length} of ${allClaims.length} claims shown`,
     );
@@ -33,7 +33,7 @@ describe('Claims Explorer routes', () => {
 
   it('resolves claim detail routes to the correct record', () => {
     renderAt('/claims/ATLAS-CON-003');
-    expect(screen.queryByRole('heading', { name: /Claims Explorer/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: /Evidence library/i })).not.toBeInTheDocument();
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
       /Inferring consumer welfare or durable competitive constraint/i,
     );
@@ -75,6 +75,6 @@ describe('Claims Explorer routes', () => {
 
     await user.click(screen.getByRole('button', { name: /Reset filters/i }));
     expect(screen.getByTestId('match-count')).toHaveTextContent('43 of 43 claims shown');
-    expect(within(screen.getByRole('table')).getByText('ATLAS-LEG-001')).toBeInTheDocument();
+    expect(within(screen.getByRole('list', { name: 'Matching claims' })).getByText('ATLAS-LEG-001')).toBeInTheDocument();
   });
 });

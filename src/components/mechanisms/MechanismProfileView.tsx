@@ -16,7 +16,6 @@ import {
   countMechanismFamily,
 } from '@/research/mechanismQueries';
 import {
-  RELATION_TYPE_LABELS,
   getMechanismProfileContent,
   mechanismDefinitionLimitation,
   mechanismDisplayDefinition,
@@ -24,12 +23,42 @@ import {
   mechanismProvenance,
 } from '@/research/mechanismProfiles';
 import { explanationsForMechanism } from '@/research/mechanismExplanations';
-import { MechanismPathway } from './MechanismPathway';
+import { MechanismPathway, RelationChip } from './MechanismPathway';
 import { caseSectionAnchor } from '@/research/casebookConstants';
 import { OUTCOME_STAGES } from '@/research/taxonomy';
 import { claimsExplorerHref } from '@/research/urlFilters';
 import { gapsHref } from '@/research/gapsUrl';
 import { requirementsForMechanism } from '@/research/gapsQueries';
+
+function SourceLinkList({
+  sources,
+}: {
+  sources: { kind: string; id: string; caseId?: string; section?: number }[];
+}) {
+  return (
+    <>
+      {sources.map((source) =>
+        source.kind === 'claim' ? (
+          <Link key={source.id} to={`/claims/${source.id}`} className="id-link">
+            {source.id}
+          </Link>
+        ) : source.caseId && source.section ? (
+          <Link
+            key={source.id}
+            to={`/casebook/${source.caseId}#${caseSectionAnchor(source.section)}`}
+            className="id-link"
+          >
+            {source.id}
+          </Link>
+        ) : (
+          <span key={source.id} className="mono" style={{ color: 'var(--color-ink-muted)' }}>
+            {source.id}
+          </span>
+        ),
+      )}
+    </>
+  );
+}
 
 export function MechanismProfileView({
   mechanismId,
@@ -66,101 +95,145 @@ export function MechanismProfileView({
     ),
   );
 
+  const claimsHref = isFamily
+    ? claimsExplorerHrefForMechanism(mechanismId)
+    : claimsExplorerHref({ mechanisms: [mechanismId] });
+
   return (
-    <article className="space-y-6" data-testid={`mechanism-profile-${mechanismId}`}>
-      <header className="space-y-3 border border-line bg-paper-raised p-5">
-        <p className="text-xs uppercase tracking-wide text-ink-subtle">
+    <article className="profile-layout" data-testid={`mechanism-profile-${mechanismId}`}>
+      <header className="profile-header">
+        <p className="page-kicker">
           {isFamily ? 'Mechanism family' : 'Exact atlas submechanism'}
         </p>
-        <h1 className="font-display text-3xl font-semibold text-ink">
-          <span className="font-mono text-2xl">{mechanismId}</span>
-          <span className="ml-3">{mechanismDisplayTitle(mechanismId)}</span>
+        <h1 className="page-title" style={{ marginBottom: '0.75rem' }}>
+          <span className="family-id">{mechanismId}</span>{' '}
+          {mechanismDisplayTitle(mechanismId)}
         </h1>
-        <p className="max-w-3xl text-sm leading-relaxed text-ink">
+        <p className="lede" style={{ marginBottom: '0.75rem' }}>
           {mechanismDisplayDefinition(mechanismId)}
         </p>
-        {definitionLimit ? (
-          <p className="max-w-3xl text-xs text-ink-muted">{definitionLimit}</p>
-        ) : null}
-        <p className="text-xs text-ink-subtle">
+        {definitionLimit ? <p className="small-note">{definitionLimit}</p> : null}
+        <p className="meta-line" style={{ marginTop: '0.5rem' }}>
           Provenance: {mechanismProvenance(mechanismId)}
         </p>
+        <div className="action-row" style={{ marginTop: '1rem' }}>
+          <Link to={claimsHref} className="btn btn--primary" data-testid="profile-claims-link">
+            {isFamily
+              ? `View ${familyCount} family-associated claims`
+              : `View ${exactCount} exact-tag claims`}
+          </Link>
+          {isFamily ? (
+            <Link to={claimsExplorerHref({ mechanisms: [mechanismId] })} className="btn btn--secondary">
+              Exact {mechanismId} only ({exactCount})
+            </Link>
+          ) : null}
+        </div>
       </header>
 
-      <section className="space-y-3 border border-line bg-paper-raised p-5">
-        <h2 className="text-sm font-semibold text-ink">Taxonomy relationships</h2>
-        <p className="text-xs text-ink-subtle">
-          Relation type: {RELATION_TYPE_LABELS.taxonomy}. Membership is registry-based, not
+      <nav aria-label="On this page">
+        <ul className="tag-list">
+          <li>
+            <a className="tag-link" href="#profile-taxonomy">
+              Taxonomy
+            </a>
+          </li>
+          <li>
+            <a className="tag-link" href="#profile-coverage">
+              Coverage
+            </a>
+          </li>
+          <li>
+            <a className="tag-link" href="#profile-alternatives">
+              Alternative explanations
+            </a>
+          </li>
+          <li>
+            <a className="tag-link" href="#profile-outcomes">
+              Outcomes
+            </a>
+          </li>
+          <li>
+            <a className="tag-link" href="#profile-casebook">
+              Casebook passages
+            </a>
+          </li>
+          <li>
+            <a className="tag-link" href="#profile-limitations">
+              Limitations
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <section id="profile-taxonomy" className="profile-section" aria-labelledby="profile-taxonomy-h">
+        <h2 id="profile-taxonomy-h">Taxonomy relationships</h2>
+        <p className="small-note">
+          Relation type: <RelationChip relation="taxonomy" /> Membership is registry-based, not
           substring matching.
         </p>
         {parentId ? (
-          <p className="text-sm text-ink">
+          <p className="prose-block">
             Parent family:{' '}
-            <Link
-              to={mechanismProfileHref(parentId)}
-              className="font-mono text-accent no-underline hover:underline"
-            >
+            <Link to={mechanismProfileHref(parentId)} className="id-link">
               {parentId}
             </Link>{' '}
             — {getMechanismFamily(parentId).label}
           </p>
         ) : (
-          <div className="flex flex-wrap gap-2">
-            <span className="text-sm text-ink-muted">Registered submechanisms:</span>
-            {children.map((childId) => (
-              <Link
-                key={childId}
-                to={mechanismProfileHref(childId)}
-                className="font-mono text-sm text-accent no-underline hover:underline"
-              >
-                {childId}
-              </Link>
-            ))}
+          <div>
+            <p className="eyebrow" style={{ marginBottom: '0.35rem' }}>
+              Registered submechanisms
+            </p>
+            <ul className="sub-list">
+              {children.map((childId) => (
+                <li key={childId}>
+                  <Link to={mechanismProfileHref(childId)} className="sub-id">
+                    {childId}
+                  </Link>
+                  <span>{getMechanismSubmechanism(childId).label}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         )}
         {!isFamily && parentId ? (
-          <div className="flex flex-wrap gap-2 text-sm">
-            <span className="text-ink-muted">Siblings:</span>
-            {getMechanismFamily(parentId)
-              .childIds.filter((id) => id !== mechanismId)
-              .map((id) => (
-                <Link
-                  key={id}
-                  to={mechanismProfileHref(id)}
-                  className="font-mono text-accent no-underline hover:underline"
-                >
-                  {id}
-                </Link>
-              ))}
+          <div>
+            <p className="eyebrow" style={{ marginBottom: '0.35rem' }}>
+              Siblings
+            </p>
+            <ul className="tag-list">
+              {getMechanismFamily(parentId)
+                .childIds.filter((id) => id !== mechanismId)
+                .map((id) => (
+                  <li key={id}>
+                    <Link to={mechanismProfileHref(id)} className="tag-link">
+                      <span className="mono">{id}</span>
+                    </Link>
+                  </li>
+                ))}
+            </ul>
           </div>
         ) : null}
       </section>
 
-      <section className="space-y-3 border border-line bg-paper-raised p-5">
-        <h2 className="text-sm font-semibold text-ink">Research coverage</h2>
-        <dl className="grid gap-3 sm:grid-cols-2">
+      <section id="profile-coverage" className="profile-section" aria-labelledby="profile-coverage-h">
+        <h2 id="profile-coverage-h">Research coverage</h2>
+        <dl className="stat-row">
           <div>
-            <dt className="text-xs text-ink-subtle">Exact-tag claims</dt>
-            <dd className="font-mono text-lg text-ink" data-testid="profile-exact-count">
-              {exactCount}
-            </dd>
+            <dt>Exact-tag claims</dt>
+            <dd data-testid="profile-exact-count">{exactCount}</dd>
           </div>
           {familyCount !== null ? (
             <div>
-              <dt className="text-xs text-ink-subtle">Family-expanded unique claims</dt>
-              <dd className="font-mono text-lg text-ink" data-testid="profile-family-count">
-                {familyCount}
-              </dd>
+              <dt>Family-expanded unique claims</dt>
+              <dd data-testid="profile-family-count">{familyCount}</dd>
             </div>
           ) : (
             <div>
-              <dt className="text-xs text-ink-subtle">Parent family expansion</dt>
-              <dd className="text-sm text-ink-muted">
+              <dt>Parent family expansion</dt>
+              <dd style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--c-fs-label)', fontWeight: 400 }}>
                 Exact tag only — use{' '}
-                <Link
-                  to={mechanismProfileHref(parentId!)}
-                  className="font-mono text-accent no-underline hover:underline"
-                >
+                <Link to={mechanismProfileHref(parentId!)} className="id-link">
                   {parentId}
                 </Link>{' '}
                 for family-expanded coverage.
@@ -168,115 +241,75 @@ export function MechanismProfileView({
             </div>
           )}
         </dl>
-        <p className="text-xs text-ink-subtle">
+        <p className="small-note">
           Coverage is not causal importance. Exact and family figures are distinct. A family can
-          contain legal facts, descriptive findings, hypotheses, assumptions, and limitations —
-          do not treat all associated evidence as proof of the mechanism.
+          contain legal facts, descriptive findings, hypotheses, assumptions, and limitations — do
+          not treat all associated evidence as proof of the mechanism.
         </p>
-        <div className="flex flex-wrap gap-2">
-          <Link
-            to={
-              isFamily
-                ? claimsExplorerHrefForMechanism(mechanismId)
-                : claimsExplorerHref({ mechanisms: [mechanismId] })
-            }
-            className="inline-flex border border-accent bg-accent px-3 py-1.5 text-sm font-medium text-white no-underline hover:opacity-90"
-            data-testid="profile-claims-link"
-          >
-            {isFamily
-              ? `View ${familyCount} family-associated claims`
-              : `View ${exactCount} exact-tag claims`}
-          </Link>
-          {isFamily ? (
-            <Link
-              to={claimsExplorerHref({ mechanisms: [mechanismId] })}
-              className="inline-flex border border-line px-3 py-1.5 text-sm text-ink no-underline hover:bg-neutral-soft"
-            >
-              Exact {mechanismId} only ({exactCount})
-            </Link>
-          ) : null}
-        </div>
       </section>
 
       {mechanismId === 'M5a' || mechanismId === 'M5' ? (
         <section
           id="contextual-subdivisions"
-          className="space-y-3 border border-dashed border-line-strong bg-neutral-soft p-5"
+          className="panel panel--dashed"
+          style={{ scrollMarginTop: '1.5rem' }}
           data-testid="contextual-subdivisions"
+          aria-labelledby="contextual-subdivisions-h"
         >
-          <h2 className="text-sm font-semibold text-ink">
+          <h2 id="contextual-subdivisions-h" className="panel-title">
             Contextual subdivisions (not atlas tags)
           </h2>
-          <p className="text-xs text-ink-muted">
+          <p className="small-note" style={{ marginBottom: '0.75rem' }}>
             Case 2 refers to M5a-1 and M5a-2. These are conceptual subdivisions of M5a, not exact
-            atlas <span className="font-mono">mechanism_ids</span> values. They do not receive
+            atlas <span className="mono">mechanism_ids</span> values. They do not receive
             fabricated claim counts.
           </p>
-          <ul className="space-y-2">
+          <ul className="link-rows">
             {MECHANISM_CONTEXTUAL_SUBDIVISIONS.map((item) => (
-              <li key={item.id} className="text-sm text-ink">
-                <span className="font-mono">{item.id}</span> — {item.label}. {item.note}
+              <li key={item.id}>
+                <span className="mono link-rows-id">{item.id}</span>
+                <span>
+                  {item.label}. {item.note}
+                </span>
               </li>
             ))}
           </ul>
         </section>
       ) : null}
 
-      <section className="space-y-3 border border-line bg-paper-raised p-5">
-        <h2 className="text-sm font-semibold text-ink">
-          Alternative explanations and curated notes
-        </h2>
+      <section
+        id="profile-alternatives"
+        className="profile-section"
+        aria-labelledby="profile-alternatives-h"
+      >
+        <h2 id="profile-alternatives-h">Alternative explanations and curated notes</h2>
         {content.sparseExplanation ? (
-          <p className="text-sm text-ink-muted">
+          <p className="notice" style={{ maxWidth: 'var(--c-prose)' }}>
             Adequate standalone casebook prose for this tag is limited. Taxonomy, linked evidence,
             and the limitation below are presented rather than inventing a detailed theory.
           </p>
         ) : null}
-        <ul className="space-y-3">
+        <ul className="relation-list">
           {content.alternativeExplanations.map((item, index) => (
-            <li key={index} className="space-y-1 text-sm">
-              <p className="text-ink">{item.text}</p>
-              <p className="text-[10px] uppercase tracking-wide text-ink-subtle">
-                {RELATION_TYPE_LABELS[item.relation]}
-              </p>
-              <div className="flex flex-wrap gap-2 text-xs">
-                {item.sources.map((source) =>
-                  source.kind === 'claim' ? (
-                    <Link
-                      key={source.id}
-                      to={`/claims/${source.id}`}
-                      className="font-mono text-accent no-underline hover:underline"
-                    >
-                      {source.id}
-                    </Link>
-                  ) : source.caseId && source.section ? (
-                    <Link
-                      key={source.id}
-                      to={`/casebook/${source.caseId}#${caseSectionAnchor(source.section)}`}
-                      className="font-mono text-accent no-underline hover:underline"
-                    >
-                      {source.id}
-                    </Link>
-                  ) : (
-                    <span key={source.id} className="font-mono text-ink-muted">
-                      {source.id}
-                    </span>
-                  ),
-                )}
+            <li key={index}>
+              <p className="prose-block">{item.text}</p>
+              <div className="action-row" style={{ marginTop: '0.4rem', gap: '0.25rem 0.75rem' }}>
+                <RelationChip relation={item.relation} />
+                <SourceLinkList sources={item.sources} />
               </div>
             </li>
           ))}
         </ul>
       </section>
 
-      <section className="space-y-3 border border-line bg-paper-raised p-5">
-        <h2 className="text-sm font-semibold text-ink">Outcome associations</h2>
-        <p className="text-xs text-ink-subtle">
+      <section id="profile-outcomes" className="profile-section" aria-labelledby="profile-outcomes-h">
+        <h2 id="profile-outcomes-h">Outcome associations</h2>
+        <p className="small-note">
           Association with an outcome tag is not empirical measurement of that outcome. O1–O6 is
           not a mandatory causal chain.
         </p>
         {content.outcomeNotes.map((note, index) => (
-          <p key={index} className="text-sm text-ink-muted">
+          <p key={index} className="prose-block">
             {note.text}{' '}
             {note.sources.map((source) => (
               <Link
@@ -288,54 +321,53 @@ export function MechanismProfileView({
                       ? `/casebook/${source.caseId}#${caseSectionAnchor(source.section)}`
                       : '#'
                 }
-                className="ml-1 font-mono text-xs text-accent no-underline hover:underline"
+                className="id-link"
+                style={{ marginLeft: '0.25rem' }}
               >
                 {source.id}
               </Link>
             ))}
           </p>
         ))}
-        <div className="flex flex-wrap gap-2">
+        <ul className="tag-list">
           {associatedOutcomes.map((outcome) => (
-            <Link
-              key={outcome.id}
-              to={
-                isFamily
-                  ? claimsExplorerHref({
-                      mechanismFamilies: [mechanismId],
-                      outcomes: [outcome.id],
-                    })
-                  : claimsExplorerHref({
-                      mechanisms: [mechanismId],
-                      outcomes: [outcome.id],
-                    })
-              }
-              className="border border-line px-2 py-1 font-mono text-xs text-ink-muted no-underline hover:border-accent hover:text-accent"
-            >
-              {outcome.id} {outcome.label}
-            </Link>
+            <li key={outcome.id}>
+              <Link
+                to={
+                  isFamily
+                    ? claimsExplorerHref({
+                        mechanismFamilies: [mechanismId],
+                        outcomes: [outcome.id],
+                      })
+                    : claimsExplorerHref({
+                        mechanisms: [mechanismId],
+                        outcomes: [outcome.id],
+                      })
+                }
+                className="tag-link"
+              >
+                <span className="mono">{outcome.id}</span> {outcome.label}
+              </Link>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
 
-      <section className="space-y-3 border border-line bg-paper-raised p-5">
-        <h2 className="text-sm font-semibold text-ink">Relevant casebook passages</h2>
+      <section id="profile-casebook" className="profile-section" aria-labelledby="profile-casebook-h">
+        <h2 id="profile-casebook-h">Relevant casebook passages</h2>
         {content.casebookPassages.length === 0 ? (
-          <p className="text-sm text-ink-muted">
+          <p className="small-note">
             No dedicated casebook mechanism-section row for this exact tag; see parent family and
             linked claims.
           </p>
         ) : (
-          <ul className="space-y-2">
+          <ul className="relation-list">
             {content.casebookPassages.map((passage) => (
-              <li key={`${passage.caseId}-${passage.section}`} className="text-sm">
-                <Link
-                  to={`/casebook/${passage.caseId}#${caseSectionAnchor(passage.section)}`}
-                  className="font-medium text-accent no-underline hover:underline"
-                >
+              <li key={`${passage.caseId}-${passage.section}`}>
+                <Link to={`/casebook/${passage.caseId}#${caseSectionAnchor(passage.section)}`}>
                   {passage.caseId} §{passage.section} — {passage.label}
                 </Link>
-                <p className="text-xs text-ink-muted">{passage.note}</p>
+                <p className="small-note">{passage.note}</p>
               </li>
             ))}
           </ul>
@@ -343,77 +375,88 @@ export function MechanismProfileView({
       </section>
 
       {explanations.length > 0 ? (
-        <section className="space-y-3">
-          <h2 className="font-display text-xl font-semibold text-ink">
-            Conditional explanations
-          </h2>
-          {explanations.map((item) => (
-            <MechanismPathway key={item.id} explanation={item} />
-          ))}
+        <section
+          id="profile-explanations"
+          className="profile-section"
+          aria-labelledby="profile-explanations-h"
+        >
+          <h2 id="profile-explanations-h">Conditional explanations</h2>
+          <div className="stack">
+            {explanations.map((item) => (
+              <MechanismPathway key={item.id} explanation={item} />
+            ))}
+          </div>
         </section>
       ) : null}
 
-      <section className="space-y-2 border border-line bg-paper-raised p-5">
-        <h2 className="text-sm font-semibold text-ink">Material evidence limitations</h2>
-        <ul className="list-disc space-y-1 pl-5 text-sm text-ink-muted">
+      <section
+        id="profile-limitations"
+        className="profile-section"
+        aria-labelledby="profile-limitations-h"
+      >
+        <h2 id="profile-limitations-h">Material evidence limitations</h2>
+        <ul className="bullets">
           {content.limitations.map((item) => (
             <li key={item}>{item}</li>
           ))}
         </ul>
         {linkedRequirements.length > 0 ? (
-          <div className="space-y-1 pt-2" data-testid="mechanism-gaps-links">
-            <p className="text-xs font-medium uppercase tracking-wide text-ink-muted">
+          <div className="panel panel--muted" data-testid="mechanism-gaps-links">
+            <p className="eyebrow" style={{ marginBottom: '0.5rem' }}>
               Related research requirements
             </p>
-            <ul className="space-y-1 text-sm">
+            <ul className="link-rows">
               {linkedRequirements.map((req) => (
                 <li key={req.id}>
-                  <Link
-                    to={`/gaps/${req.id}`}
-                    className="font-mono text-xs text-accent no-underline hover:underline"
-                  >
+                  <Link to={`/gaps/${req.id}`} className="id-link link-rows-id">
                     {req.id}
                   </Link>
-                  <span className="text-ink-muted"> — {req.curatedLabel}</span>
+                  <span>{req.curatedLabel}</span>
                 </li>
               ))}
             </ul>
-            <Link
-              to={
-                isFamily
-                  ? gapsHref({
-                      mechanismFamilies: [mechanismId as MechanismFamilyId],
-                    })
-                  : gapsHref({ mechanisms: [mechanismId] })
-              }
-              className="text-xs text-accent no-underline hover:underline"
-            >
-              Filter Evidence Gaps by {mechanismId}
-            </Link>
+            <p className="small-note" style={{ marginTop: '0.5rem' }}>
+              <Link
+                to={
+                  isFamily
+                    ? gapsHref({
+                        mechanismFamilies: [mechanismId as MechanismFamilyId],
+                      })
+                    : gapsHref({ mechanisms: [mechanismId] })
+                }
+              >
+                Filter Research gaps by {mechanismId}
+              </Link>
+            </p>
           </div>
         ) : (
-          <p className="pt-2 text-xs text-ink-subtle">
+          <p className="small-note small-note--subtle">
             No curated §9 requirement associations for this tag. Associations are source-grounded,
             not inferred from co-tagging alone.
           </p>
         )}
       </section>
 
-      <nav aria-label="Mechanism taxonomy" className="flex flex-wrap gap-2 text-xs">
-        {MECHANISM_FAMILIES.map((family) => (
-          <Link
-            key={family.id}
-            to={mechanismProfileHref(family.id)}
-            className={[
-              'border px-2 py-1 font-mono no-underline',
-              family.id === mechanismId || family.id === parentId
-                ? 'border-accent bg-accent-soft text-accent'
-                : 'border-line text-ink-muted hover:border-accent',
-            ].join(' ')}
-          >
-            {family.id}
-          </Link>
-        ))}
+      <nav aria-label="Mechanism taxonomy" className="taxonomy-nav">
+        <p className="eyebrow" style={{ marginBottom: '0.5rem' }}>
+          Mechanism families
+        </p>
+        <ul className="tag-list">
+          {MECHANISM_FAMILIES.map((family) => {
+            const current = family.id === mechanismId || family.id === parentId;
+            return (
+              <li key={family.id}>
+                <Link
+                  to={mechanismProfileHref(family.id)}
+                  className="tag-link"
+                  aria-current={current ? 'true' : undefined}
+                >
+                  <span className="mono">{family.id}</span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
       </nav>
     </article>
   );

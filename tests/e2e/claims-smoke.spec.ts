@@ -20,10 +20,10 @@ test.describe('Claims Explorer smoke', () => {
     });
 
     await page.goto('/claims');
-    await expect(page.getByRole('heading', { name: 'Claims Explorer' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Evidence library' })).toBeVisible();
     await expect(page.getByText(/43 of 43 claims/)).toBeVisible();
 
-    await page.getByLabel('Search').fill('ATLAS-CON-001');
+    await page.getByRole('searchbox', { name: 'Search' }).fill('ATLAS-CON-001');
     await expect(page.getByText(/1 of 43 claims/)).toBeVisible();
     await expect(page.getByRole('link', { name: 'ATLAS-CON-001', exact: true })).toBeVisible();
 
@@ -32,15 +32,15 @@ test.describe('Claims Explorer smoke', () => {
 
     await page.getByRole('button', { name: 'unresolved hypothesis' }).click();
     await expect(page.getByText(/4 of 43 claims match filters/)).toBeVisible();
-    await expect(page.getByText('ATLAS-HYP-004')).toHaveCount(0);
+    await expect(page.getByRole('link', { name: 'ATLAS-HYP-004', exact: true })).toHaveCount(0);
 
     await page.getByRole('button', { name: 'Reset filters' }).click();
     await page.getByRole('button', { name: 'absence of finding' }).click();
-    await expect(page.getByText('ATLAS-HYP-004')).toBeVisible();
+    await expect(page.getByRole('link', { name: 'ATLAS-HYP-004', exact: true })).toBeVisible();
 
     await page.getByRole('button', { name: 'Reset filters' }).click();
-    await page.getByLabel('Search').fill('ATLAS-EMP-002');
-    await page.getByRole('link', { name: /Open claim ATLAS-EMP-002/i }).click();
+    await page.getByRole('searchbox', { name: 'Search' }).fill('ATLAS-EMP-002');
+    await page.getByRole('link', { name: 'ATLAS-EMP-002', exact: true }).click();
     await expect(page).toHaveURL(/\/claims\/ATLAS-EMP-002$/);
     await expect(page.getByRole('heading', { level: 1 })).toContainText(/land banking/i);
     await expect(page.getByText('All 18 source fields')).toBeVisible();
@@ -100,7 +100,7 @@ test.describe('Claims Explorer smoke', () => {
     });
 
     await page.goto('/claims/ATLAS-HYP-002');
-    await page.getByRole('navigation', { name: 'Breadcrumb' }).getByRole('link', { name: 'Claims Explorer' }).click();
+    await page.getByRole('navigation', { name: 'Breadcrumb' }).getByRole('link', { name: 'Evidence library' }).click();
     await expect(page).toHaveURL(/\/claims$/);
     await page.goBack();
     await expect(page).toHaveURL(/\/claims\/ATLAS-HYP-002$/);
@@ -114,7 +114,7 @@ test.describe('Claims Explorer smoke', () => {
     // Keyboard: search remains operable at mobile width.
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/claims');
-    await page.getByLabel('Search').focus();
+    await page.getByRole('searchbox', { name: 'Search' }).focus();
     await page.keyboard.type('ATLAS-LEG-003');
     await expect(page.getByText(/1 of 43 claims/)).toBeVisible();
     await expect(page.getByRole('link', { name: 'ATLAS-LEG-003', exact: true })).toBeVisible();

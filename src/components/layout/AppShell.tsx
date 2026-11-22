@@ -1,99 +1,257 @@
-import { NavLink, Outlet } from 'react-router-dom';
+import { useEffect, useId, useRef, useState } from 'react';
+import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import {
   RESEARCH_CORRECTION_PASS,
   RESEARCH_CUTOFF,
   RESEARCH_RELEASE,
 } from '@/research/constants';
 import { researchDataset } from '@/data/researchDataset';
+import { BrandLockup } from '@/components/brand/Mark';
 
-const navItems = [
-  { to: '/', label: 'Overview', end: true },
-  { to: '/claims', label: 'Claims Explorer' },
-  { to: '/casebook', label: 'Casebook' },
-  { to: '/mechanisms', label: 'Mechanisms' },
-  { to: '/comparison', label: 'Comparison' },
-  { to: '/gaps', label: 'Evidence Gaps' },
-  { to: '/sandbox', label: 'Sandbox', deferred: true },
+/**
+ * Primary navigation hierarchy (approved Direction C).
+ * Canonical routes and research IDs are unchanged.
+ */
+const NAV_GROUPS = [
+  {
+    label: 'Research',
+    items: [
+      { to: '/', label: 'Overview', end: true },
+      { to: '/casebook', label: 'Investigations', end: false },
+    ],
+  },
+  {
+    label: 'Analysis',
+    items: [
+      { to: '/comparison', label: 'Compare policies', end: false },
+      { to: '/mechanisms', label: 'Mechanisms', end: false },
+    ],
+  },
+  {
+    label: 'Evidence',
+    items: [
+      { to: '/claims', label: 'Evidence library', end: false },
+      { to: '/gaps', label: 'Research gaps', end: false },
+    ],
+  },
 ] as const;
 
-export function AppShell() {
-  const { provenance } = researchDataset;
+function isWorkspaceRoute(pathname: string): boolean {
+  return pathname !== '/';
+}
 
+function NavGroups({
+  onNavigate,
+  idPrefix,
+}: {
+  onNavigate?: () => void;
+  idPrefix: string;
+}) {
   return (
-    <div className="min-h-screen text-ink">
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-paper-raised focus:px-3 focus:py-2"
-      >
-        Skip to content
-      </a>
-
-      <header className="border-b border-line bg-paper-raised/90 backdrop-blur-sm">
-        <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap items-end justify-between gap-3">
-            <div>
-              <p className="font-display text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
-                PolisLab
-              </p>
-              <p className="mt-1 max-w-2xl text-sm text-ink-muted">
-                Interactive evidence-based political-economy research laboratory
-              </p>
-            </div>
-            <div className="text-right text-xs text-ink-subtle">
-              <p>
-                Research {RESEARCH_RELEASE} · app development v0.2 · Build 07
-              </p>
-              <p>Evidence cutoff {RESEARCH_CUTOFF}</p>
-              <p>Correction pass {RESEARCH_CORRECTION_PASS}</p>
-            </div>
-          </div>
-
-          <nav aria-label="Primary" className="flex flex-wrap gap-1 border-t border-line pt-3">
-            {navItems.map((item) => (
+    <>
+      {NAV_GROUPS.map((group) => (
+        <div key={group.label}>
+          <p className="rail-group-label" id={`${idPrefix}-${group.label}`}>
+            {group.label}
+          </p>
+          <div role="group" aria-labelledby={`${idPrefix}-${group.label}`}>
+            {group.items.map((item) => (
               <NavLink
                 key={item.to}
                 to={item.to}
-                end={'end' in item ? item.end : false}
+                end={item.end}
                 className={({ isActive }) =>
-                  [
-                    'rounded px-2.5 py-1.5 text-sm no-underline transition-colors',
-                    isActive
-                      ? 'bg-accent-soft font-medium text-accent'
-                      : 'text-ink-muted hover:bg-neutral-soft hover:text-ink',
-                  ].join(' ')
+                  `rail-link${isActive ? ' is-active' : ''}`
                 }
+                onClick={onNavigate}
               >
                 {item.label}
-                {'deferred' in item && item.deferred ? (
-                  <span className="ml-1 text-[10px] uppercase tracking-wide text-ink-subtle">
-                    later
-                  </span>
-                ) : null}
               </NavLink>
             ))}
-          </nav>
+          </div>
+        </div>
+      ))}
+    </>
+  );
+}
+
+export function AppShell() {
+  const location = useLocation();
+  const withRail = isWorkspaceRoute(location.pathname);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const drawerTitleId = useId();
+  const { provenance } = researchDataset;
+
+  const drawerRef = useRef<HTMLDialogElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const mainRef = useRef<HTMLElement>(null);
+  const previousPath = useRef(location.pathname);
+
+  useEffect(() => {
+    if (previousPath.current === location.pathname) return;
+    previousPath.current = location.pathname;
+    drawerRef.current?.close();
+    const anchor = document.getElementById(location.hash.slice(1));
+    if (anchor) anchor.scrollIntoView();
+    else window.scrollTo(0, 0);
+    mainRef.current?.focus({ preventScroll: true });
+  }, [location.pathname, location.hash]);
+
+  useEffect(() => {
+    if (typeof window.matchMedia !== 'function') return undefined;
+    const desktop = window.matchMedia('(min-width: 960px)');
+    const closeOnDesktop = () => {
+      if (desktop.matches) drawerRef.current?.close();
+    };
+    desktop.addEventListener('change', closeOnDesktop);
+    return () => desktop.removeEventListener('change', closeOnDesktop);
+  }, []);
+
+  function openDrawer() {
+    drawerRef.current?.showModal();
+    setDrawerOpen(true);
+  }
+
+  function closeDrawer() {
+    drawerRef.current?.close();
+  }
+
+  return (
+    <div className="app">
+      <a className="skip-link sr-only" href="#main-content">
+        Skip to content
+      </a>
+
+      <header className="chrome">
+        <div className="chrome-inner">
+          <Link
+            to="/"
+            className="brand-lockup brand-lockup--compact"
+            aria-label="PolisLab home"
+          >
+            <BrandLockup compact />
+          </Link>
+          <div className="chrome-actions">
+            {!withRail ? (
+              <Link to="/casebook/Case1" className="btn btn--primary">
+                Enter laboratory
+              </Link>
+            ) : null}
+            <button
+              ref={menuButtonRef}
+              type="button"
+              className="menu-toggle"
+              aria-expanded={drawerOpen}
+              aria-controls="mobile-nav-drawer"
+              onClick={openDrawer}
+            >
+              Menu
+            </button>
+          </div>
         </div>
       </header>
 
-      <main id="main-content" className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <Outlet />
-      </main>
-
-      <footer className="border-t border-line">
-        <div className="mx-auto flex max-w-7xl flex-col gap-1 px-4 py-4 text-xs text-ink-subtle sm:px-6 lg:px-8">
-          <p>
-            Source: {provenance.sourceFile} · SHA-256{' '}
-            <span className="font-mono">{provenance.sourceContentSha256.slice(0, 12)}…</span>
-          </p>
-          <p>
-            Research text licensed CC BY 4.0. Software licensing for this application layer is
-            a separate decision and is not set by this build.
-          </p>
-          <p>
-            Not legal advice. Does not produce policy rankings, welfare forecasts, or simulated
-            economic effects.
-          </p>
+      <dialog
+        ref={drawerRef}
+        className="drawer"
+        id="mobile-nav-drawer"
+        aria-labelledby={drawerTitleId}
+        onClose={() => {
+          setDrawerOpen(false);
+          menuButtonRef.current?.focus();
+        }}
+        onClick={(event) => {
+          if (event.target === event.currentTarget) event.currentTarget.close();
+        }}
+      >
+        <div className="drawer-panel">
+          <div className="drawer-header">
+            <p id={drawerTitleId} className="page-kicker" style={{ margin: 0 }}>
+              Navigate
+            </p>
+            <button
+              type="button"
+              className="btn btn--secondary"
+              onClick={closeDrawer}
+            >
+              Close
+            </button>
+          </div>
+          <nav aria-label="Mobile primary">
+            <NavGroups idPrefix="m" onNavigate={closeDrawer} />
+          </nav>
+          <div className="rail-secondary" style={{ marginTop: '1.5rem' }}>
+            <p>
+              Research {RESEARCH_RELEASE} · cutoff {RESEARCH_CUTOFF}
+            </p>
+            <p>
+              <Link to="/casebook/source" onClick={closeDrawer}>
+                Methodology &amp; source
+              </Link>
+            </p>
+          </div>
         </div>
+      </dialog>
+
+      <div className={`workspace${withRail ? ' workspace--with-rail' : ''}`}>
+        {withRail ? (
+          <aside className="rail" aria-label="Workspace">
+            <nav aria-label="Primary">
+              <NavGroups idPrefix="d" />
+            </nav>
+            <div className="rail-secondary">
+              <p>
+                Research {RESEARCH_RELEASE}
+                <br />
+                Cutoff {RESEARCH_CUTOFF}
+                <br />
+                Correction {RESEARCH_CORRECTION_PASS}
+                <br />
+                App v0.2 · Build 08F
+              </p>
+              <p style={{ marginTop: '0.75rem' }}>
+                <Link to="/casebook/source">Methodology &amp; source</Link>
+              </p>
+            </div>
+          </aside>
+        ) : null}
+
+        <main
+          ref={mainRef}
+          tabIndex={-1}
+          id="main-content"
+          className={`main${withRail ? ' main--workspace' : ' main--editorial'}`}
+        >
+          <Outlet />
+        </main>
+      </div>
+
+      <footer className="footer-bar">
+        <p>
+          Source {provenance.sourceFile} · SHA-256{' '}
+          <span className="mono">{provenance.sourceContentSha256.slice(0, 12)}…</span>
+        </p>
+        <p>
+          Research text{' '}
+          <a
+            href="https://creativecommons.org/licenses/by/4.0/"
+            target="_blank"
+            rel="noreferrer"
+            className="underline underline-offset-2"
+          >
+            CC BY 4.0
+          </a>
+          ; application software Apache 2.0 (see repository{' '}
+          <span className="mono">LICENSE-SOFTWARE</span>).{' '}
+          <Link to="/casebook/source#licensing" className="underline underline-offset-2">
+            Methodology &amp; licensing
+          </Link>
+          .
+        </p>
+        <p>
+          Not legal advice. Does not produce policy rankings, welfare forecasts, or
+          simulated economic effects.
+        </p>
       </footer>
     </div>
   );

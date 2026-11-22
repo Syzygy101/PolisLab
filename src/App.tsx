@@ -1,13 +1,18 @@
 import { lazy, Suspense } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { AppShell } from '@/components/layout/AppShell';
 import { OverviewPage } from '@/pages/OverviewPage';
 import { ClaimsPage } from '@/pages/ClaimsPage';
-import { ClaimDetailPage } from '@/pages/ClaimDetailPage';
-import { ComparePage } from '@/pages/ComparePage';
+import { NotFoundPage } from '@/pages/NotFoundPage';
 import { PlaceholderPage } from '@/pages/PlaceholderPage';
 
-/** Casebook / mechanism routes load on demand. */
+/** Claim detail / compare and heavier modules load on demand. */
+const ClaimDetailPage = lazy(() =>
+  import('@/pages/ClaimDetailPage').then((m) => ({ default: m.ClaimDetailPage })),
+);
+const ComparePage = lazy(() =>
+  import('@/pages/ComparePage').then((m) => ({ default: m.ComparePage })),
+);
 const CasebookPage = lazy(() =>
   import('@/pages/CasebookPage').then((m) => ({ default: m.CasebookPage })),
 );
@@ -47,8 +52,22 @@ export default function App() {
       <Route element={<AppShell />}>
         <Route index element={<OverviewPage />} />
         <Route path="claims" element={<ClaimsPage />} />
-        <Route path="claims/compare" element={<ComparePage />} />
-        <Route path="claims/:claimId" element={<ClaimDetailPage />} />
+        <Route
+          path="claims/compare"
+          element={
+            <Suspense fallback={<RouteFallback label="claim comparison" />}>
+              <ComparePage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="claims/:claimId"
+          element={
+            <Suspense fallback={<RouteFallback label="claim" />}>
+              <ClaimDetailPage />
+            </Suspense>
+          }
+        />
         <Route
           path="casebook"
           element={
@@ -118,12 +137,12 @@ export default function App() {
           element={
             <PlaceholderPage
               title="Analytical Sandbox"
-              description="Separately gated analytical workspace. Deferred and gated — not available in Build 07."
+              description="Future gated analytical workspace. Not part of the v0.2 research modules and not available for investigation in this release candidate. Use Claims, Casebook, Mechanisms, Policy Comparison, or Evidence Gaps instead."
               gated
             />
           }
         />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
   );

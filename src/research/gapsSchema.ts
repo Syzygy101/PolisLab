@@ -17,7 +17,7 @@ import {
   type OutcomeStageId,
 } from './taxonomy';
 
-export const GAPS_REGISTRY_VERSION = '2026.11.22-b07' as const;
+export const GAPS_REGISTRY_VERSION = '2026.11.22-b08' as const;
 
 export const RESEARCH_REQUIREMENT_ID_PATTERN = /^REQ-C[1-4]-\d{2}$/;
 export const GAPS_CLAIM_ID_PATTERN = /^ATLAS-[A-Z]+-\d{3}$/;

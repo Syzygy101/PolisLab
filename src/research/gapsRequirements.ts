@@ -66,9 +66,9 @@ const CASE1: ResearchRequirement[] = [
       'Public inquiry materials did not determine case-by-case land banking; parcel-level intent remains unobservable on published sources (ATLAS-EMP-002).',
     competingExplanations: [
       'Strategic foreclosure / exclusionary holding (M1c)',
-      'Planning delay (M1a)',
-      'Efficient option value / capital rationing (M1b family caveats)',
-      'Physical scarcity or landlord preference without blocking motive',
+      'Planning delay (M1b)',
+      'Efficient option value / capital rationing (M5a)',
+      'Physical scarcity or landlord preference without blocking motive (M1a)',
     ],
     assessmentChangingNote:
       'Parcel-level ACCC/court findings establishing exclusionary intent in a material share of long-held sites — or systematic rejection of that characterisation.',
@@ -121,10 +121,10 @@ const CASE1: ResearchRequirement[] = [
     remainsUncertain:
       'No verified Australian reduced-form study isolating planning delay from strategic site holding was registered (ATLAS-GAP-001).',
     competingExplanations: [
-      'Planning delay (M1a)',
+      'Planning delay (M1b)',
       'Strategic holding / foreclosure (M1c)',
       'Exclusivity / covenant channel',
-      'Option value without exclusionary intent (M1b caveats)',
+      'Option value without exclusionary intent (M5a)',
     ],
     assessmentChangingNote:
       'AU quasi-experiment decomposing planning delay vs holding vs exclusivity (atlas observation: credible AU design decomposing M1a/M1b/M1c).',
@@ -197,7 +197,7 @@ const CASE2: ResearchRequirement[] = [
     sourceText:
       'Grocery-specific FIRB processing distributions by vacant land / lease / start-business / FGI.  ',
     referencedClaimIds: ['ATLAS-ADM-001', 'ATLAS-LEG-001', 'ATLAS-LEG-002'],
-    associatedMechanismIds: ['M5a'],
+    associatedMechanismIds: ['M6a'],
     associatedOutcomeIds: ['O1'],
     requirementType: 'descriptive_observation',
     observationRole: 'clarify_scope_or_measurement',
@@ -224,7 +224,7 @@ const CASE2: ResearchRequirement[] = [
     sourceText:
       'Documented call-in (or routine voluntary notification) of ordinary private grocery starts.  ',
     referencedClaimIds: ['ATLAS-LEG-001', 'ATLAS-CON-001'],
-    associatedMechanismIds: ['M5a'],
+    associatedMechanismIds: ['M6a'],
     associatedOutcomeIds: ['O1'],
     requirementType: 'descriptive_observation',
     observationRole: 'clarify_scope_or_measurement',
@@ -251,7 +251,7 @@ const CASE2: ResearchRequirement[] = [
     sourceText:
       'Case studies where FIRB conditions were the marginal cause of abandonment after sites/planning were secured.  ',
     referencedClaimIds: ['ATLAS-ADM-001', 'ATLAS-LIT-005'],
-    associatedMechanismIds: ['M5a'],
+    associatedMechanismIds: ['M6a'],
     associatedOutcomeIds: ['O1', 'O2'],
     requirementType: 'empirical_identification',
     observationRole: 'distinguish_mechanisms',
@@ -306,7 +306,7 @@ const CASE2: ResearchRequirement[] = [
     itemNumber: 5,
     sourceText:
       'Confirmation of Layer C streamlining commencement dates on the Federal Register.',
-    referencedClaimIds: ['ATLAS-LEG-004', 'ATLAS-LEG-005'],
+    referencedClaimIds: [],
     associatedMechanismIds: [],
     associatedOutcomeIds: [],
     requirementType: 'legal_institutional_verification',
@@ -320,7 +320,7 @@ const CASE2: ResearchRequirement[] = [
     assessmentChangingNote:
       'Confirmation of Layer C streamlining commencement dates on the Federal Register.',
     qualification:
-      'Legal / institutional verification of commencement is not empirical falsification of an entry hypothesis. Layer C announcements must not be restated as Layer A baselines.',
+      'Legal / institutional verification of commencement is not empirical falsification of an entry hypothesis. Layer C announcements must not be restated as Layer A baselines. No published atlas claim establishes Layer C commencement; FTA threshold and lease/option claims (LEG-004 / LEG-005) do not substitute for Register commencement confirmation.',
     falsificationUnspecified: true,
     comparisonVariantIds: null,
   }),
@@ -559,7 +559,7 @@ const CASE4: ResearchRequirement[] = [
     caseId: 'Case4',
     itemNumber: 5,
     sourceText: 'Remake or repeal decisions around the 2030 sunset.',
-    referencedClaimIds: ['ATLAS-LEG-008'],
+    referencedClaimIds: ['ATLAS-LEG-007'],
     associatedMechanismIds: [],
     associatedOutcomeIds: [],
     requirementType: 'legal_institutional_verification',
@@ -572,7 +572,7 @@ const CASE4: ResearchRequirement[] = [
     competingExplanations: [],
     assessmentChangingNote: 'Remake or repeal decisions around the 2030 sunset.',
     qualification:
-      'Future legislative remake/repeal is legal / institutional verification, not an empirical falsification of past notification effects. Do not invent completion dates or effectiveness findings.',
+      'Future legislative remake/repeal is legal / institutional verification, not an empirical falsification of past notification effects. Do not invent completion dates or effectiveness findings. ATLAS-LEG-007 records the Division sunset under s 3-4 on 30 Jun 2030 unless remade; ATLAS-LEG-008 concerns notification waivers, not the sunset.',
     falsificationUnspecified: true,
     comparisonVariantIds: null,
   }),

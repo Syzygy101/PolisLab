@@ -19,11 +19,11 @@ test.describe('Build 03R acceptance journeys', () => {
     const search = page.getByRole('searchbox', { name: 'Search' });
     await search.fill('ATLAS-EMP');
     // Immediate navigation before debounce settles.
-    await page.getByRole('link', { name: /Open claim ATLAS-EMP-001/i }).click();
+    await page.getByRole('link', { name: 'ATLAS-EMP-001', exact: true }).click();
     await expect(page).toHaveURL(/\/claims\/ATLAS-EMP-001$/);
 
     await page.getByRole('navigation', { name: 'Breadcrumb' }).getByRole('link', {
-      name: 'Claims Explorer',
+      name: 'Evidence library',
     }).click();
     await expect(page).toHaveURL(/case=Case1/);
     await expect(page).toHaveURL(/q=ATLAS-EMP/);

@@ -1,0 +1,89 @@
+PolisLab
+Copyright 2026 Seiji Lorefice
+
+================================================================================
+Application software
+================================================================================
+
+The PolisLab interactive application (source under `src/`, build scripts,
+configuration, tests, and related software artefacts) is licensed under the
+Apache License, Version 2.0.
+
+See LICENSE-SOFTWARE for the full licence text.
+
+================================================================================
+Original published research
+================================================================================
+
+Original PolisLab research text and structured claims in `research/10_*` and
+the repository root `LICENSE` are licensed under Creative Commons Attribution
+4.0 International (CC BY 4.0).
+
+See LICENSE. Do not modify published research artefacts without the owner's
+research-release process.
+
+================================================================================
+Research-derived generated datasets
+================================================================================
+
+Generated consumer artefacts under `src/data/` (for example
+`claims.generated.json` and `casebook.generated.json`) are produced from the
+published research sources. They encode research content and inherit the
+research attribution and redistribution constraints for that content. The
+application software that generates and serves them is Apache 2.0; the
+underlying research text remains CC BY 4.0.
+
+================================================================================
+Runtime dependencies (summary)
+================================================================================
+
+Runtime npm dependencies are predominantly MIT-licensed, including React, React
+DOM, React Router, Zod, PapaParse, and the unified / remark / mdast stack used
+for Markdown processing.
+
+For authoritative package-level licence strings and versions, see
+`package-lock.json` or run `npx license-checker` before redistribution.
+
+================================================================================
+Build and test tooling (summary)
+================================================================================
+
+Development dependencies include MIT, Apache-2.0, ISC, BSD, MPL-2.0, and
+BlueOak-1.0.0 licensed packages (for example Vite, Vitest, Playwright,
+TypeScript, Tailwind). They are not required to run the built static site in a
+browser but may matter for source redistribution. Confirm with
+`package-lock.json` / `license-checker`.
+
+================================================================================
+Fonts (SIL Open Font License 1.1)
+================================================================================
+
+The application loads these typefaces remotely via Google Fonts at runtime:
+
+  - Source Sans 3
+  - Source Serif 4
+  - IBM Plex Mono
+
+Each is licensed under the SIL Open Font License 1.1. Font files are not
+redistributed as binary assets in the production `dist/` output; browsers fetch
+them from Google Fonts when the app is used.
+
+================================================================================
+Brand mark
+================================================================================
+
+The PolisLab geometric brand mark used in the application is an original
+design asset. No proprietary third-party icon pack is bundled.
+
+================================================================================
+Third-party materials cited in research
+================================================================================
+
+External primary sources, legislation, and other materials referenced or linked
+from the research remain under their own copyright terms. This repository links
+to them where appropriate; it does not relicense them.
+
+================================================================================
+
+This NOTICE file is for attribution and informational purposes. It does not
+modify the terms of LICENSE, LICENSE-SOFTWARE, or third-party licences.

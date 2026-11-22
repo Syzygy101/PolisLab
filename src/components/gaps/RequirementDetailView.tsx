@@ -13,6 +13,17 @@ import { StatusBadge } from '@/components/claims/StatusBadge';
 import { AdmissibilityBadge } from '@/components/claims/AdmissibilityBadge';
 import { CasebookMarkdown } from '@/components/casebook/CasebookMarkdown';
 
+const SECTION_NAV = [
+  ['original-req', '1. Original requirement'],
+  ['proposition', '2. Proposition'],
+  ['establishes', '3. What is established'],
+  ['uncertain', '4. What is uncertain'],
+  ['competing', '5. Competing explanations'],
+  ['alter', '6. Assessment-changing observation'],
+  ['limits', '7. Limitations'],
+  ['sources', '8. Sources and context'],
+] as const;
+
 export function RequirementDetailView({
   requirement,
 }: {
@@ -21,96 +32,98 @@ export function RequirementDetailView({
   const sourceDisplay = displayRequirementText(requirement.sourceText);
 
   return (
-    <article className="space-y-6" data-testid={`requirement-detail-${requirement.id}`}>
-      <header className="space-y-3 border border-line bg-paper-raised p-5">
-        <p className="font-mono text-xs text-ink-subtle">{requirement.id}</p>
-        <h1 className="font-display text-2xl font-semibold text-ink">
+    <article className="profile-layout" data-testid={`requirement-detail-${requirement.id}`}>
+      <header className="profile-header">
+        <p className="page-kicker">
+          Research requirement · <span className="mono">{requirement.id}</span>
+        </p>
+        <h1 className="page-title" style={{ marginBottom: '0.5rem' }}>
           {requirement.curatedLabel}
         </h1>
-        <p className="text-sm text-ink-muted">
+        <p className="lede" style={{ marginBottom: '1rem' }}>
           {requirement.caseId} §9 item {requirement.itemNumber} ·{' '}
           {RESEARCH_REQUIREMENT_TYPE_LABELS[requirement.requirementType]}
         </p>
-        <div className="flex flex-wrap gap-2">
-          <Link
-            to={casebookSection9Href(requirement.caseId)}
-            className="border border-accent/40 bg-accent-soft px-3 py-1.5 text-sm text-accent no-underline"
-          >
+        <div className="action-row">
+          <Link to={casebookSection9Href(requirement.caseId)} className="btn btn--secondary">
             Open {requirement.caseId} §9 in casebook
           </Link>
-          <Link
-            to={gapsHref({ cases: [requirement.caseId] })}
-            className="border border-line px-3 py-1.5 text-sm text-ink no-underline hover:bg-neutral-soft"
-          >
+          <Link to={gapsHref({ cases: [requirement.caseId] })} className="btn btn--ghost">
             All {requirement.caseId} requirements
           </Link>
         </div>
       </header>
 
+      <nav aria-label="On this page">
+        <ul className="tag-list">
+          {SECTION_NAV.map(([id, label]) => (
+            <li key={id}>
+              <a className="tag-link" href={`#${id}-section`}>
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
       <section
-        className="space-y-3 border border-line bg-paper-raised p-5"
+        id="original-req-section"
+        className="req-section"
         aria-labelledby="original-req-heading"
       >
-        <h2 id="original-req-heading" className="text-sm font-semibold text-ink">
-          1. Original research requirement
-        </h2>
-        <p className="text-xs text-ink-subtle">
+        <h2 id="original-req-heading">1. Original research requirement</h2>
+        <p className="small-note">
           Exact published wording from {requirement.sourceFile} (v0.1.1). Distinct from the curated
           label above.
         </p>
-        <blockquote className="border-l-2 border-accent bg-accent-soft/40 px-4 py-3 text-sm text-ink">
+        <blockquote className="req-source-quote">
           <CasebookMarkdown markdown={sourceDisplay} />
         </blockquote>
       </section>
 
       <section
-        className="space-y-2 border border-line bg-paper-raised p-5"
+        id="proposition-section"
+        className="req-section"
         aria-labelledby="proposition-heading"
       >
-        <h2 id="proposition-heading" className="text-sm font-semibold text-ink">
-          2. Relevant proposition or policy question
-        </h2>
-        <p className="text-xs uppercase tracking-wide text-ink-subtle">Curated summary</p>
-        <p className="text-sm text-ink">{requirement.relevantProposition}</p>
+        <h2 id="proposition-heading">2. Relevant proposition or policy question</h2>
+        <p className="eyebrow">Curated summary</p>
+        <p className="prose-block">{requirement.relevantProposition}</p>
       </section>
 
       <section
-        className="space-y-3 border border-line bg-paper-raised p-5"
+        id="establishes-section"
+        className="req-section"
         aria-labelledby="establishes-heading"
       >
-        <h2 id="establishes-heading" className="text-sm font-semibold text-ink">
-          3. What the available research establishes
-        </h2>
+        <h2 id="establishes-heading">3. What the available research establishes</h2>
         {requirement.referencedClaimIds.length === 0 ? (
-          <p className="text-sm text-ink-muted">
+          <p className="small-note">
             No atlas claims are directly referenced for this requirement.
           </p>
         ) : (
-          <ul className="space-y-3">
+          <ul className="stack" style={{ listStyle: 'none', margin: 0, padding: 0 }}>
             {requirement.referencedClaimIds.map((claimId) => {
               const claim = findClaimById(claimId);
               if (!claim) {
                 return (
-                  <li key={claimId} className="text-sm text-caution">
+                  <li key={claimId} className="notice notice--caution">
                     Missing claim {claimId}
                   </li>
                 );
               }
               return (
-                <li key={claimId} className="border border-line bg-paper px-3 py-2">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <Link
-                      to={`/claims/${claimId}`}
-                      className="font-mono text-xs text-accent no-underline hover:underline"
-                    >
+                <li key={claimId} className="req-claim">
+                  <div className="req-claim-head">
+                    <Link to={`/claims/${claimId}`} className="id-link">
                       {claimId}
                     </Link>
                     <StatusBadge status={claim.status} />
                     <AdmissibilityBadge value={claim.admissible_in_policy_comparison} />
                   </div>
-                  <p className="mt-1 text-sm text-ink">{claim.exact_claim}</p>
-                  <p className="mt-2 text-xs text-ink-muted">
-                    <span className="font-medium text-ink">Source establishes: </span>
+                  <p>{claim.exact_claim}</p>
+                  <p className="small-note" style={{ marginTop: '0.5rem' }}>
+                    <strong style={{ color: 'var(--color-ink)' }}>Source establishes: </strong>
                     {claim.what_source_establishes}
                   </p>
                 </li>
@@ -120,30 +133,20 @@ export function RequirementDetailView({
         )}
       </section>
 
-      <section
-        className="space-y-2 border border-line bg-paper-raised p-5"
-        aria-labelledby="uncertain-heading"
-      >
-        <h2 id="uncertain-heading" className="text-sm font-semibold text-ink">
-          4. What remains uncertain
-        </h2>
-        <p className="text-xs uppercase tracking-wide text-ink-subtle">Curated summary</p>
-        <p className="text-sm text-ink">{requirement.remainsUncertain}</p>
+      <section id="uncertain-section" className="req-section" aria-labelledby="uncertain-heading">
+        <h2 id="uncertain-heading">4. What remains uncertain</h2>
+        <p className="eyebrow">Curated summary</p>
+        <p className="prose-block">{requirement.remainsUncertain}</p>
       </section>
 
-      <section
-        className="space-y-2 border border-line bg-paper-raised p-5"
-        aria-labelledby="competing-heading"
-      >
-        <h2 id="competing-heading" className="text-sm font-semibold text-ink">
-          5. Competing explanations
-        </h2>
+      <section id="competing-section" className="req-section" aria-labelledby="competing-heading">
+        <h2 id="competing-heading">5. Competing explanations</h2>
         {requirement.competingExplanations.length === 0 ? (
-          <p className="text-sm text-ink-muted">
+          <p className="small-note">
             This requirement does not engage a competing-mechanism frame in the published §9 item.
           </p>
         ) : (
-          <ul className="list-disc space-y-1 pl-5 text-sm text-ink">
+          <ul className="bullets" style={{ color: 'var(--color-ink)' }}>
             {requirement.competingExplanations.map((item) => (
               <li key={item}>{item}</li>
             ))}
@@ -153,8 +156,8 @@ export function RequirementDetailView({
           const claim = findClaimById(claimId);
           if (!claim?.competing_mechanism_or_contrary_evidence.trim()) return null;
           return (
-            <p key={`${claimId}-comp`} className="text-xs text-ink-muted">
-              <Link to={`/claims/${claimId}`} className="font-mono text-accent">
+            <p key={`${claimId}-comp`} className="req-atlas-note">
+              <Link to={`/claims/${claimId}`} className="id-link">
                 {claimId}
               </Link>
               : {claim.competing_mechanism_or_contrary_evidence}
@@ -163,20 +166,15 @@ export function RequirementDetailView({
         })}
       </section>
 
-      <section
-        className="space-y-2 border border-line bg-paper-raised p-5"
-        aria-labelledby="alter-heading"
-      >
-        <h2 id="alter-heading" className="text-sm font-semibold text-ink">
-          6. Observation that could alter the assessment
-        </h2>
-        <p className="text-sm text-ink">{requirement.assessmentChangingNote}</p>
-        <p className="text-xs text-ink-muted">
-          Role: {OBSERVATION_ROLE_LABELS[requirement.observationRole]}
+      <section id="alter-section" className="req-section" aria-labelledby="alter-heading">
+        <h2 id="alter-heading">6. Observation that could alter the assessment</h2>
+        <p className="prose-block">{requirement.assessmentChangingNote}</p>
+        <p className="small-note">
+          Role: <strong>{OBSERVATION_ROLE_LABELS[requirement.observationRole]}</strong>
         </p>
         {requirement.falsificationUnspecified ||
         requirement.observationRole === 'unspecified_by_source' ? (
-          <p className="border border-line-strong bg-neutral-soft px-3 py-2 text-sm text-ink">
+          <p className="notice" style={{ maxWidth: 'var(--c-prose)' }}>
             The published research does not specify a sufficient empirical falsification test.
           </p>
         ) : null}
@@ -184,37 +182,34 @@ export function RequirementDetailView({
           const claim = findClaimById(claimId);
           if (!claim?.observation_that_would_alter_assessment.trim()) return null;
           return (
-            <p key={`${claimId}-obs`} className="text-xs text-ink-muted">
-              <span className="font-mono">{claimId}</span> atlas field:{' '}
+            <p key={`${claimId}-obs`} className="req-atlas-note">
+              <span className="mono">{claimId}</span> atlas field:{' '}
               {claim.observation_that_would_alter_assessment}
             </p>
           );
         })}
       </section>
 
-      <section
-        className="space-y-2 border border-line bg-paper-raised p-5"
-        aria-labelledby="limits-heading"
-      >
-        <h2 id="limits-heading" className="text-sm font-semibold text-ink">
-          7. Relevant outcome and inference limitations
-        </h2>
-        <p className="text-sm text-ink">{requirement.qualification}</p>
+      <section id="limits-section" className="req-section" aria-labelledby="limits-heading">
+        <h2 id="limits-heading">7. Relevant outcome and inference limitations</h2>
+        <p className="prose-block">{requirement.qualification}</p>
         {requirement.associatedOutcomeIds.length > 0 ? (
-          <p className="text-xs text-ink-muted">
-            Associated outcomes (where explicitly supported):{' '}
-            {requirement.associatedOutcomeIds.map((o) => (
-              <Link
-                key={o}
-                to={gapsHref({ outcomes: [o] })}
-                className="mr-2 font-mono text-accent no-underline hover:underline"
-              >
-                {o}
-              </Link>
-            ))}
-          </p>
+          <div>
+            <p className="small-note" style={{ marginBottom: '0.35rem' }}>
+              Associated outcomes (where explicitly supported):
+            </p>
+            <ul className="tag-list">
+              {requirement.associatedOutcomeIds.map((o) => (
+                <li key={o}>
+                  <Link to={gapsHref({ outcomes: [o] })} className="tag-link">
+                    <span className="mono">{o}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         ) : (
-          <p className="text-xs text-ink-subtle">
+          <p className="small-note small-note--subtle">
             No outcome IDs are explicitly associated with this requirement.
           </p>
         )}
@@ -222,8 +217,8 @@ export function RequirementDetailView({
           const claim = findClaimById(claimId);
           if (!claim?.limitations_external_validity.trim()) return null;
           return (
-            <p key={`${claimId}-lim`} className="text-xs text-ink-muted">
-              <span className="font-mono">{claimId}</span> limitations:{' '}
+            <p key={`${claimId}-lim`} className="req-atlas-note">
+              <span className="mono">{claimId}</span> limitations:{' '}
               {claim.limitations_external_validity}
             </p>
           );
@@ -232,67 +227,65 @@ export function RequirementDetailView({
           const claim = findClaimById(claimId);
           if (!claim?.admissibility_conditions.trim()) return null;
           return (
-            <p key={`${claimId}-adm`} className="text-xs text-ink-muted">
-              <span className="font-mono">{claimId}</span> admissibility conditions:{' '}
+            <p key={`${claimId}-adm`} className="req-atlas-note">
+              <span className="mono">{claimId}</span> admissibility conditions:{' '}
               {claim.admissibility_conditions}
             </p>
           );
         })}
       </section>
 
-      <section
-        className="space-y-3 border border-line bg-paper-raised p-5"
-        aria-labelledby="sources-heading"
-      >
-        <h2 id="sources-heading" className="text-sm font-semibold text-ink">
-          8. Source citations and casebook context
-        </h2>
-        <ul className="space-y-1 text-sm text-ink-muted">
+      <section id="sources-section" className="req-section" aria-labelledby="sources-heading">
+        <h2 id="sources-heading">8. Source citations and casebook context</h2>
+        <ul className="link-rows">
           <li>
-            Casebook:{' '}
-            <Link
-              to={casebookSection9Href(requirement.caseId)}
-              className="text-accent no-underline hover:underline"
-            >
-              {requirement.caseId} §9
-            </Link>
+            <span>
+              Casebook:{' '}
+              <Link to={casebookSection9Href(requirement.caseId)}>{requirement.caseId} §9</Link>
+            </span>
           </li>
           <li>
-            Release {requirement.researchRelease} · SHA{' '}
-            <span className="font-mono text-xs">
-              {requirement.sourceContentSha256.slice(0, 12)}…
+            <span>
+              Release {requirement.researchRelease} · SHA{' '}
+              <span className="mono">{requirement.sourceContentSha256.slice(0, 12)}…</span>
             </span>
           </li>
         </ul>
         {requirement.associatedMechanismIds.length > 0 ? (
-          <div className="flex flex-wrap gap-2">
-            {requirement.associatedMechanismIds.map((m) => (
-              <Link
-                key={m}
-                to={mechanismProfileHref(m)}
-                className="border border-line px-2 py-1 font-mono text-xs text-accent no-underline hover:bg-neutral-soft"
-              >
-                {m}
-              </Link>
-            ))}
+          <div>
+            <p className="eyebrow" style={{ marginBottom: '0.35rem' }}>
+              Associated mechanisms
+            </p>
+            <ul className="tag-list">
+              {requirement.associatedMechanismIds.map((m) => (
+                <li key={m}>
+                  <Link to={mechanismProfileHref(m)} className="tag-link">
+                    <span className="mono">{m}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         ) : null}
         {requirement.comparisonVariantIds && requirement.comparisonVariantIds.length > 0 ? (
-          <p className="text-xs text-ink-muted">
-            Variant-specific links (published support only):{' '}
-            {requirement.comparisonVariantIds.map((v) => (
-              <Link
-                key={v}
-                to={`/comparison?a=${encodeURIComponent(v)}`}
-                className="mr-2 font-mono text-accent no-underline hover:underline"
-              >
-                {v}
-              </Link>
-            ))}
-          </p>
+          <div>
+            <p className="small-note" style={{ marginBottom: '0.35rem' }}>
+              Variant-specific links (published support only):
+            </p>
+            <ul className="tag-list">
+              {requirement.comparisonVariantIds.map((v) => (
+                <li key={v}>
+                  <Link to={`/comparison?a=${encodeURIComponent(v)}`} className="tag-link">
+                    <span className="mono">{v}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         ) : (
-          <p className="text-xs text-ink-subtle">
-            Case-wide requirement — not assigned to a single comparison variant unless listed above.
+          <p className="small-note small-note--subtle">
+            Case-wide requirement — not assigned to a single comparison variant unless listed
+            above.
           </p>
         )}
       </section>

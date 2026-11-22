@@ -13,12 +13,16 @@ import { toString } from 'mdast-util-to-string';
 import type { Root } from 'mdast';
 import { visit } from 'unist-util-visit';
 
-/** Exact claim ID — three digits, not followed by another digit. */
-export const CLAIM_ID_RE = /ATLAS-[A-Z]+-\d{3}(?!\d)/g;
+/**
+ * Exact claim ID as a whole token.
+ * Rejects embedding inside longer alphanumerics (XATLAS-LEG-001, ATLAS-LEG-001ABC,
+ * ATLAS-LEG-0010) while still matching IDs adjacent to ordinary punctuation.
+ */
+export const CLAIM_ID_RE = /(?<![A-Za-z0-9])ATLAS-[A-Z]+-\d{3}(?![A-Za-z0-9])/g;
 
 /** Compact inclusive ranges: ATLAS-LEG-001–005 or ATLAS-LEG-001–ATLAS-LEG-005. */
 export const CLAIM_RANGE_RE =
-  /ATLAS-([A-Z]+)-(\d{3})\s*[–-]\s*(?:ATLAS-\1-)?(\d{3})(?!\d)/g;
+  /(?<![A-Za-z0-9])ATLAS-([A-Z]+)-(\d{3})\s*[–-]\s*(?:ATLAS-\1-)?(\d{3})(?![A-Za-z0-9])/g;
 
 export type ClaimTextPart =
   | { type: 'text'; value: string }

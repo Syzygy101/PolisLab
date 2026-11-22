@@ -168,7 +168,9 @@ test.describe('Casebook Explorer Build 04 journeys', () => {
     });
     await page.goto('/casebook/Case1');
     await expect(page.getByTestId('case-page-Case1')).toBeVisible();
-    await expect(page.getByTestId('case-section-nav')).toBeVisible();
+    // Below 960px the sticky rail is replaced by a compact "Jump to section" control.
+    await expect(page.getByTestId('case-section-jump')).toBeVisible();
+    await expect(page.getByTestId('case-section-nav')).toBeHidden();
     await page.screenshot({
       path: path.join(screenshotDir, 'mobile-case1.png'),
       fullPage: false,
@@ -180,12 +182,27 @@ test.describe('Casebook Explorer Build 04 journeys', () => {
       fullPage: false,
     });
 
-    // Keyboard-accessible section nav
+    // Keyboard-accessible compact section jump at 390px (all 10 sections + evidence index)
     await page.goto('/casebook/Case1');
     await expect(page.getByTestId('case-page-Case1')).toBeVisible();
-    await page.getByRole('navigation', { name: 'Case sections' }).getByRole('link').first().focus();
+    const jump = page.getByTestId('case-section-jump');
+    await jump.locator('summary').focus();
     await page.keyboard.press('Enter');
-    await expect(page).toHaveURL(/section-1/);
+    await expect(jump.getByRole('link')).toHaveCount(11);
+    await jump.getByRole('link', { name: /^9\./ }).focus();
+    await page.keyboard.press('Enter');
+    await expect(page).toHaveURL(/section-9/);
+    await expect(jump).not.toHaveAttribute('open', '');
+    await expect(page.getByTestId('case-section-9')).toBeInViewport();
+
+    // Desktop: sticky rail is present for every case and reaches section 10.
+    await page.setViewportSize({ width: 1280, height: 800 });
+    for (const caseId of ['Case1', 'Case2', 'Case3', 'Case4']) {
+      await page.goto(`/casebook/${caseId}`);
+      const rail = page.getByRole('navigation', { name: 'Case sections' });
+      await expect(rail).toBeVisible();
+      await expect(rail.getByRole('link')).toHaveCount(11);
+    }
 
     expect(consoleErrors, consoleErrors.join('\n')).toEqual([]);
   });

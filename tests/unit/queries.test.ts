@@ -27,7 +27,24 @@ describe('claim filtering', () => {
     });
     expect(upper.some((c) => c.claim_id === 'ATLAS-EMP-002')).toBe(true);
     expect(mixed.length).toBeGreaterThan(0);
-    expect(mixed.every((c) => /land banking/i.test(JSON.stringify(c)))).toBe(true);
+    // Literal (substring) matches: all still returned, case-folded.
+    const literal = mixed.filter((c) => /land banking/i.test(JSON.stringify(c)));
+    expect(literal.map((c) => c.claim_id).sort()).toEqual(
+      ['ATLAS-ADM-002', 'ATLAS-EMP-001', 'ATLAS-EMP-002'].sort(),
+    );
+    // Build 08P whole-word fallback adds same-field word matches (CSV-derived):
+    // the words "land" and "banking" occur non-adjacently in one field.
+    expect(
+      mixed
+        .filter((c) => !/land banking/i.test(JSON.stringify(c)))
+        .map((c) => c.claim_id)
+        .sort(),
+    ).toEqual(['ATLAS-HYP-001', 'ATLAS-LEG-003']);
+    expect(
+      filterClaims(allClaims, { ...EMPTY_FILTERS, search: 'land banking' }).map(
+        (c) => c.claim_id,
+      ),
+    ).toEqual(mixed.map((c) => c.claim_id));
   });
 
   it('whitespace-only search is treated as inactive and returns the full set', () => {
@@ -37,6 +54,113 @@ describe('claim filtering', () => {
     });
     expect(results).toHaveLength(allClaims.length);
     expect(filtersAreActive({ ...EMPTY_FILTERS, search: '   \t  ' })).toBe(false);
+  });
+
+  describe('deterministic search: substring + same-field whole-word fallback', () => {
+    const ids = (search: string) =>
+      filterClaims(allClaims, { ...EMPTY_FILTERS, search }).map((c) => c.claim_id);
+
+    it('multiword query "undeveloped sites" retrieves EMP-001 and EMP-002 (CSV-derived)', () => {
+      // CSV: EMP-001 exact_claim "undeveloped/unused sites ..." (words not adjacent);
+      // EMP-002 exact_claim "... whether undeveloped sites constituted ...".
+      const emp1 = allClaims.find((c) => c.claim_id === 'ATLAS-EMP-001')!;
+      const emp2 = allClaims.find((c) => c.claim_id === 'ATLAS-EMP-002')!;
+      expect(emp1.exact_claim.toLowerCase()).toContain('undeveloped/unused sites');
+      expect(emp2.exact_claim.toLowerCase()).toContain('undeveloped sites');
+
+      expect(ids('undeveloped sites').sort()).toEqual(['ATLAS-EMP-001', 'ATLAS-EMP-002']);
+    });
+
+    it('whole-word fallback is order-independent and case-insensitive', () => {
+      expect(ids('sites undeveloped').sort()).toEqual(['ATLAS-EMP-001', 'ATLAS-EMP-002']);
+      expect(ids('UNDEVELOPED   Sites').sort()).toEqual(['ATLAS-EMP-001', 'ATLAS-EMP-002']);
+    });
+
+    it('duplicated query words still match when the field has the word once', () => {
+      expect(ids('undeveloped undeveloped sites').sort()).toEqual([
+        'ATLAS-EMP-001',
+        'ATLAS-EMP-002',
+      ]);
+    });
+
+    it('punctuated query "undeveloped/unused sites" is literal-only and retrieves EMP-001', () => {
+      // The slash disables whole-word mode; EMP-001 matches by literal substring only.
+      expect(ids('undeveloped/unused sites')).toEqual(['ATLAS-EMP-001']);
+      // Punctuation between words blocks the fallback (EMP-002 has both words
+      // but not the literal phrase).
+      expect(ids('undeveloped, sites')).toEqual([]);
+      expect(ids('sites, undeveloped')).toEqual([]);
+    });
+
+    it('misspellings are not corrected and do not match EMP-001/EMP-002', () => {
+      const result = ids('undevelopped sites');
+      expect(result).toEqual([]);
+      expect(result).not.toContain('ATLAS-EMP-001');
+      expect(result).not.toContain('ATLAS-EMP-002');
+    });
+
+    it('does not satisfy a query with words scattered across different fields', () => {
+      // CSV: "emp" appears as a whole word only in EMP-001's claim_id
+      // (ATLAS-EMP-001); "undeveloped" appears in its exact_claim. No single
+      // field contains both, so there must be no match.
+      const emp1 = allClaims.find((c) => c.claim_id === 'ATLAS-EMP-001')!;
+      expect(emp1.claim_id.toLowerCase()).toContain('emp');
+      expect(emp1.exact_claim.toLowerCase()).toContain('undeveloped');
+      expect(emp1.exact_claim.toLowerCase().match(/[\p{L}\p{N}]+/gu)).not.toContain('emp');
+
+      expect(ids('emp undeveloped')).toEqual([]);
+      expect(ids('undeveloped emp')).toEqual([]);
+      expect(ids('atlas emp undeveloped')).toEqual([]);
+    });
+
+    it('same-field whole-word matching works within claim_id tokens', () => {
+      // Both words occur in the single claim_id field "ATLAS-EMP-001".
+      expect(ids('atlas emp 001')).toEqual(['ATLAS-EMP-001']);
+    });
+
+    it('exact ATLAS identifiers remain searchable via substring on claim_id', () => {
+      expect(ids('ATLAS-EMP-001')).toEqual(['ATLAS-EMP-001']);
+      expect(ids('atlas-emp-002')).toEqual(['ATLAS-EMP-002']);
+      expect(ids('ATLAS-EMP-003')).toEqual(['ATLAS-EMP-003']);
+      // HYP-002 is also cross-referenced from other records' text (CSV): POL-001/002.
+      expect(ids('ATLAS-HYP-002')).toEqual(['ATLAS-HYP-002', 'ATLAS-POL-001', 'ATLAS-POL-002']);
+    });
+
+    it('existing literal substring matches remain valid', () => {
+      const literal = ids('land banking');
+      // Every previous literal match is still returned.
+      const literalBefore = allClaims
+        .filter((c) =>
+          [c.claim_id, c.exact_claim, c.primary_source_title, c.what_source_establishes,
+            c.limitations_external_validity, c.competing_mechanism_or_contrary_evidence,
+            c.admissibility_conditions, c.literature_src_ids,
+            c.observation_that_would_alter_assessment, c.pinpoint,
+            c.institutional_geographic_scope, c.mechanism_ids, c.outcome_ids,
+            c.casebook_cases, c.primary_source_url].some((v) =>
+            v.toLowerCase().includes('land banking'),
+          ),
+        )
+        .map((c) => c.claim_id);
+      expect(literalBefore.length).toBeGreaterThan(0);
+      for (const id of literalBefore) {
+        expect(literal).toContain(id);
+      }
+      expect(ids('labelled qualitative caution')).toEqual(['ATLAS-HYP-002']);
+      expect(ids('src-accc-inq').length).toBe(6);
+    });
+
+    it('whitespace-only search stays inactive and single words stay substring-only', () => {
+      expect(ids('   ')).toHaveLength(allClaims.length);
+      expect(ids('\n\t ')).toHaveLength(allClaims.length);
+      // Single word: substring semantic (partial word still matches).
+      expect(ids('undevelop')).toContain('ATLAS-EMP-001');
+      expect(ids('undevelop')).toContain('ATLAS-EMP-002');
+    });
+
+    it('partial words do not satisfy whole-word fallback for multiword queries', () => {
+      // "undevelop sites" is not a literal substring; "undevelop" is not a whole word.
+      expect(ids('undevelop sites')).toEqual([]);
+    });
   });
 
   it('status filter returns only matching records', () => {

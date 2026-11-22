@@ -24,14 +24,16 @@ function renderGaps(initialPath = '/gaps') {
 }
 
 describe('gaps pages', () => {
-  it('renders overview without deferred badge on Evidence Gaps nav', () => {
+  it('renders overview without deferred badge on Research gaps nav', () => {
     renderGaps();
     expect(screen.getByTestId('gaps-page')).toBeInTheDocument();
     const nav = screen.getByRole('navigation', { name: 'Primary' });
-    const gapsLink = within(nav).getByRole('link', { name: /Evidence Gaps/i });
+    const gapsLink = within(nav).getByRole('link', { name: /Research gaps/i });
     expect(gapsLink).toHaveAttribute('href', '/gaps');
     expect(within(gapsLink).queryByText(/later/i)).toBeNull();
-    expect(within(nav).getByText(/later/i)).toBeInTheDocument();
+    // Analytical Sandbox removed from primary nav in Build 08 (deferred; /sandbox URL only).
+    expect(within(nav).queryByText(/later/i)).toBeNull();
+    expect(within(nav).queryByRole('link', { name: /Sandbox/i })).toBeNull();
   });
 
   it('filters by case via URL and shows match count', async () => {
@@ -81,5 +83,31 @@ describe('gaps pages', () => {
         /^The published research does not specify a sufficient empirical falsification test\.$/,
       ),
     ).toBeInTheDocument();
+  });
+
+  it('titles the module "Research gaps" and lists all 19 published requirements', () => {
+    renderGaps();
+    expect(screen.getByRole('heading', { level: 1, name: 'Research gaps' })).toBeInTheDocument();
+    expect(screen.getByTestId('gaps-match-count')).toHaveTextContent('Showing 19 of 19');
+    expect(screen.getAllByTestId(/^gaps-req-REQ-/)).toHaveLength(19);
+    expect(document.title).toBe('Research gaps · PolisLab');
+  });
+
+  it('retains entry points, agenda grouping, and assessment-changing themes', () => {
+    renderGaps();
+    expect(screen.getByTestId('gaps-entry-points')).toHaveTextContent(/Absence of finding/);
+    expect(screen.getByTestId('gaps-entry-points')).toHaveTextContent(
+      /claim-level limitations and assessment-changing observations/i,
+    );
+    expect(screen.getByTestId('gaps-entry-points')).toHaveTextContent(/research agenda/i);
+    expect(screen.getByTestId('gaps-assessment-themes')).toBeInTheDocument();
+    expect(screen.getByLabelText('Research agenda programme')).toBeInTheDocument();
+  });
+
+  it('preserves the return link from a requirement to the filtered list', () => {
+    renderGaps('/gaps/REQ-C3-04?from=case%3DCase3');
+    const back = screen.getByTestId('return-to-gaps');
+    expect(back).toHaveTextContent('Research gaps');
+    expect(back.getAttribute('href')).toContain('case=Case3');
   });
 });

@@ -12,6 +12,7 @@ import {
 } from '../../src/research/referenceExpectations';
 import { RESEARCH_INSIGHTS, RESEARCH_BOUNDARIES } from '../../src/research/overviewContent';
 import { RESEARCH_CASES } from '../../src/research/taxonomy';
+import { GAPS_REGISTRY } from '../../src/research/gapsRequirements';
 
 afterEach(() => {
   cleanup();
@@ -30,17 +31,51 @@ function renderOverview(initial = '/') {
 }
 
 describe('Overview page', () => {
-  it('renders orientation, coverage, and dynamic case counts', () => {
+  it('renders the editorial entrance: identity, primary action, coverage strip', () => {
     renderOverview();
+    expect(screen.getByTestId('overview-page')).toBeInTheDocument();
     expect(
       screen.getByRole('heading', {
-        name: /Institutions, market entry and grocery competition/i,
+        level: 1,
+        name: /How institutions shape markets\. How policy might change them\./i,
       }),
     ).toBeInTheDocument();
+    expect(screen.getByText(/Independent economic research laboratory/i)).toBeInTheDocument();
+    expect(document.body.textContent).toMatch(/PolisLab publishes source-grounded evidence/i);
+
+    const primary = screen.getByTestId('overview-enter');
+    expect(primary).toHaveTextContent(/Begin investigating — Case 1/);
+    expect(primary).toHaveAttribute('href', '/casebook/Case1');
+    expect(screen.getByRole('link', { name: /Open evidence library/i })).toHaveAttribute(
+      'href',
+      '/claims',
+    );
+
+    const strip = screen.getByTestId('coverage-strip');
+    expect(strip).toHaveTextContent('43');
+    expect(strip).toHaveTextContent(/published claims/i);
+    expect(strip).toHaveTextContent(String(RESEARCH_CASES.length));
+    expect(strip).toHaveTextContent(String(GAPS_REGISTRY.requirements.length));
+    expect(strip).toHaveTextContent(/research-requirement entries/i);
+    expect(screen.getByText(/not success metrics/i)).toBeInTheDocument();
+
+    expect(
+      screen.getByRole('heading', {
+        name: /Australian grocery competition research programme/i,
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getByTestId('programme-visual')).toHaveTextContent(
+      `${allClaims.length} claims`,
+    );
+  });
+
+  it('renders detailed coverage and dynamic case counts', () => {
+    renderOverview();
     expect(screen.getByTestId('coverage-metrics')).toHaveTextContent('43');
     expect(screen.getByTestId('coverage-metrics')).toHaveTextContent('Published claims');
     expect(screen.getByText(/not policy performance/i)).toBeInTheDocument();
 
+    expect(screen.getAllByTestId(/^case-card-/)).toHaveLength(4);
     for (const researchCase of RESEARCH_CASES) {
       const card = screen.getByTestId(`case-card-${researchCase.id}`);
       expect(within(card).getByText(researchCase.title)).toBeInTheDocument();
@@ -61,7 +96,7 @@ describe('Overview page', () => {
     expect(within(chart).getByText(String(V011_EXPECTED_STATUS_COUNTS.empirical_finding))).toBeInTheDocument();
     expect(
       screen.getByRole('link', {
-        name: /Filter Claims Explorer by status Verified legal fact/i,
+        name: /Filter Evidence library by status Verified legal fact/i,
       }),
     ).toHaveAttribute('href', '/claims?status=verified_legal_fact');
   });
@@ -70,7 +105,7 @@ describe('Overview page', () => {
     const user = userEvent.setup();
     renderOverview();
     await user.click(screen.getByTestId('case-claims-link-Case1'));
-    expect(screen.getByRole('heading', { name: /Claims Explorer/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Evidence library/i })).toBeInTheDocument();
     expect(screen.getByTestId('match-count')).toHaveTextContent(
       `${V011_EXPECTED_CASE_MEMBERSHIP.Case1} of ${allClaims.length} claims match filters`,
     );
@@ -92,15 +127,15 @@ describe('Overview page', () => {
   it('outcome selection changes explanatory content and links to filtered claims', async () => {
     const user = userEvent.setup();
     renderOverview();
-    await user.click(screen.getByRole('button', { name: /O6: Consumer welfare/i }));
+    await user.click(screen.getByRole('button', { name: /O6 Consumer welfare/i }));
     const panel = screen.getByTestId('outcome-stage-panel');
     expect(panel).toHaveTextContent(/Consumer welfare/i);
     expect(panel).toHaveTextContent(/no calibrated Australian diversion/i);
     expect(
-      screen.getByRole('button', { name: /O6: Consumer welfare/i, pressed: true }),
+      screen.getByRole('button', { name: /O6 Consumer welfare/i, pressed: true }),
     ).toBeInTheDocument();
     await user.click(screen.getByTestId('outcome-claims-link-O6'));
-    expect(screen.getByRole('heading', { name: /Claims Explorer/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Evidence library/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'O6', pressed: true })).toBeInTheDocument();
   });
 
@@ -121,6 +156,31 @@ describe('Overview page', () => {
       'href',
       '#policy-investigations',
     );
+  });
+
+  it('offers access to the full workspace and states scope limits', () => {
+    renderOverview();
+    const how = document.getElementById('how-to-investigate')!;
+    for (const [name, href] of [
+      [/Investigations \(Casebook\)/, '/casebook'],
+      [/^Evidence library$/, '/claims'],
+      [/Policy Comparison Laboratory/, '/comparison'],
+      [/Mechanism Explorer/, '/mechanisms'],
+      [/Evidence Gaps/, '/gaps'],
+    ] as const) {
+      expect(within(how).getByRole('link', { name })).toHaveAttribute('href', href);
+    }
+    expect(screen.getByRole('link', { name: /Methodology & full source/i })).toHaveAttribute(
+      'href',
+      '/casebook/source',
+    );
+    expect(
+      screen.queryByRole('link', { name: /Claims Explorer/i }),
+    ).not.toBeInTheDocument();
+    const body = document.body.textContent ?? '';
+    expect(body).toMatch(/calibrated simulator, legal advice, policy-ranking tool or original causal/i);
+    expect(body).toMatch(/Analytical Sandbox is a future gated capability/i);
+    expect(body).toMatch(/probabilities, welfare forecasts, or policy rankings/i);
   });
 
   it('preserves research integrity language on the Overview', () => {

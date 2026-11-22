@@ -5,17 +5,25 @@ import { listVariants } from '@/research/comparisonQueries';
 import { comparisonHref } from '@/research/comparisonUrl';
 import { SourceRefList } from './SourceRefList';
 
-export function OrientationTable() {
+/**
+ * Secondary orientation section. Rendered as a `<details>` so that direct
+ * selected-comparison URLs reach the selectors and compared sections first.
+ */
+export function OrientationTable({ defaultOpen = false }: { defaultOpen?: boolean }) {
   const orientations = CASE_IDS.map(
     (caseId) => COMPARISON_DATASET.orientations.find((o) => o.caseId === caseId)!,
   );
 
   return (
-    <section className="space-y-4" data-testid="comparison-orientation">
-      <div className="space-y-2">
-        <h2 className="font-display text-xl font-semibold text-ink">
-          Four-case orientation
-        </h2>
+    <details
+      className="space-y-4 border-t border-line pt-4"
+      data-testid="comparison-orientation"
+      open={defaultOpen}
+    >
+      <summary className="cursor-pointer font-display text-lg font-semibold text-ink">
+        Four-case orientation{defaultOpen ? '' : ' (secondary)'}
+      </summary>
+      <div className="mt-3 space-y-2">
         <p className="max-w-3xl text-sm text-ink-muted">
           Published cross-case comparison table. Orientation only — not a ranking, scorecard, or
           policy winner. Every case declares <span className="font-medium">no policy winner</span>.
@@ -122,6 +130,6 @@ export function OrientationTable() {
           <SourceRefList key={o.caseId} sources={o.sources} />
         ))}
       </div>
-    </section>
+    </details>
   );
 }

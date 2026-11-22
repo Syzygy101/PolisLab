@@ -4,7 +4,10 @@ import type {
   PathwayEdge,
   PathwayNode,
 } from '@/research/mechanismExplanations';
-import { RELATION_TYPE_LABELS } from '@/research/mechanismProfiles';
+import {
+  RELATION_TYPE_LABELS,
+  type MechanismRelationType,
+} from '@/research/mechanismProfiles';
 import { caseSectionAnchor } from '@/research/casebookConstants';
 import { isCaseId } from '@/research/taxonomy';
 
@@ -67,51 +70,93 @@ function formatEdgeSentence(
   }
 }
 
+const RELATION_CHIP_CLASS: Record<MechanismRelationType, string> = {
+  taxonomy: 'label-chip',
+  metadata: 'label-chip',
+  citation: 'label-chip label-chip--status-data',
+  // Hypotheses and competing explanations keep the dashed caution treatment:
+  // they are never styled as established findings.
+  hypothesised: 'label-chip label-chip--status-caution',
+  competing_explanation: 'label-chip label-chip--status-caution',
+};
+
+/** Relation-type label; the type is always shown in words, never by colour alone. */
+export function RelationChip({ relation }: { relation: MechanismRelationType }) {
+  return (
+    <span className={RELATION_CHIP_CLASS[relation]} data-relation-type={relation}>
+      {RELATION_TYPE_LABELS[relation]}
+    </span>
+  );
+}
+
+function SourceLinks({ sources }: { sources: MechanismExplanation['sources'] }) {
+  return (
+    <>
+      {sources.map((source) => {
+        if (source.kind === 'claim') {
+          return (
+            <Link
+              key={source.id}
+              to={`/claims/${source.id}`}
+              className="id-link"
+              data-pathway-claim={source.id}
+            >
+              {source.id}
+            </Link>
+          );
+        }
+        if (source.caseId && isCaseId(source.caseId) && source.section) {
+          return (
+            <Link
+              key={source.id}
+              to={`/casebook/${source.caseId}#${caseSectionAnchor(source.section)}`}
+              className="id-link"
+              data-pathway-case-section={source.id}
+            >
+              {source.id}
+            </Link>
+          );
+        }
+        return (
+          <span key={source.id} className="mono" style={{ color: 'var(--color-ink-muted)' }}>
+            {source.id}
+          </span>
+        );
+      })}
+    </>
+  );
+}
+
 export function MechanismPathway({ explanation }: { explanation: MechanismExplanation }) {
   return (
-    <article
-      className="space-y-4 border border-line bg-paper-raised p-4"
-      data-testid={`pathway-${explanation.id}`}
-    >
-      <header className="space-y-2">
-        <h3 className="font-display text-lg font-semibold text-ink">{explanation.title}</h3>
-        <p className="text-sm leading-relaxed text-ink">{explanation.summary}</p>
-        <p className="text-xs text-ink-muted">
-          <span className="font-medium text-ink">Conditions: </span>
+    <article className="pathway" data-testid={`pathway-${explanation.id}`}>
+      <header className="stack--tight" style={{ display: 'grid' }}>
+        <h3>{explanation.title}</h3>
+        <p className="prose-block">{explanation.summary}</p>
+        <p className="small-note">
+          <strong style={{ color: 'var(--color-ink)' }}>Conditions: </strong>
           {explanation.conditions}
         </p>
-        <p className="text-xs text-ink-muted">
-          <span className="font-medium text-ink">Qualitative wording: </span>
+        <p className="small-note">
+          <strong style={{ color: 'var(--color-ink)' }}>Qualitative wording: </strong>
           {explanation.qualitativeWording}
         </p>
       </header>
 
-      <div className="space-y-2">
-        <p className="text-xs font-medium uppercase tracking-wide text-ink-subtle">
-          Structured pathway (not a causal graph with weights)
-        </p>
-        <ul className="grid gap-2 sm:grid-cols-2">
+      <div className="stack--tight" style={{ display: 'grid', gap: '0.75rem' }}>
+        <p className="eyebrow">Structured pathway (not a causal graph with weights)</p>
+        <ul className="pathway-nodes">
           {explanation.nodes.map((node) => (
-            <li
-              key={node.id}
-              className="border border-line bg-paper px-3 py-2 text-sm"
-              data-relation={node.relation}
-              data-node-id={node.id}
-            >
-              <p className="font-medium text-ink">{node.label}</p>
-              <p className="text-xs text-ink-muted">{node.detail}</p>
+            <li key={node.id} data-relation={node.relation} data-node-id={node.id}>
+              <p className="node-label">{node.label}</p>
+              <p className="node-detail">{node.detail}</p>
               {node.relation ? (
-                <p className="mt-1 text-[10px] uppercase tracking-wide text-ink-subtle">
-                  {RELATION_TYPE_LABELS[node.relation]}
-                </p>
+                <span className="relation-tag">{RELATION_TYPE_LABELS[node.relation]}</span>
               ) : null}
             </li>
           ))}
         </ul>
-        <ul
-          className="space-y-2 text-sm text-ink"
-          data-testid={`pathway-edges-${explanation.id}`}
-        >
+        <ul className="relation-list" data-testid={`pathway-edges-${explanation.id}`}>
           {explanation.edges.map((edge, index) => (
             <li
               key={`${edge.from}-${edge.to}-${index}`}
@@ -119,11 +164,10 @@ export function MechanismPathway({ explanation }: { explanation: MechanismExplan
               data-edge-from={edge.from}
               data-edge-to={edge.to}
             >
-              <p>{formatEdgeSentence(edge, explanation.nodes)}</p>
-              <p className="text-[10px] uppercase tracking-wide text-ink-subtle">
+              <p className="relation-sentence">{formatEdgeSentence(edge, explanation.nodes)}</p>
+              <p className="relation-tag">
                 {RELATION_TYPE_LABELS[edge.relation]}
-                {edge.relation === 'hypothesised' ||
-                edge.relation === 'competing_explanation'
+                {edge.relation === 'hypothesised' || edge.relation === 'competing_explanation'
                   ? ' · evidence limit: not established as a general causal fact'
                   : edge.relation === 'metadata'
                     ? ' · evidence limit: co-tagging only'
@@ -134,54 +178,24 @@ export function MechanismPathway({ explanation }: { explanation: MechanismExplan
             </li>
           ))}
         </ul>
-        <p className="text-xs text-ink-subtle">
+        <p className="small-note small-note--subtle">
           Compatibility, distinction, and hypothesis relations are stated in plain wording.
           Directed causal arrows are not used for generic metadata co-tagging.
         </p>
       </div>
 
-      <div className="space-y-1">
-        <p className="text-xs font-medium text-ink">Inferential limitations</p>
-        <ul className="list-disc space-y-1 pl-5 text-xs text-ink-muted">
+      <div className="stack--tight" style={{ display: 'grid', gap: '0.35rem' }}>
+        <p className="eyebrow">Inferential limitations</p>
+        <ul className="bullets">
           {explanation.inferentialLimitations.map((item) => (
             <li key={item}>{item}</li>
           ))}
         </ul>
       </div>
 
-      <div className="flex flex-wrap gap-2 text-xs">
-        <span className="text-ink-subtle">Sources:</span>
-        {explanation.sources.map((source) => {
-          if (source.kind === 'claim') {
-            return (
-              <Link
-                key={source.id}
-                to={`/claims/${source.id}`}
-                className="font-mono text-accent no-underline hover:underline"
-                data-pathway-claim={source.id}
-              >
-                {source.id}
-              </Link>
-            );
-          }
-          if (source.caseId && isCaseId(source.caseId) && source.section) {
-            return (
-              <Link
-                key={source.id}
-                to={`/casebook/${source.caseId}#${caseSectionAnchor(source.section)}`}
-                className="font-mono text-accent no-underline hover:underline"
-                data-pathway-case-section={source.id}
-              >
-                {source.id}
-              </Link>
-            );
-          }
-          return (
-            <span key={source.id} className="font-mono text-ink-muted">
-              {source.id}
-            </span>
-          );
-        })}
+      <div className="action-row" style={{ gap: '0.25rem 0.75rem' }}>
+        <span className="eyebrow">Sources</span>
+        <SourceLinks sources={explanation.sources} />
       </div>
     </article>
   );

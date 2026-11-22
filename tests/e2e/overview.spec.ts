@@ -24,8 +24,10 @@ test.describe('Overview Build 02 journeys', () => {
 
     await page.goto('/');
     await expect(
-      page.getByRole('heading', { name: /Institutions, market entry and grocery competition/i }),
+      page.getByRole('heading', { level: 1, name: /How institutions shape markets/i }),
     ).toBeVisible();
+    await expect(page.getByTestId('overview-enter')).toBeVisible();
+    await expect(page.getByTestId('coverage-strip')).toBeVisible();
     await expect(page.getByTestId('case-count-Case1')).toHaveText('20');
 
     await page.getByTestId('case-claims-link-Case1').click();
@@ -36,13 +38,21 @@ test.describe('Overview Build 02 journeys', () => {
       'true',
     );
 
-    await page.getByRole('link', { name: /Open claim ATLAS-ASM-001/i }).click();
+    await page.getByRole('link', { name: 'ATLAS-ASM-001', exact: true }).click();
     await expect(page).toHaveURL(/\/claims\/ATLAS-ASM-001$/);
     await expect(page.getByRole('heading', { level: 1 })).toContainText(/Post-2026 Australian baseline/i);
 
-    await page.getByRole('navigation', { name: 'Breadcrumb' }).getByRole('link', { name: 'Claims Explorer' }).click();
+    await page.getByRole('navigation', { name: 'Breadcrumb' }).getByRole('link', { name: 'Evidence library' }).click();
     await expect(page).toHaveURL(/\/claims/);
 
+    expect(consoleErrors, `Console errors: ${consoleErrors.join('\n')}`).toEqual([]);
+  });
+
+  test('Overview primary action begins Case 1 investigation', async ({ page }) => {
+    const consoleErrors = await collectConsoleErrors(page);
+    await page.goto('/');
+    await page.getByTestId('overview-enter').click();
+    await expect(page).toHaveURL(/\/casebook\/Case1/);
     expect(consoleErrors, `Console errors: ${consoleErrors.join('\n')}`).toEqual([]);
   });
 
@@ -53,7 +63,7 @@ test.describe('Overview Build 02 journeys', () => {
     await page.getByTestId('status-link-absence_of_finding').click();
     await expect(page).toHaveURL(/status=absence_of_finding/);
     await expect(page.getByText(/6 of 43 claims match filters/)).toBeVisible();
-    await expect(page.getByText('ATLAS-HYP-004')).toBeVisible();
+    await expect(page.getByRole('link', { name: 'ATLAS-HYP-004', exact: true })).toBeVisible();
 
     await page.getByRole('button', { name: 'Reset filters' }).click();
     await expect(page.getByText(/43 of 43 claims shown/)).toBeVisible();
@@ -66,7 +76,7 @@ test.describe('Overview Build 02 journeys', () => {
     const consoleErrors = await collectConsoleErrors(page);
 
     await page.goto('/');
-    await page.getByRole('button', { name: /O6: Consumer welfare/i }).click();
+    await page.getByRole('button', { name: /O6 Consumer welfare/i }).click();
     await expect(page.getByTestId('outcome-stage-panel')).toContainText(/Consumer welfare/i);
     await expect(page.getByTestId('outcome-stage-panel')).toContainText(
       /no calibrated Australian diversion/i,
@@ -96,7 +106,7 @@ test.describe('Overview Build 02 journeys', () => {
       'true',
     );
 
-    await page.getByRole('button', { name: 'O1' }).click();
+    await page.getByRole('button', { name: 'O1', exact: true }).click();
     await expect(page).toHaveURL(/case=Case2/);
     await expect(page).toHaveURL(/outcome=O1/);
 
@@ -139,10 +149,11 @@ test.describe('Overview Build 02 journeys', () => {
 
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto('/');
-    await page.getByRole('link', { name: 'Open Claims Explorer' }).focus();
-    await expect(page.getByRole('link', { name: 'Open Claims Explorer' })).toBeFocused();
+    const evidenceLibraryCta = page.getByTestId('overview-evidence-library');
+    await evidenceLibraryCta.focus();
+    await expect(evidenceLibraryCta).toBeFocused();
     await page.keyboard.press('Tab');
-    await expect(page.getByRole('link', { name: 'Open Claims Explorer' })).not.toBeFocused();
+    await expect(evidenceLibraryCta).not.toBeFocused();
 
     await page.getByTestId('case-claims-link-Case1').click();
     await expect(page.getByText(/20 of 43 claims match filters/)).toBeVisible();
@@ -151,7 +162,7 @@ test.describe('Overview Build 02 journeys', () => {
       fullPage: true,
     });
 
-    await page.getByRole('link', { name: /Open claim ATLAS-ASM-001/i }).click();
+    await page.getByRole('link', { name: 'ATLAS-ASM-001', exact: true }).click();
     await expect(page).toHaveURL(/\/claims\/ATLAS-ASM-001$/);
     await page.screenshot({
       path: path.join(screenshotDir, 'desktop-claim-detail-from-filtered.png'),

@@ -268,7 +268,7 @@ const PROFILES: Record<string, MechanismProfileContent> = {
     alternativeExplanations: [
       {
         text: 'ACCC material treats capital as unlikely binding for large internationals while sites and time-to-scale remain material.',
-        relation: 'metadata',
+        relation: 'citation',
         sources: [
           { kind: 'claim', id: 'ATLAS-EMP-003' },
           { kind: 'case_section', id: 'Case2 §4', caseId: 'Case2', section: 4 },

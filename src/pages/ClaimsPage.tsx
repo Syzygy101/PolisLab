@@ -4,8 +4,10 @@ import { allClaims } from '@/data/researchDataset';
 import { ClaimFiltersPanel } from '@/components/claims/ClaimFilters';
 import {
   ClaimsTable,
+  CompareBar,
   type ExplorerReturnState,
 } from '@/components/claims/ClaimsTable';
+import { ClaimInspector } from '@/components/claims/ClaimInspector';
 import { compareHref } from '@/research/compareUrl';
 import {
   collectPresentAdmissibilities,
@@ -26,8 +28,13 @@ import {
   parseFiltersFromSearchParams,
   serializeFiltersToSearchParams,
 } from '@/research/urlFilters';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import { useMediaMin } from '@/hooks/useMediaMin';
 
 const SEARCH_URL_DEBOUNCE_MS = 200;
+
+/** Viewport width at which the master-detail inspector layout is used. */
+const INSPECTOR_MIN_WIDTH_PX = 1100;
 
 /** Stable key for the non-search filter location that owns a pending search draft. */
 function dimensionScopeKey(filters: ClaimFilters): string {
@@ -53,8 +60,12 @@ function dimensionScopeKey(filters: ClaimFilters): string {
  * draft so a late debounce cannot overwrite the restored URL.
  */
 export function ClaimsPage() {
+  useDocumentTitle('Evidence library');
+
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [inspectId, setInspectId] = useState<string | null>(null);
+  const wide = useMediaMin(INSPECTOR_MIN_WIDTH_PX);
   const mountedRef = useRef(true);
 
   const committed = useMemo(
@@ -213,6 +224,10 @@ export function ClaimsPage() {
       ? compareHref({ a: selectedIds[0], b: selectedIds[1] })
       : null;
 
+  // Inspector shows the explicitly inspected record, else the first visible result.
+  const inspected =
+    matched.find((claim) => claim.claim_id === inspectId) ?? matched[0] ?? null;
+
   function toggleSelect(claimId: string) {
     setSelectedIds((current) => {
       if (current.includes(claimId)) {
@@ -235,14 +250,14 @@ export function ClaimsPage() {
   ];
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4" data-testid="claims-page">
       <header className="space-y-2">
-        <h1 className="font-display text-3xl font-semibold text-ink">Claims Explorer</h1>
-        <p className="max-w-3xl text-sm text-ink-muted">
-          Evidence investigation workspace over all {allClaims.length} authentic research claims
-          from the Policy Claims Atlas. Evidentiary status and policy-comparison admissibility
-          remain distinct. Hypotheses are not styled as established findings. Filters sync to the
-          URL for shareable research subsets.
+        <p className="page-kicker">Evidence</p>
+        <h1 className="page-title">Evidence library</h1>
+        <p className="lede" style={{ maxWidth: '60rem' }}>
+          Search all {allClaims.length} authentic Policy Claims Atlas claims, inspect a record
+          beside the results, or select two to compare. Status and admissibility remain distinct;
+          hypotheses are not styled as established findings. Filters sync to the URL.
         </p>
         {!ignoredFilterParamsAreEmpty(ignored) ? (
           <p
@@ -273,15 +288,49 @@ export function ClaimsPage() {
         active={active}
       />
 
-      <ClaimsTable
-        claims={matched}
+      <CompareBar
         selectedIds={selectedIds}
-        onToggleSelect={toggleSelect}
         compareHref={comparisonPath}
         onClearSelection={() => setSelectedIds([])}
         explorerReturnState={explorerReturnState}
         onBeforeNavigate={commitPendingSearch}
       />
+
+      <p className="meta-line">
+        Row text is a preview, not a summary.{' '}
+        {wide
+          ? 'Select a row to inspect the complete record; each ID opens its stable page.'
+          : 'Open a record for the complete claim and all 18 source fields.'}
+      </p>
+
+      <div className={`claims-layout${wide ? ' claims-layout--split' : ''}`}>
+        <ClaimsTable
+          claims={matched}
+          selectedIds={selectedIds}
+          onToggleSelect={toggleSelect}
+          explorerReturnState={explorerReturnState}
+          onBeforeNavigate={commitPendingSearch}
+          wide={wide}
+          inspectedId={inspected?.claim_id ?? null}
+          onInspect={setInspectId}
+        />
+
+        {wide ? (
+          <aside className="inspector" aria-label="Record inspector" data-testid="inspector">
+            {inspected ? (
+              <ClaimInspector
+                claim={inspected}
+                explorerReturnState={explorerReturnState}
+                onBeforeNavigate={commitPendingSearch}
+              />
+            ) : (
+              <p className="inspector-empty">
+                No record to inspect. Adjust the filters to see matching claims.
+              </p>
+            )}
+          </aside>
+        ) : null}
+      </div>
     </div>
   );
 }

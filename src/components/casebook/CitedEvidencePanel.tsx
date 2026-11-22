@@ -41,45 +41,43 @@ export function CitedEvidencePanel({ researchCase }: { researchCase: ParsedCase 
 
   return (
     <section
-      className="space-y-3 border border-line bg-paper-raised p-4"
+      className="stack"
       aria-labelledby="cited-evidence-heading"
       data-testid="cited-evidence-panel"
     >
-      <div className="space-y-1">
-        <h2 id="cited-evidence-heading" className="font-display text-lg font-semibold text-ink">
-          Cited evidence ({members.length})
-        </h2>
-        <p className="text-sm text-ink-muted">
-          Direct citation membership for {researchCase.id} — including common all-case rules where
-          applicable. Memberships overlap across cases and do not measure evidence quality or policy
-          performance.
-        </p>
+      <div className="case-section-head">
+        <h2 id="cited-evidence-heading">Cited evidence ({members.length})</h2>
       </div>
+      <p className="small-note">
+        Direct citation membership for {researchCase.id} — including common all-case rules where
+        applicable. Memberships overlap across cases and do not measure evidence quality or policy
+        performance.
+      </p>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="action-row">
         <Link
           to={claimsExplorerHref({ cases: [researchCase.id] })}
-          className="border border-accent bg-accent px-3 py-1.5 text-sm font-medium text-white no-underline hover:opacity-90"
+          className="btn btn--primary"
           data-testid="open-case-claims-explorer"
         >
-          Open in Claims Explorer
+          Open in Evidence library
         </Link>
         {compareReady ? (
           <Link
             to={compareHref({ a: selected[0], b: selected[1] })}
-            className="border border-accent/40 bg-accent-soft px-3 py-1.5 text-sm font-medium text-accent no-underline hover:bg-accent-soft"
+            className="btn btn--secondary"
             data-testid="compare-selected-claims"
           >
             Compare selected claims
           </Link>
         ) : (
-          <span className="px-1 py-1.5 text-xs text-ink-subtle">
+          <span className="small-note small-note--subtle" role="status">
             Select two cited claims to open evidence comparison
           </span>
         )}
       </div>
 
-      <ul className="divide-y divide-line border border-line">
+      <ul className="evidence-list">
         {members.map((claim) => {
           const relation = classifyCitationRelation(
             casebookDataset,
@@ -92,26 +90,18 @@ export function CitedEvidencePanel({ researchCase }: { researchCase: ParsedCase 
           );
           const checked = selected.includes(claim.claim_id);
           return (
-            <li
-              key={claim.claim_id}
-              className="flex flex-col gap-2 px-3 py-2 sm:flex-row sm:items-start sm:justify-between"
-            >
-              <div className="min-w-0 space-y-1">
-                <div className="flex flex-wrap items-center gap-2">
-                  <Link
-                    to={`/claims/${claim.claim_id}`}
-                    className="font-mono text-xs text-accent no-underline hover:underline"
-                  >
+            <li key={claim.claim_id}>
+              <div style={{ minWidth: 0 }}>
+                <div className="action-row" style={{ marginBottom: '0.25rem' }}>
+                  <Link to={`/claims/${claim.claim_id}`} className="id-link">
                     {claim.claim_id}
                   </Link>
                   <StatusBadge status={claim.status} />
-                  <span className="text-[11px] text-ink-subtle">
-                    {CITATION_RELATION_LABELS[relation]}
-                  </span>
+                  <span className="meta-line">{CITATION_RELATION_LABELS[relation]}</span>
                 </div>
-                <p className="text-sm text-ink line-clamp-2">{claim.exact_claim}</p>
+                <p className="claim-text">{claim.exact_claim}</p>
               </div>
-              <label className="flex shrink-0 items-center gap-2 text-xs text-ink-muted">
+              <label className="check-inline">
                 <input
                   type="checkbox"
                   checked={checked}
@@ -124,7 +114,7 @@ export function CitedEvidencePanel({ researchCase }: { researchCase: ParsedCase 
           );
         })}
       </ul>
-      <p className="text-xs text-ink-subtle">
+      <p className="meta-line">
         Atlas universe: {allClaims.length} claims. This index lists direct members only.
       </p>
     </section>

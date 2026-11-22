@@ -10,9 +10,9 @@ test.describe('Build 03 evidence investigation workspace', () => {
     await page.goto('/');
     await page.getByTestId('case-claims-link-Case1').click();
     await expect(page).toHaveURL(/\/claims\?case=Case1/);
-    await expect(page.getByRole('heading', { name: 'Claims Explorer' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Evidence library' })).toBeVisible();
     await page.getByRole('searchbox', { name: 'Search' }).fill('ATLAS-EMP-001');
-    await page.getByRole('link', { name: /Open claim ATLAS-EMP-001/i }).click();
+    await page.getByRole('link', { name: 'ATLAS-EMP-001', exact: true }).click();
     await expect(page).toHaveURL(/\/claims\/ATLAS-EMP-001$/);
     await expect(page.getByTestId('related-evidence')).toContainText('ATLAS-EMP-002');
     await page.getByRole('link', { name: /Compare with another claim/i }).click();
@@ -60,7 +60,7 @@ test.describe('Build 03 evidence investigation workspace', () => {
     await page.goto('/claims/compare?a=ATLAS-HYP-001&b=ATLAS-POL-001');
     await expect(page.getByTestId('compare-slot-a')).toContainText('ATLAS-HYP-001');
     await expect(page.getByTestId('compare-slot-b')).toContainText('ATLAS-POL-001');
-    await page.getByRole('navigation', { name: 'Breadcrumb' }).getByRole('link', { name: 'Claims Explorer' }).click();
+    await page.getByRole('navigation', { name: 'Breadcrumb' }).getByRole('link', { name: 'Evidence library' }).click();
     await expect(page).toHaveURL(/\/claims$/);
     await page.goBack();
     await expect(page).toHaveURL(/\/claims\/compare\?a=ATLAS-HYP-001&b=ATLAS-POL-001/);

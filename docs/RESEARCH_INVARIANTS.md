@@ -25,6 +25,12 @@ Established safeguards for the interactive application. These constrain Build 01
 - Classification uses the published `status` vocabulary, not ID prefixes such as `HYP`, `CON`, or `EMP`.
 - Example: `ATLAS-HYP-004` has status `absence_of_finding`, not `unresolved_hypothesis`.
 
+## Release-scoped interpretation wording
+
+- UI copy and summaries must use **release-scoped** research status language: what the published synthesis **registered**, **verified for its source dates**, or recorded as an **absence of finding** within the evidence reviewed — not universal claims of non-existence, permanent impossibility, or economy-wide proof.
+- `absence_of_finding` means the dated research pass did not establish the proposition; it is not a licence to treat the underlying question as closed for all time or all jurisdictions.
+- Historical or administrative statements are valid only for their stated source dates and institutional context.
+
 ## Layer A / B / C / D separation
 
 - Distinguish law in force, administrative practice, announced reforms, and hypothetical instruments.
@@ -104,3 +110,12 @@ Established safeguards for the interactive application. These constrain Build 01
 - Authoritative published research for the application baseline: `research/10_policy_claims_atlas.csv`, `research/10_policy_assessment_casebook.md`, and `LICENSE`.
 - Unpublished local files under `research/01–09` and `references/` must not be staged, committed, or bundled as source files.
 - Local acceptance screenshots under `docs/screenshots/` are working artefacts and must not enter publication commits unless separately authorised.
+
+## Product integration fidelity (Build 08)
+
+- Do not present the Analytical Sandbox as an active research workflow. Direct `/sandbox` may explain a future capability only.
+- Evidence comparison (`/claims/compare`) and policy comparison (`/comparison`) must remain distinct in UI copy and documentation.
+- Comparison pathway surfaces must retain casebook §6 “plausible” framing; gap/hypothesis claim IDs linked as sources are limiting or conditional evidence, not affirmative pathway proof, unless the source text establishes the proposition.
+- Gaps competing-explanation labels must track taxonomy: M1a scarcity, M1b planning, M1c foreclosure, M5a option value, M6a FDI/FIRB friction.
+- Curated §9 claim associations must support the requirement proposition; unsupported atlas IDs must not be shown as if they establish Layer C commencement or sunset rules they do not state.
+- Software interpretation defects are fixed in application curated content only — never by editing published research. Source-side inconsistencies are reported for a future research-release decision.
