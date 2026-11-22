@@ -43,9 +43,9 @@ Third-party materials cited or linked here are **not** relicensed. External prim
 
 ---
 
-## Application (development v0.2 — Build 06)
+## Application (development v0.2 — Build 07)
 
-Interactive research laboratory with a **Research Overview**, an evidence **Claims Explorer** (search, status/admissibility/case/mechanism/outcome/literature filters, shareable URLs), full claim inspection, **two-claim comparison** (`/claims/compare`), related-evidence navigation, an interactive **Casebook Explorer**, a **Mechanism Explorer** (`/mechanisms`), and a qualitative **Policy Comparison Laboratory** (`/comparison?a=&b=`) over the authentic v0.1.1 atlas and published casebook Markdown. Evidence Gaps and the Analytical Sandbox remain deferred navigation stubs only.
+Interactive research laboratory with a **Research Overview**, an evidence **Claims Explorer** (search, status/admissibility/case/mechanism/outcome/literature filters, shareable URLs), full claim inspection, **two-claim comparison** (`/claims/compare`), related-evidence navigation, an interactive **Casebook Explorer**, a **Mechanism Explorer** (`/mechanisms`), a qualitative **Policy Comparison Laboratory** (`/comparison?a=&b=`), and an **Evidence Gaps and Falsification** laboratory (`/gaps`, `/gaps/:requirementId`) over the authentic v0.1.1 atlas and published casebook Markdown. The Analytical Sandbox remains a deferred, gated navigation stub only.
 
 **Software licensing:** the research artefacts remain under CC BY 4.0 as above. A separate licence decision is still required for the application/software layer; this build does not choose one.
 
@@ -69,8 +69,10 @@ npm run typecheck
 npm run test                      # Vitest unit / component tests
 npm run test:e2e                  # Playwright (serial workers; dedicated port 4173)
 npm run build
-npm run verify:research           # independent atlas + casebook + mechanism Python verifiers
+npm run verify:research           # independent atlas + casebook + mechanism + gaps Python verifiers
+npm run verify:gaps               # Evidence Gaps §9 / classification verifier only
 ```
+
 
 End-to-end tests use a **dedicated Vite server on port 4173** with `reuseExistingServer: false` and `--workers=1`. Do not treat intermittent parallel runs on port 5173 as reliable.
 

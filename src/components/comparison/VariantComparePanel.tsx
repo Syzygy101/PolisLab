@@ -4,13 +4,24 @@ import { OUTCOME_STAGES, getOutcomeStage } from '@/research/taxonomy';
 import { caseSectionAnchor } from '@/research/casebookConstants';
 import { SourceRefList } from './SourceRefList';
 import { allClaims, findClaimById } from '@/data/researchDataset';
+import { partitionComparisonRequirements } from '@/research/gapsQueries';
+import type { ResearchRequirement } from '@/research/gapsSchema';
+import {
+  CrossCaseSideRequirements,
+  SharedCaseWideRequirements,
+  VariantSpecificRequirements,
+} from './ComparisonRequirements';
 
 function SideColumn({
   side,
   label,
+  gapRequirements,
+  sameCase,
 }: {
   side: VariantComparisonSide | null;
   label: string;
+  gapRequirements: ResearchRequirement[];
+  sameCase: boolean;
 }) {
   if (!side) {
     return (
@@ -179,6 +190,19 @@ function SideColumn({
         )}
       </section>
 
+      {sameCase ? (
+        <VariantSpecificRequirements
+          requirements={gapRequirements}
+          variantId={variant.id}
+        />
+      ) : (
+        <CrossCaseSideRequirements
+          requirements={gapRequirements}
+          variantId={variant.id}
+          caseId={variant.caseId}
+        />
+      )}
+
       <p className="text-[11px] text-ink-subtle">
         Atlas claims available for lookup: {allClaims.length}. Admissibility is not a truth
         verdict.
@@ -188,6 +212,15 @@ function SideColumn({
 }
 
 export function VariantComparePanel({ comparison }: { comparison: VariantComparison }) {
+  const partitioned = partitionComparisonRequirements(
+    comparison.a
+      ? { id: comparison.a.variant.id, caseId: comparison.a.variant.caseId }
+      : null,
+    comparison.b
+      ? { id: comparison.b.variant.id, caseId: comparison.b.variant.caseId }
+      : null,
+  );
+
   return (
     <div className="space-y-4" data-testid="variant-compare-panel">
       {comparison.notices.length > 0 ? (
@@ -205,8 +238,18 @@ export function VariantComparePanel({ comparison }: { comparison: VariantCompari
       </p>
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <SideColumn side={comparison.a} label="Variant A" />
-        <SideColumn side={comparison.b} label="Variant B" />
+        <SideColumn
+          side={comparison.a}
+          label="Variant A"
+          gapRequirements={partitioned.sideA}
+          sameCase={partitioned.sameCase}
+        />
+        <SideColumn
+          side={comparison.b}
+          label="Variant B"
+          gapRequirements={partitioned.sideB}
+          sameCase={partitioned.sameCase}
+        />
       </div>
 
       {comparison.shared ? (
@@ -249,6 +292,10 @@ export function VariantComparePanel({ comparison }: { comparison: VariantCompari
               </div>
             ))}
           </div>
+          <SharedCaseWideRequirements
+            caseId={comparison.shared.caseId}
+            requirements={partitioned.sharedCaseWide}
+          />
           <Link
             to={`/casebook/${comparison.shared.caseId}#${caseSectionAnchor(6)}`}
             className="text-sm text-accent no-underline hover:underline"

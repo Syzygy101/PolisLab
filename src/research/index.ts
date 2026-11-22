@@ -29,3 +29,8 @@ export * from './comparisonSchema';
 export * from './comparisonDataset';
 export * from './comparisonQueries';
 export * from './comparisonUrl';
+export * from './gapsSchema';
+export * from './gapsParse';
+export * from './gapsRequirements';
+export * from './gapsQueries';
+export * from './gapsUrl';

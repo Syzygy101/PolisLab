@@ -6,6 +6,8 @@ import { compareHref } from '@/research/compareUrl';
 import { findClaimsSharingSourceUrl } from '@/research/relatedEvidence';
 import { isSafeHttpUrl } from '@/research/safeUrl';
 import { claimsExplorerHref } from '@/research/urlFilters';
+import { gapsHref } from '@/research/gapsUrl';
+import { requirementsReferencingClaim } from '@/research/gapsQueries';
 import { AdmissibilityBadge, admissibilityExpandedLabel } from './AdmissibilityBadge';
 import type { ExplorerReturnState } from './ClaimsTable';
 import { RelatedEvidencePanel } from './RelatedEvidencePanel';
@@ -65,6 +67,7 @@ export function ClaimDetailView({
   explorerReturnState?: ExplorerReturnState | null;
 }) {
   const sharedUrlClaims = findClaimsSharingSourceUrl(claim, allClaims);
+  const linkedRequirements = requirementsReferencingClaim(claim.claim_id);
 
   return (
     <article className="space-y-6">
@@ -104,6 +107,14 @@ export function ClaimDetailView({
               {claim.cases[0]} evidence subset
             </Link>
           ) : null}
+          <Link
+            to={gapsHref({ claimId: claim.claim_id })}
+            className="border border-line px-3 py-1.5 text-sm text-ink no-underline hover:bg-neutral-soft"
+            data-testid="claim-gaps-link"
+          >
+            Related research requirements
+            {linkedRequirements.length > 0 ? ` (${linkedRequirements.length})` : ''}
+          </Link>
         </div>
       </header>
 
@@ -193,6 +204,26 @@ export function ClaimDetailView({
           Observation that would alter the assessment
         </h2>
         <FieldBlock field="observation_that_would_alter_assessment" claim={claim} />
+        {linkedRequirements.length > 0 ? (
+          <div className="space-y-1" data-testid="claim-linked-requirements">
+            <p className="text-xs font-medium uppercase tracking-wide text-ink-muted">
+              Linked casebook §9 requirements
+            </p>
+            <ul className="space-y-1 text-sm">
+              {linkedRequirements.map((req) => (
+                <li key={req.id}>
+                  <Link
+                    to={`/gaps/${req.id}`}
+                    className="font-mono text-xs text-accent no-underline hover:underline"
+                  >
+                    {req.id}
+                  </Link>
+                  <span className="text-ink-muted"> — {req.curatedLabel}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
       </section>
 
       <section

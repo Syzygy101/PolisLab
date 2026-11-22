@@ -26,6 +26,12 @@ const MechanismDetailPage = lazy(() =>
 const ComparisonPage = lazy(() =>
   import('@/pages/ComparisonPage').then((m) => ({ default: m.ComparisonPage })),
 );
+const GapsPage = lazy(() =>
+  import('@/pages/GapsPage').then((m) => ({ default: m.GapsPage })),
+);
+const GapRequirementPage = lazy(() =>
+  import('@/pages/GapRequirementPage').then((m) => ({ default: m.GapRequirementPage })),
+);
 
 function RouteFallback({ label }: { label: string }) {
   return (
@@ -94,10 +100,17 @@ export default function App() {
         <Route
           path="gaps"
           element={
-            <PlaceholderPage
-              title="Evidence Gaps and Falsification"
-              description="Observations that would alter assessments and documented evidence gaps. Deferred — case §9 sections are navigable in the Casebook Explorer (Build 07 will prioritise the gap register)."
-            />
+            <Suspense fallback={<RouteFallback label="evidence gaps" />}>
+              <GapsPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="gaps/:requirementId"
+          element={
+            <Suspense fallback={<RouteFallback label="evidence gaps" />}>
+              <GapRequirementPage />
+            </Suspense>
           }
         />
         <Route
@@ -105,7 +118,7 @@ export default function App() {
           element={
             <PlaceholderPage
               title="Analytical Sandbox"
-              description="Separately gated analytical workspace. Deferred and gated — not available in Build 06."
+              description="Separately gated analytical workspace. Deferred and gated — not available in Build 07."
               gated
             />
           }

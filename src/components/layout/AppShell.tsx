@@ -12,7 +12,7 @@ const navItems = [
   { to: '/casebook', label: 'Casebook' },
   { to: '/mechanisms', label: 'Mechanisms' },
   { to: '/comparison', label: 'Comparison' },
-  { to: '/gaps', label: 'Evidence Gaps', deferred: true },
+  { to: '/gaps', label: 'Evidence Gaps' },
   { to: '/sandbox', label: 'Sandbox', deferred: true },
 ] as const;
 
@@ -41,7 +41,7 @@ export function AppShell() {
             </div>
             <div className="text-right text-xs text-ink-subtle">
               <p>
-                Research {RESEARCH_RELEASE} · app development v0.2 · Build 06
+                Research {RESEARCH_RELEASE} · app development v0.2 · Build 07
               </p>
               <p>Evidence cutoff {RESEARCH_CUTOFF}</p>
               <p>Correction pass {RESEARCH_CORRECTION_PASS}</p>

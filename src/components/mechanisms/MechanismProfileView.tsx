@@ -7,6 +7,7 @@ import {
   getMechanismSubmechanism,
   isMechanismFamilyId,
   mechanismProfileHref,
+  type MechanismFamilyId,
   type MechanismId,
 } from '@/research/taxonomy';
 import {
@@ -27,6 +28,8 @@ import { MechanismPathway } from './MechanismPathway';
 import { caseSectionAnchor } from '@/research/casebookConstants';
 import { OUTCOME_STAGES } from '@/research/taxonomy';
 import { claimsExplorerHref } from '@/research/urlFilters';
+import { gapsHref } from '@/research/gapsUrl';
+import { requirementsForMechanism } from '@/research/gapsQueries';
 
 export function MechanismProfileView({
   mechanismId,
@@ -38,6 +41,10 @@ export function MechanismProfileView({
   const content = getMechanismProfileContent(mechanismId);
   const isFamily = isMechanismFamilyId(mechanismId);
   const exactCount = countExactMechanism(claims, mechanismId);
+  const linkedRequirements = requirementsForMechanism(
+    mechanismId,
+    { familyExpand: isFamily },
+  );
   const familyCount = isFamily
     ? countMechanismFamily(claims, mechanismId)
     : null;
@@ -353,6 +360,43 @@ export function MechanismProfileView({
             <li key={item}>{item}</li>
           ))}
         </ul>
+        {linkedRequirements.length > 0 ? (
+          <div className="space-y-1 pt-2" data-testid="mechanism-gaps-links">
+            <p className="text-xs font-medium uppercase tracking-wide text-ink-muted">
+              Related research requirements
+            </p>
+            <ul className="space-y-1 text-sm">
+              {linkedRequirements.map((req) => (
+                <li key={req.id}>
+                  <Link
+                    to={`/gaps/${req.id}`}
+                    className="font-mono text-xs text-accent no-underline hover:underline"
+                  >
+                    {req.id}
+                  </Link>
+                  <span className="text-ink-muted"> — {req.curatedLabel}</span>
+                </li>
+              ))}
+            </ul>
+            <Link
+              to={
+                isFamily
+                  ? gapsHref({
+                      mechanismFamilies: [mechanismId as MechanismFamilyId],
+                    })
+                  : gapsHref({ mechanisms: [mechanismId] })
+              }
+              className="text-xs text-accent no-underline hover:underline"
+            >
+              Filter Evidence Gaps by {mechanismId}
+            </Link>
+          </div>
+        ) : (
+          <p className="pt-2 text-xs text-ink-subtle">
+            No curated §9 requirement associations for this tag. Associations are source-grounded,
+            not inferred from co-tagging alone.
+          </p>
+        )}
       </section>
 
       <nav aria-label="Mechanism taxonomy" className="flex flex-wrap gap-2 text-xs">

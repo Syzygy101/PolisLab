@@ -17,6 +17,7 @@ import {
   STATUS_LABELS,
 } from '@/research/taxonomy';
 import { claimsExplorerHref } from '@/research/urlFilters';
+import { gapsHref } from '@/research/gapsUrl';
 import { StatusDistribution } from '@/components/overview/StatusDistribution';
 import { OutcomeStageExplorer } from '@/components/overview/OutcomeStageExplorer';
 
@@ -363,10 +364,17 @@ export function OverviewPage() {
           ))}
         </ul>
         <p className="text-sm text-ink-muted">
-          See the Policy Assessment Casebook methodology, institutional layers above, and
+          See the Policy Assessment Casebook methodology, institutional layers above,
           claim-level limitations in the{' '}
           <Link to="/claims" className="font-medium text-accent underline-offset-2 hover:underline">
             Claims Explorer
+          </Link>
+          , and source-grounded research requirements in{' '}
+          <Link
+            to={gapsHref()}
+            className="font-medium text-accent underline-offset-2 hover:underline"
+          >
+            Evidence Gaps
           </Link>
           .
         </p>
@@ -385,7 +393,7 @@ export function OverviewPage() {
           <p>
             <span className="font-medium text-ink">Research release</span> {RESEARCH_RELEASE}
             {' · '}
-            <span className="font-medium text-ink">Application</span> development v0.2 (Build 04)
+            <span className="font-medium text-ink">Application</span> development v0.2 (Build 07)
           </p>
           <p>
             <span className="font-medium text-ink">Institutional/legal cutoff</span> {RESEARCH_CUTOFF}
@@ -421,22 +429,25 @@ export function OverviewPage() {
       </section>
 
       <section className="space-y-1 border-t border-line pt-5 text-sm text-ink-muted">
-        <h2 className="text-base font-semibold text-ink">Deferred modules</h2>
+        <h2 className="text-base font-semibold text-ink">Laboratory modules</h2>
         <p>
-          Mechanism Explorer is available at{' '}
+          Mechanism Explorer:{' '}
           <Link to="/mechanisms" className="text-accent no-underline hover:underline">
             /mechanisms
           </Link>
-          . Policy Comparison Laboratory is available at{' '}
+          . Policy Comparison:{' '}
           <Link to="/comparison" className="text-accent no-underline hover:underline">
             /comparison
           </Link>
-          . Evidence Gaps and the gated Analytical Sandbox remain deferred (navigation labelled
-          “later”). Casebook Explorer is available at{' '}
+          . Evidence Gaps:{' '}
+          <Link to="/gaps" className="text-accent no-underline hover:underline">
+            /gaps
+          </Link>
+          . Casebook:{' '}
           <Link to="/casebook" className="text-accent">
             /casebook
           </Link>
-          .
+          . The gated Analytical Sandbox remains deferred (navigation labelled “later”).
         </p>
       </section>
     </div>

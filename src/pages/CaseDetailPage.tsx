@@ -11,6 +11,8 @@ import {
   RESEARCH_CUTOFF,
   RESEARCH_RELEASE,
 } from '@/research/constants';
+import { gapsHref } from '@/research/gapsUrl';
+import { requirementsForCase } from '@/research/gapsQueries';
 
 export function CaseDetailPage() {
   const { caseId = '' } = useParams();
@@ -45,6 +47,7 @@ export function CaseDetailPage() {
 
   const meta = CASE_DERIVED_META[caseId];
   const questionSection = researchCase.sections.find((s) => s.number === 1);
+  const section9Requirements = requirementsForCase(caseId);
 
   return (
     <div className="space-y-6" data-testid={`case-page-${caseId}`}>
@@ -101,6 +104,13 @@ export function CaseDetailPage() {
           >
             Evidence that would change the assessment
           </a>
+          <Link
+            to={gapsHref({ cases: [caseId] })}
+            className="border border-line px-3 py-1.5 text-sm text-ink no-underline hover:bg-neutral-soft"
+            data-testid="case-gaps-link"
+          >
+            Evidence Gaps ({section9Requirements.length} §9 requirements)
+          </Link>
         </div>
       </header>
 
@@ -164,6 +174,35 @@ export function CaseDetailPage() {
                 markdown={section.markdown}
                 claimReturn={{ caseId, section: section.number }}
               />
+              {section.number === 9 && section9Requirements.length > 0 ? (
+                <div
+                  className="space-y-2 border border-line bg-paper px-3 py-3"
+                  data-testid="case-section-9-gaps"
+                >
+                  <p className="text-xs font-medium uppercase tracking-wide text-ink-muted">
+                    Inspect in Evidence Gaps
+                  </p>
+                  <ul className="space-y-1 text-sm">
+                    {section9Requirements.map((req) => (
+                      <li key={req.id}>
+                        <Link
+                          to={`/gaps/${req.id}`}
+                          className="font-mono text-xs text-accent no-underline hover:underline"
+                        >
+                          {req.id}
+                        </Link>
+                        <span className="text-ink-muted"> — {req.curatedLabel}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <Link
+                    to={gapsHref({ cases: [caseId] })}
+                    className="text-xs text-accent no-underline hover:underline"
+                  >
+                    All {caseId} research requirements
+                  </Link>
+                </div>
+              ) : null}
               {section.explicitClaimIds.length > 0 ? (
                 <p className="text-xs text-ink-subtle">
                   Explicit claim IDs in this section:{' '}

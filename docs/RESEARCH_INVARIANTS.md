@@ -72,6 +72,18 @@ Established safeguards for the interactive application. These constrain Build 01
 - Open thesis questions (e.g. `ATLAS-HYP-003`) remain unresolved hypotheses, not ranked recommendations.
 - The Policy Comparison Laboratory (Build 06) is qualitative only: no scores, ranks, invented probabilities, or numerical effect estimates. `policyWinnerDeclared` remains false for every case.
 
+## Evidence Gaps and falsification fidelity (Build 07)
+
+- Casebook §9 numbered research requirements are preserved as distinct source entries (v0.1.1: Case1=5, Case2=5, Case3=4, Case4=5; total 19). Do not silently merge similar requirements.
+- Registry `sourceText` must soft-match the pinned casebook §9 wording; independent verification checks content anchors, not counts alone. Stale or corrupted registry entries must fail validation.
+- GAP-prefixed claim IDs do not define the set of all research gaps. Atlas groups remain distinct: GAP-prefixed records, `absence_of_finding` status, and `unresolved_hypothesis` status are not interchangeable and must not be summed as a unique unresolved-question count.
+- `ATLAS-HYP-004` retains `absence_of_finding` (not `unresolved_hypothesis`). `ATLAS-HYP-002` retains admissibility `no` (qualitative caution only).
+- Legal / institutional verification is distinct from empirical falsification. Where the published research does not specify a sufficient empirical falsification test, state that explicitly.
+- Distinctions that must not be collapsed: absence of finding ≠ proof of absence; descriptive site data ≠ foreclosure identification; FIRB processing ≠ binding transaction requirement; ALDI chronology ≠ binding logistics constraint; foreign diversion magnitudes ≠ Australian parameters; notification/waiver activity ≠ realised openings or competition; proposed observations ≠ collected results.
+- Curated research-agenda programmes are organisational aids only — not newly published findings. No universal priority scores, confidence rankings, composite evidence-completeness measures, or automated gap closure.
+- Direct requirement↔claim / mechanism / outcome / variant associations must be source-supported; case membership alone is insufficient; generic metadata co-tagging is not causal support.
+- In Policy Comparison, same-case case-wide §9 requirements display once in the shared panel; variant-specific links appear only where curated `comparisonVariantIds` are set. Cross-case comparisons preserve each side’s original case scope.
+
 ## Policy comparison fidelity (Build 06)
 
 - Comparison variants, baselines, pathways, and outcome assessments must track the pinned casebook narrative (SHA `3da0e29c…` at v0.1.1).
