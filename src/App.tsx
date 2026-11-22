@@ -7,7 +7,7 @@ import { ClaimDetailPage } from '@/pages/ClaimDetailPage';
 import { ComparePage } from '@/pages/ComparePage';
 import { PlaceholderPage } from '@/pages/PlaceholderPage';
 
-/** Casebook routes load markdown renderer + generated case bodies on demand. */
+/** Casebook / mechanism routes load on demand. */
 const CasebookPage = lazy(() =>
   import('@/pages/CasebookPage').then((m) => ({ default: m.CasebookPage })),
 );
@@ -17,11 +17,20 @@ const CaseDetailPage = lazy(() =>
 const CasebookSourcePage = lazy(() =>
   import('@/pages/CasebookSourcePage').then((m) => ({ default: m.CasebookSourcePage })),
 );
+const MechanismsPage = lazy(() =>
+  import('@/pages/MechanismsPage').then((m) => ({ default: m.MechanismsPage })),
+);
+const MechanismDetailPage = lazy(() =>
+  import('@/pages/MechanismDetailPage').then((m) => ({ default: m.MechanismDetailPage })),
+);
+const ComparisonPage = lazy(() =>
+  import('@/pages/ComparisonPage').then((m) => ({ default: m.ComparisonPage })),
+);
 
-function CasebookFallback() {
+function RouteFallback({ label }: { label: string }) {
   return (
     <p className="text-sm text-ink-muted" role="status">
-      Loading casebook…
+      Loading {label}…
     </p>
   );
 }
@@ -37,7 +46,7 @@ export default function App() {
         <Route
           path="casebook"
           element={
-            <Suspense fallback={<CasebookFallback />}>
+            <Suspense fallback={<RouteFallback label="casebook" />}>
               <CasebookPage />
             </Suspense>
           }
@@ -45,7 +54,7 @@ export default function App() {
         <Route
           path="casebook/source"
           element={
-            <Suspense fallback={<CasebookFallback />}>
+            <Suspense fallback={<RouteFallback label="casebook" />}>
               <CasebookSourcePage />
             </Suspense>
           }
@@ -53,7 +62,7 @@ export default function App() {
         <Route
           path="casebook/:caseId"
           element={
-            <Suspense fallback={<CasebookFallback />}>
+            <Suspense fallback={<RouteFallback label="casebook" />}>
               <CaseDetailPage />
             </Suspense>
           }
@@ -61,19 +70,25 @@ export default function App() {
         <Route
           path="mechanisms"
           element={
-            <PlaceholderPage
-              title="Mechanism Explorer"
-              description="Causal mechanism mapping (M1–M6) will be explored here. Deferred — not implemented in Build 04."
-            />
+            <Suspense fallback={<RouteFallback label="mechanisms" />}>
+              <MechanismsPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="mechanisms/:mechanismId"
+          element={
+            <Suspense fallback={<RouteFallback label="mechanisms" />}>
+              <MechanismDetailPage />
+            </Suspense>
           }
         />
         <Route
           path="comparison"
           element={
-            <PlaceholderPage
-              title="Policy Comparison Laboratory"
-              description="Structured cross-policy comparison of admissible claims across cases. Deferred — not implemented in Build 04. Two-claim evidence comparison remains at /claims/compare; case investigations are at /casebook."
-            />
+            <Suspense fallback={<RouteFallback label="comparison" />}>
+              <ComparisonPage />
+            </Suspense>
           }
         />
         <Route
@@ -90,7 +105,7 @@ export default function App() {
           element={
             <PlaceholderPage
               title="Analytical Sandbox"
-              description="Separately gated analytical workspace. Deferred and gated — not available in Build 04."
+              description="Separately gated analytical workspace. Deferred and gated — not available in Build 06."
               gated
             />
           }

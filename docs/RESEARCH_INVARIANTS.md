@@ -38,8 +38,17 @@ Established safeguards for the interactive application. These constrain Build 01
 ## Direct case membership semantics
 
 - Case filters match claims that list the selected casebook case identifier.
-- Claims Explorer mechanism/outcome/case controls are **exact-tag** filters over parsed identifiers (not silent family expansion).
+- Claims Explorer `mechanism=` / outcome / case controls are **exact-tag** filters over parsed identifiers.
+- Build 05 adds opt-in `mechanism_family=` family-expanded filtering via an explicit parent–child registry (e.g. family M1 → unique records tagged M1, M1a, M1b, or M1c). Exact-tag URLs retain their original meaning. Related-evidence overlap remains exact-match.
 - Casebook Explorer membership is the same direct-citation set (case body citations plus common front-matter rules that explicitly apply to all four cases). Do not equate section-explicit citation, case-body citation, common rules, atlas membership, and merely related metadata.
+
+## Mechanism metadata vs causal relationships
+
+- Atlas mechanism/outcome co-tagging is research metadata association, not causal identification.
+- Competing explanations (e.g. M1a / M1b / M1c / option value) remain distinct; general family tags do not independently establish a particular submechanism.
+- Contextual Case 2 subdivisions M5a-1 / M5a-2 are not atlas tags and must not receive fabricated claim counts.
+- Observed ALDI distribution chronology does not establish that logistics was the binding constraint.
+- FDI frictions are transaction-specific.
 
 ## Casebook source fidelity
 
@@ -61,8 +70,25 @@ Established safeguards for the interactive application. These constrain Build 01
 
 - The application must not produce policy rankings, welfare forecasts, or simulated economic effects.
 - Open thesis questions (e.g. `ATLAS-HYP-003`) remain unresolved hypotheses, not ranked recommendations.
+- The Policy Comparison Laboratory (Build 06) is qualitative only: no scores, ranks, invented probabilities, or numerical effect estimates. `policyWinnerDeclared` remains false for every case.
+
+## Policy comparison fidelity (Build 06)
+
+- Comparison variants, baselines, pathways, and outcome assessments must track the pinned casebook narrative (SHA `3da0e29c…` at v0.1.1).
+- Case 1 R and E remain separate Layer D instruments; favourable / adverse / null pathway columns retain their published meanings; release does not imply rival acquisition or subsequent productive capacity; `ATLAS-HYP-002` is qualitative caution only (`admissible_in_policy_comparison=no`), never a validated equilibrium result.
+- Case 2 CF-A–D remain distinct; case-wide pathways (`variantIds: null`) are not silently reassigned to a single counterfactual; private vs FGI, trigger vs condition, and Layer C vs Layer D stay distinct.
+- Case 3 ALDI chronology is an observed O2 benchmark; hypothetical consumer-benefit pathways remain labelled hypothetical; actual welfare remains unidentified; FDI-only and merger-notification-only are analytical comparators, not fully specified legislative instruments.
+- Case 4 B0 is the dated institutional baseline; stronger/weaker scenarios keep nested alternatives separate; notification, waiver, determination, completion, and opening remain distinct; Kalgoorlie is a local prospective ACCC assessment, not a general realised causal finding.
+- Cross-case variant pairing must not imply mutual exclusivity, direct substitutability, or joint implementability; variants may differ in institutional scope, target actors, policy objective, baseline, and outcome assessment basis.
+- Structural dataset validation (claim membership, ref integrity, O5/O6 overclaim bans) is not a substitute for substantive research review and does not verify economic truth.
+
+## Release pin gate (Build 05 remediation)
+
+- `npm run validate:release` must reject drift in the pinned atlas CSV, casebook Markdown, or research LICENSE relative to published commit `a1922f8…`, even when ordinary `validate` would pass after regenerating consumer JSON.
+- Acceptance and release workflows run pin/source validation against on-disk artefacts before any regeneration step that could mask source edits.
 
 ## Publication boundary
 
 - Authoritative published research for the application baseline: `research/10_policy_claims_atlas.csv`, `research/10_policy_assessment_casebook.md`, and `LICENSE`.
 - Unpublished local files under `research/01–09` and `references/` must not be staged, committed, or bundled as source files.
+- Local acceptance screenshots under `docs/screenshots/` are working artefacts and must not enter publication commits unless separately authorised.

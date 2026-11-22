@@ -173,7 +173,7 @@ export function ClaimsTable({
                     <AdmissibilityBadge value={claim.admissible_in_policy_comparison} />
                   </td>
                   <td className="px-3 py-2 align-top">
-                    <IdChipList values={claim.mechanisms} />
+                    <IdChipList values={claim.mechanisms} linkMechanisms />
                   </td>
                   <td className="px-3 py-2 align-top">
                     <IdChipList values={claim.outcomes} />

@@ -1,5 +1,5 @@
 /**
- * URL-based Claims Explorer filter contract (Build 02 / 03).
+ * URL-based Claims Explorer filter contract (Build 02 / 03 / 05).
  *
  * Query parameters on `/claims`:
  * - `q`           — free-text search (single string; whitespace-only ignored when matching)
@@ -7,16 +7,25 @@
  * - `admissibility` — policy-comparison admissibility (`yes`|`no`|`conditional`); repeatable
  * - `case`        — casebook case ID (Case1…Case4); repeatable
  * - `outcome`     — exact outcome tag (O1…O6); repeatable
- * - `mechanism`   — exact mechanism tag (e.g. M1, M1a); repeatable
+ * - `mechanism`   — exact mechanism tag (e.g. M1, M1a); repeatable — **exact-tag only**
+ * - `mechanism_family` — family-expanded mechanism (M1…M6); repeatable
  * - `literature`  — exact literature-source identifier; repeatable
  * - `source_url`  — exact primary source URL match (single value)
  * - `sort`        — `claim_id` (default) or `primary_source_title`
+ *
+ * Mechanism dimension combination:
+ * - `mechanism=M1` retains exact-tag semantics (records tagged M1 only).
+ * - `mechanism_family=M1` expands via the explicit registry to M1 ∪ M1a ∪ M1b ∪ M1c.
+ * - Exact tags and family expansions within the mechanism dimension combine with OR
+ *   (union of resolved tags); across dimensions (status, admissibility, case,
+ *   outcome, literature, search, source URL), filters combine with AND.
  *
  * Invalid-value semantics (predictable; documented):
  * - Unknown `status` values: **ignored** (not applied; listed in UI notice).
  * - Unknown `admissibility` values: **ignored**.
  * - Unknown `case` values (not Case1–Case4): **ignored**.
  * - Unknown `outcome` values (not O1–O6): **ignored**.
+ * - Unknown `mechanism_family` values (not M1–M6): **ignored**.
  * - Unknown `sort` values: **ignored** (default `claim_id`).
  * - `mechanism` / `literature` values: **retained and applied** as exact-tag
  *   filters even if no claim currently carries the tag (may yield zero matches).
@@ -26,10 +35,9 @@
  *   changes filters; committed filter state uses only the accepted values.
  *
  * Other semantics:
- * - Within a dimension, values combine with OR; across dimensions, with AND.
  * - Clearing filters removes corresponding parameters.
  * - Empty filters yield `/claims` with no query string (default sort omitted).
- * - Mechanism filtering remains exact-tag (no family expansion).
+ * - Related-evidence overlap remains exact-tag (unaffected by `mechanism_family`).
  * - Claim-detail paths `/claims/:claimId` and compare `/claims/compare` are separate.
  *
  * Admissibility is not a truth verdict and is distinct from evidentiary status.
@@ -44,9 +52,12 @@ import {
 } from './queries';
 import {
   CASE_IDS,
+  MECHANISM_FAMILY_IDS,
   OUTCOME_STAGE_IDS,
   isCaseId,
+  isMechanismFamilyId,
   isOutcomeStageId,
+  type MechanismFamilyId,
 } from './taxonomy';
 
 export const URL_FILTER_PARAMS = {
@@ -56,6 +67,7 @@ export const URL_FILTER_PARAMS = {
   case: 'case',
   outcome: 'outcome',
   mechanism: 'mechanism',
+  mechanismFamily: 'mechanism_family',
   literature: 'literature',
   sourceUrl: 'source_url',
   sort: 'sort',
@@ -65,6 +77,7 @@ const STATUS_SET = new Set<string>(CLAIM_STATUSES);
 const ADMISSIBILITY_SET = new Set<string>(ADMISSIBILITY_VALUES);
 const CASE_SET = new Set<string>(CASE_IDS);
 const OUTCOME_SET = new Set<string>(OUTCOME_STAGE_IDS);
+const MECHANISM_FAMILY_SET = new Set<string>(MECHANISM_FAMILY_IDS);
 const SORT_VALUES = new Set<ClaimSortKey>(['claim_id', 'primary_source_title']);
 
 function isClaimStatus(value: string): value is ClaimStatus {
@@ -93,7 +106,7 @@ function uniquePreserveOrder(values: string[]): string[] {
 
 /**
  * Parse committed Claims Explorer filters from URLSearchParams.
- * Invalid status/admissibility/case/outcome/sort values are dropped;
+ * Invalid status/admissibility/case/outcome/sort/mechanism_family values are dropped;
  * mechanism and literature tags are kept as exact tags.
  */
 export function parseFiltersFromSearchParams(
@@ -118,6 +131,12 @@ export function parseFiltersFromSearchParams(
       .map((value) => value.trim())
       .filter((value) => value.length > 0),
   );
+  const mechanismFamilies = uniquePreserveOrder(
+    params
+      .getAll(URL_FILTER_PARAMS.mechanismFamily)
+      .map((value) => value.trim())
+      .filter(isMechanismFamilyId),
+  ) as MechanismFamilyId[];
   const literatureSources = uniquePreserveOrder(
     params
       .getAll(URL_FILTER_PARAMS.literature)
@@ -136,6 +155,7 @@ export function parseFiltersFromSearchParams(
     cases,
     outcomes,
     mechanisms,
+    mechanismFamilies,
     literatureSources,
     sourceUrl,
     sort,
@@ -166,6 +186,9 @@ export function serializeFiltersToSearchParams(
   for (const mechanism of filters.mechanisms) {
     params.append(URL_FILTER_PARAMS.mechanism, mechanism);
   }
+  for (const family of filters.mechanismFamilies) {
+    params.append(URL_FILTER_PARAMS.mechanismFamily, family);
+  }
   for (const literature of filters.literatureSources) {
     params.append(URL_FILTER_PARAMS.literature, literature);
   }
@@ -193,6 +216,7 @@ export interface IgnoredFilterParams {
   admissibilities: string[];
   cases: string[];
   outcomes: string[];
+  mechanismFamilies: string[];
   sorts: string[];
 }
 
@@ -222,6 +246,14 @@ export function collectIgnoredFilterParams(
         .getAll(URL_FILTER_PARAMS.outcome)
         .filter((value) => value.length > 0 && !OUTCOME_SET.has(value)),
     ),
+    mechanismFamilies: uniquePreserveOrder(
+      params
+        .getAll(URL_FILTER_PARAMS.mechanismFamily)
+        .map((value) => value.trim())
+        .filter(
+          (value) => value.length > 0 && !MECHANISM_FAMILY_SET.has(value),
+        ),
+    ),
     sorts:
       sortRaw && sortRaw.length > 0 && !isClaimSortKey(sortRaw) ? [sortRaw] : [],
   };
@@ -240,6 +272,7 @@ export function ignoredFilterParamsAreEmpty(
     ignored.admissibilities.length === 0 &&
     ignored.cases.length === 0 &&
     ignored.outcomes.length === 0 &&
+    ignored.mechanismFamilies.length === 0 &&
     ignored.sorts.length === 0
   );
 }
@@ -250,6 +283,7 @@ export function filtersEqual(a: ClaimFilters, b: ClaimFilters): boolean {
     a.statuses.join('\0') === b.statuses.join('\0') &&
     a.admissibilities.join('\0') === b.admissibilities.join('\0') &&
     a.mechanisms.join('\0') === b.mechanisms.join('\0') &&
+    a.mechanismFamilies.join('\0') === b.mechanismFamilies.join('\0') &&
     a.outcomes.join('\0') === b.outcomes.join('\0') &&
     a.cases.join('\0') === b.cases.join('\0') &&
     a.literatureSources.join('\0') === b.literatureSources.join('\0') &&
@@ -266,6 +300,7 @@ export function dimensionsEqualExceptSearch(
     a.statuses.join('\0') === b.statuses.join('\0') &&
     a.admissibilities.join('\0') === b.admissibilities.join('\0') &&
     a.mechanisms.join('\0') === b.mechanisms.join('\0') &&
+    a.mechanismFamilies.join('\0') === b.mechanismFamilies.join('\0') &&
     a.outcomes.join('\0') === b.outcomes.join('\0') &&
     a.cases.join('\0') === b.cases.join('\0') &&
     a.literatureSources.join('\0') === b.literatureSources.join('\0') &&

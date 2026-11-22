@@ -102,24 +102,3 @@ export function validateCasebookDataset(
     throw new ResearchIngestError('Casebook dataset validation failed', issues);
   }
 }
-
-export function findCasebookGeneratedDrift(
-  expected: CasebookDataset,
-  actualRaw: unknown,
-): string[] {
-  const issues: string[] = [];
-  if (!actualRaw || typeof actualRaw !== 'object') {
-    return ['Generated casebook is not an object'];
-  }
-  const actual = actualRaw as CasebookDataset;
-  if (actual.provenance?.sourceContentSha256 !== expected.provenance.sourceContentSha256) {
-    issues.push('Casebook SHA-256 drift between source and generated artefact');
-  }
-  if (JSON.stringify(actual.cases) !== JSON.stringify(expected.cases)) {
-    issues.push('Generated casebook cases drift from freshly ingested source');
-  }
-  if (actual.frontMatterMarkdown !== expected.frontMatterMarkdown) {
-    issues.push('Generated casebook front matter drift');
-  }
-  return issues;
-}

@@ -423,8 +423,16 @@ export function OverviewPage() {
       <section className="space-y-1 border-t border-line pt-5 text-sm text-ink-muted">
         <h2 className="text-base font-semibold text-ink">Deferred modules</h2>
         <p>
-          Mechanism Explorer, Policy Comparison Laboratory, Evidence Gaps, and the gated Analytical
-          Sandbox remain deferred (navigation labelled “later”). Casebook Explorer is available at{' '}
+          Mechanism Explorer is available at{' '}
+          <Link to="/mechanisms" className="text-accent no-underline hover:underline">
+            /mechanisms
+          </Link>
+          . Policy Comparison Laboratory is available at{' '}
+          <Link to="/comparison" className="text-accent no-underline hover:underline">
+            /comparison
+          </Link>
+          . Evidence Gaps and the gated Analytical Sandbox remain deferred (navigation labelled
+          “later”). Casebook Explorer is available at{' '}
           <Link to="/casebook" className="text-accent">
             /casebook
           </Link>

@@ -318,7 +318,7 @@ function TagBundle({ claim }: { claim: Claim | undefined }) {
     <div className="space-y-2 text-sm">
       <div>
         <span className="text-xs text-ink-subtle">Mechanisms </span>
-        <IdChipList values={claim.mechanisms} />
+        <IdChipList values={claim.mechanisms} linkMechanisms />
       </div>
       <div>
         <span className="text-xs text-ink-subtle">Outcomes </span>

@@ -153,43 +153,247 @@ export const OUTCOME_STAGES: readonly OutcomeStage[] = [
 export const MECHANISM_FAMILY_IDS = ['M1', 'M2', 'M3', 'M4', 'M5', 'M6'] as const;
 export type MechanismFamilyId = (typeof MECHANISM_FAMILY_IDS)[number];
 
+/**
+ * Exact atlas-tagged submechanism identifiers (12).
+ * Does not include contextual Case 2 prose subdivisions M5a-1 / M5a-2.
+ */
+export const MECHANISM_SUBMECHANISM_IDS = [
+  'M1a',
+  'M1b',
+  'M1c',
+  'M2a',
+  'M2b',
+  'M3a',
+  'M3b',
+  'M4a',
+  'M4b',
+  'M5a',
+  'M6a',
+  'M6b',
+] as const;
+export type MechanismSubmechanismId = (typeof MECHANISM_SUBMECHANISM_IDS)[number];
+
+/** Any navigable mechanism profile ID (family or exact atlas submechanism). */
+export type MechanismId = MechanismFamilyId | MechanismSubmechanismId;
+
 export interface MechanismFamily {
   id: MechanismFamilyId;
   label: string;
   shorthand: string;
+  /** Short published role description grounded in casebook / atlas usage. */
+  definition: string;
+  /** Atlas-exact child tags registered under this family (excludes the family tag itself). */
+  childIds: readonly MechanismSubmechanismId[];
+  provenance: string;
 }
 
-/** Casebook mechanism shorthand (families), not exact atlas sub-tags. */
+export interface MechanismSubmechanism {
+  id: MechanismSubmechanismId;
+  parentId: MechanismFamilyId;
+  label: string;
+  /**
+   * Published usage gloss. Where the casebook lacks a dedicated prose definition,
+   * label + definition note the limitation rather than inventing theory.
+   */
+  definition: string;
+  definitionLimitation?: string;
+  provenance: string;
+}
+
+/**
+ * Contextual Case 2 subdivisions of M5a — not atlas tags, not filterable IDs.
+ * Do not assign fabricated claim counts or treat all M5a claims as evidence for either.
+ */
+export const MECHANISM_CONTEXTUAL_SUBDIVISIONS = [
+  {
+    id: 'M5a-1',
+    parentExactTag: 'M5a' as const,
+    label: 'Irreversible investment',
+    note: 'Case 2 §4 distinguishes irreversible investment from financing scarcity. This is a contextual conceptual subdivision, not an atlas mechanism_ids tag.',
+    provenance: 'Case 2 §4 Affected causal mechanisms',
+  },
+  {
+    id: 'M5a-2',
+    parentExactTag: 'M5a' as const,
+    label: 'Financing scarcity',
+    note: 'Case 2 §4 notes financing scarcity (M5a-2) is weakened for large internationals per ACCC. Not an atlas tag; do not equate all M5a co-tags with this subdivision.',
+    provenance: 'Case 2 §4 Affected causal mechanisms; ATLAS-EMP-003',
+  },
+] as const;
+
+/**
+ * Explicit parent→child registry for family-expanded filtering.
+ * Validated against published atlas tags — no substring matching.
+ */
+export const MECHANISM_FAMILY_CHILDREN: Record<
+  MechanismFamilyId,
+  readonly MechanismSubmechanismId[]
+> = {
+  M1: ['M1a', 'M1b', 'M1c'],
+  M2: ['M2a', 'M2b'],
+  M3: ['M3a', 'M3b'],
+  M4: ['M4a', 'M4b'],
+  M5: ['M5a'],
+  M6: ['M6a', 'M6b'],
+};
+
+/** Casebook mechanism shorthand (families) plus published child registry. */
 export const MECHANISM_FAMILIES: readonly MechanismFamily[] = [
   {
     id: 'M1',
-    label: 'Site, planning and foreclosure',
+    label: 'Site access, planning and foreclosure',
     shorthand: 'site/planning/foreclosure',
+    definition:
+      'Constraints and strategies around supermarket-capable sites: commercial scarcity, planning/zoning, and possible strategic foreclosure — kept as competing explanations.',
+    childIds: MECHANISM_FAMILY_CHILDREN.M1,
+    provenance: 'Casebook mechanism shorthand; Case 1 §4 required M1a ≠ M1b ≠ M1c separation',
   },
   {
     id: 'M2',
     label: 'Scale and logistics',
     shorthand: 'scale/logistics',
+    definition:
+      'Minimum efficient scale and distribution logistics as candidate constraints on grocery network expansion.',
+    childIds: MECHANISM_FAMILY_CHILDREN.M2,
+    provenance: 'Casebook mechanism shorthand; Case 2–3 §4 M2a/M2b usage',
   },
   {
     id: 'M3',
     label: 'Demand and format',
     shorthand: 'demand/format',
+    definition:
+      'Demand-side substitution and format differentiation (including limited-assortment hard discount) as distinct from logistics or site control.',
+    childIds: MECHANISM_FAMILY_CHILDREN.M3,
+    provenance: 'Casebook mechanism shorthand; Case 3 §4 M3b; atlas M3a/M3b tags',
   },
   {
     id: 'M4',
     label: 'Incumbent response',
     shorthand: 'incumbent response',
+    definition:
+      'Incumbent competitive conduct ranging from ordinary rivalry to exclusionary response — kept distinct from site-foreclosure hypotheses.',
+    childIds: MECHANISM_FAMILY_CHILDREN.M4,
+    provenance: 'Casebook mechanism shorthand; Case 1 §4 M4a vs M4b; Case 4 §4',
   },
   {
     id: 'M5',
-    label: 'Finance, sunk cost and exit',
+    label: 'Finance, sunk costs and exit',
     shorthand: 'finance/sunk/exit',
+    definition:
+      'Irreversible investment, option value under uncertainty, and financing constraints that may affect entry timing or vacant control.',
+    childIds: MECHANISM_FAMILY_CHILDREN.M5,
+    provenance: 'Casebook mechanism shorthand; Case 1–3 §4 M5a usage',
   },
   {
     id: 'M6',
-    label: 'FDI mode and frictions',
+    label: 'Foreign investment mode and frictions',
     shorthand: 'FDI mode/frictions',
+    definition:
+      'Transaction-specific foreign-investment notification or call-in frictions, and the distinction between greenfield capacity and acquisition-based entry.',
+    childIds: MECHANISM_FAMILY_CHILDREN.M6,
+    provenance: 'Casebook mechanism shorthand; Case 2 §4 M6a/M6b',
+  },
+] as const;
+
+/** Exact atlas submechanisms with labels grounded in published casebook / atlas usage. */
+export const MECHANISM_SUBMECHANISMS: readonly MechanismSubmechanism[] = [
+  {
+    id: 'M1a',
+    parentId: 'M1',
+    label: 'Physical / commercial scarcity',
+    definition:
+      'Unused or controlled sites may reflect genuine scarcity of other viable parcels rather than exclusionary intent.',
+    provenance: 'Case 1 §4 mechanism table',
+  },
+  {
+    id: 'M1b',
+    parentId: 'M1',
+    label: 'Planning / zoning',
+    definition:
+      'Holding or delay may track permission delay, contamination, liquor, or centre design — not exclusion.',
+    provenance: 'Case 1 §4 mechanism table',
+  },
+  {
+    id: 'M1c',
+    parentId: 'M1',
+    label: 'Strategic foreclosure',
+    definition:
+      'Holding, options, or covenants may raise rivals’ costs — treated as a live hypothesis, not a proven general pattern (ATLAS-HYP-001).',
+    provenance: 'Case 1 §4 mechanism table; ATLAS-HYP-001',
+  },
+  {
+    id: 'M2a',
+    parentId: 'M2',
+    label: 'Scale / MES',
+    definition:
+      'Scale and capital requirements for large-network grocery entry; ACCC material treats capital as unlikely binding for large internationals while time-to-scale remains material.',
+    provenance: 'Case 2 §4 M2a/M2b; Case 3 §4; ATLAS-EMP-003',
+  },
+  {
+    id: 'M2b',
+    parentId: 'M2',
+    label: 'Distribution / logistics',
+    definition:
+      'Distribution-centre sequencing relative to store openings — observed chronology is distinct from a claim that logistics was the binding constraint (ATLAS-EMP-005; ATLAS-HYP-004).',
+    provenance: 'Case 3 §4–5; ATLAS-EMP-005; ATLAS-HYP-004',
+  },
+  {
+    id: 'M3a',
+    parentId: 'M3',
+    label: 'Demand / diversion',
+    definition:
+      'Atlas tag associated with demand-side diversion and related identification gaps (e.g. revenue diversion without incumbent price effects in foreign Supercenter evidence).',
+    definitionLimitation:
+      'The published casebook does not establish a standalone M3a prose definition separate from the M3 demand/format family shorthand; label follows atlas usage (ATLAS-LIT-001; ATLAS-GAP-002).',
+    provenance: 'Atlas tags on ATLAS-LIT-001 and ATLAS-GAP-002; casebook M3 shorthand',
+  },
+  {
+    id: 'M3b',
+    parentId: 'M3',
+    label: 'Format differentiation',
+    definition:
+      'Limited-assortment hard-discount and related format differentiation — direct consumer benefits possible; incomplete incumbent price constraint.',
+    provenance: 'Case 3 §4 mechanism table; ATLAS-EMP-004',
+  },
+  {
+    id: 'M4a',
+    parentId: 'M4',
+    label: 'Ordinary rivalry',
+    definition:
+      'Competitive expansion or pricing rivalry with possible exit-risk side effects — distinct from strategic foreclosure (M1c) and exclusionary response (M4b).',
+    provenance: 'Case 1 §4; Case 4 §4 Kalgoorlie ordinary expansion (ATLAS-ADM-002)',
+  },
+  {
+    id: 'M4b',
+    parentId: 'M4',
+    label: 'Exclusionary response',
+    definition:
+      'Preemption via sites, covenants, or acquisitions of nascent competitive constraints.',
+    provenance: 'Case 1 §4 mechanism table; Case 4 §4 M4b/M1c discussion',
+  },
+  {
+    id: 'M5a',
+    parentId: 'M5',
+    label: 'Irreversible investment / option value',
+    definition:
+      'Vacant control or multi-year irreversible investment can reflect efficient waiting under uncertainty; Case 2 additionally distinguishes irreversible investment (M5a-1) from financing scarcity (M5a-2) as contextual subdivisions — not atlas tags.',
+    provenance: 'Case 1 §4; Case 2 §4; Case 3 §4; ATLAS-EMP-003; ATLAS-EMP-005',
+  },
+  {
+    id: 'M6a',
+    parentId: 'M6',
+    label: 'Transaction-specific FDI frictions',
+    definition:
+      'Foreign-investment notification or call-in frictions that apply only when a deal is notifiable or called in — not a uniform multi-year barrier for all private grocery starts.',
+    provenance: 'Case 2 §4; ATLAS-LEG-001–005; ATLAS-CON-001',
+  },
+  {
+    id: 'M6b',
+    parentId: 'M6',
+    label: 'Greenfield vs acquisition mode',
+    definition:
+      'Ownership transfer is not interchangeable with new productive capacity; greenfield and M&A FDI modes remain distinct (ATLAS-LIT-005).',
+    provenance: 'Case 2 §4; Case 3 §4; ATLAS-LIT-005',
   },
 ] as const;
 
@@ -265,6 +469,24 @@ export function isOutcomeStageId(value: string): value is OutcomeStageId {
   return (OUTCOME_STAGE_IDS as readonly string[]).includes(value);
 }
 
+export function isMechanismFamilyId(value: string): value is MechanismFamilyId {
+  return (MECHANISM_FAMILY_IDS as readonly string[]).includes(value);
+}
+
+export function isMechanismSubmechanismId(
+  value: string,
+): value is MechanismSubmechanismId {
+  return (MECHANISM_SUBMECHANISM_IDS as readonly string[]).includes(value);
+}
+
+export function isMechanismId(value: string): value is MechanismId {
+  return isMechanismFamilyId(value) || isMechanismSubmechanismId(value);
+}
+
+export function isContextualMechanismSubdivision(value: string): boolean {
+  return MECHANISM_CONTEXTUAL_SUBDIVISIONS.some((item) => item.id === value);
+}
+
 export function getResearchCase(id: CaseId): ResearchCase {
   const found = RESEARCH_CASES.find((c) => c.id === id);
   if (!found) {
@@ -279,4 +501,46 @@ export function getOutcomeStage(id: OutcomeStageId): OutcomeStage {
     throw new Error(`Unknown outcome stage: ${id}`);
   }
   return found;
+}
+
+export function getMechanismFamily(id: MechanismFamilyId): MechanismFamily {
+  const found = MECHANISM_FAMILIES.find((item) => item.id === id);
+  if (!found) {
+    throw new Error(`Unknown mechanism family: ${id}`);
+  }
+  return found;
+}
+
+export function getMechanismSubmechanism(
+  id: MechanismSubmechanismId,
+): MechanismSubmechanism {
+  const found = MECHANISM_SUBMECHANISMS.find((item) => item.id === id);
+  if (!found) {
+    throw new Error(`Unknown mechanism submechanism: ${id}`);
+  }
+  return found;
+}
+
+/**
+ * Exact tags included in a family-expanded filter: family ID plus registered children.
+ * Uses the explicit registry — never substring matching (M1 must not match M10).
+ */
+export function expandMechanismFamilyTags(
+  familyId: MechanismFamilyId,
+): readonly string[] {
+  return [familyId, ...MECHANISM_FAMILY_CHILDREN[familyId]];
+}
+
+/** Parent family for an exact atlas tag (family tags are their own parent). */
+export function getMechanismParentFamily(
+  id: MechanismId,
+): MechanismFamilyId {
+  if (isMechanismFamilyId(id)) {
+    return id;
+  }
+  return getMechanismSubmechanism(id).parentId;
+}
+
+export function mechanismProfileHref(id: MechanismId | string): string {
+  return `/mechanisms/${id}`;
 }

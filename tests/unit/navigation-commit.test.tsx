@@ -11,14 +11,20 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-function renderExplorer(initialEntries: string[]) {
+function renderExplorer(
+  initialEntries: string[],
+  initialIndex?: number,
+) {
   const router = createMemoryRouter(
     [
       { path: '/claims', element: <ClaimsPage /> },
       { path: '/claims/compare', element: <ComparePage /> },
       { path: '/claims/:claimId', element: <ClaimDetailPage /> },
     ],
-    { initialEntries },
+    {
+      initialEntries,
+      initialIndex: initialIndex ?? initialEntries.length - 1,
+    },
   );
   return { router, ...render(<RouterProvider router={router} />) };
 }
@@ -85,5 +91,32 @@ describe('search commit and investigation navigation', () => {
       expect(router.state.location.search).toContain('case=Case2');
     });
     expect(router.state.location.search).toContain('q=FIRB');
+  });
+
+  it('scopes pending search so Back before debounce cannot overwrite M6 with M1+planning', async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+    // History stack: M6 → M1 (current).
+    const { router } = renderExplorer(
+      ['/claims?mechanism_family=M6', '/claims?mechanism_family=M1'],
+      1,
+    );
+
+    expect(router.state.location.search).toBe('?mechanism_family=M1');
+    expect(screen.getByTestId('match-count')).toHaveTextContent('24 of 43');
+
+    await user.type(screen.getByRole('searchbox', { name: 'Search' }), 'planning');
+    // Press Back before 200 ms debounce flushes the draft into the URL.
+    await router.navigate(-1);
+    await waitFor(() => {
+      expect(router.state.location.search).toBe('?mechanism_family=M6');
+    });
+
+    await vi.advanceTimersByTimeAsync(250);
+
+    expect(router.state.location.search).toBe('?mechanism_family=M6');
+    expect(router.state.location.search).not.toMatch(/planning|q=/);
+    expect(screen.getByTestId('match-count')).toHaveTextContent('14 of 43');
+    vi.useRealTimers();
   });
 });

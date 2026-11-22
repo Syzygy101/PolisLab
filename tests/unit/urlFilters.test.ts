@@ -50,8 +50,29 @@ describe('Claims Explorer URL filter contract', () => {
       admissibilities: [],
       cases: ['Case9'],
       outcomes: ['O9'],
+      mechanismFamilies: [],
       sorts: [],
     });
+  });
+
+  it('round-trips mechanism_family and ignores unknown family values', () => {
+    const filters = {
+      ...EMPTY_FILTERS,
+      mechanismFamilies: ['M1' as const],
+      mechanisms: ['M1b'],
+    };
+    const params = serializeFiltersToSearchParams(filters);
+    expect(params.getAll('mechanism_family')).toEqual(['M1']);
+    expect(params.getAll('mechanism')).toEqual(['M1b']);
+    expect(parseFiltersFromSearchParams(params)).toEqual(filters);
+
+    const ignored = collectIgnoredFilterParams(
+      new URLSearchParams('mechanism_family=M9&mechanism_family=M2'),
+    );
+    expect(ignored.mechanismFamilies).toEqual(['M9']);
+    expect(parseFiltersFromSearchParams(
+      new URLSearchParams('mechanism_family=M9&mechanism_family=M2'),
+    ).mechanismFamilies).toEqual(['M2']);
   });
 
   it('round-trips admissibility, literature, source_url, and sort', () => {
@@ -83,6 +104,7 @@ describe('Claims Explorer URL filter contract', () => {
       admissibilities: ['maybe'],
       cases: [],
       outcomes: [],
+      mechanismFamilies: [],
       sorts: ['by_strength'],
     });
   });

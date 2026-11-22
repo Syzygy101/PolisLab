@@ -3,10 +3,11 @@
   "private": true,
   "version": "0.2.0",
   "type": "module",
-  "description": "PolisLab interactive research laboratory — Overview, Claims Explorer, Casebook Explorer",
+  "description": "PolisLab interactive research laboratory — Overview, Claims, Casebook, Mechanisms, Comparison",
   "scripts": {
     "ingest": "tsx scripts/ingest-research.ts",
     "validate": "tsx scripts/validate-research.ts",
+    "validate:release": "tsx scripts/validate-release.ts",
     "predev": "npm run ingest",
     "dev": "vite",
     "prebuild": "npm run ingest && npm run validate",
@@ -16,8 +17,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test --workers=1",
-    "test:all": "npm run validate && npm run test && npm run test:e2e",
-    "verify:research": "python3 scripts/independent_verify_atlas.py && python3 scripts/independent_verify_casebook.py"
+    "test:all": "npm run validate && npm run validate:release && npm run test && npm run test:e2e",
+    "verify:research": "python3 scripts/independent_verify_atlas.py && python3 scripts/independent_verify_casebook.py && python3 scripts/independent_verify_mechanisms.py",
+    "verify:mechanisms": "python3 scripts/independent_verify_mechanisms.py"
   },
   "engines": {
     "node": "^22.12.0 || >=24"

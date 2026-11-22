@@ -10,8 +10,8 @@ const navItems = [
   { to: '/', label: 'Overview', end: true },
   { to: '/claims', label: 'Claims Explorer' },
   { to: '/casebook', label: 'Casebook' },
-  { to: '/mechanisms', label: 'Mechanisms', deferred: true },
-  { to: '/comparison', label: 'Comparison', deferred: true },
+  { to: '/mechanisms', label: 'Mechanisms' },
+  { to: '/comparison', label: 'Comparison' },
   { to: '/gaps', label: 'Evidence Gaps', deferred: true },
   { to: '/sandbox', label: 'Sandbox', deferred: true },
 ] as const;
@@ -41,7 +41,7 @@ export function AppShell() {
             </div>
             <div className="text-right text-xs text-ink-subtle">
               <p>
-                Research {RESEARCH_RELEASE} · app development v0.2 · Build 04
+                Research {RESEARCH_RELEASE} · app development v0.2 · Build 06
               </p>
               <p>Evidence cutoff {RESEARCH_CUTOFF}</p>
               <p>Correction pass {RESEARCH_CORRECTION_PASS}</p>

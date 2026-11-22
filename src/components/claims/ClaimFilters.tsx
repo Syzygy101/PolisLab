@@ -6,6 +6,10 @@ import {
   type ClaimSortKey,
 } from '@/research/queries';
 import { serializeFiltersToSearchParams } from '@/research/urlFilters';
+import {
+  MECHANISM_FAMILY_IDS,
+  type MechanismFamilyId,
+} from '@/research/taxonomy';
 
 interface ClaimFiltersProps {
   filters: Filters;
@@ -62,10 +66,20 @@ function buildActiveChips(filters: Filters): ActiveChip[] {
   for (const mechanism of filters.mechanisms) {
     chips.push({
       key: `mech:${mechanism}`,
-      label: `Mechanism: ${mechanism}`,
+      label: `Mechanism (exact): ${mechanism}`,
       remove: (f) => ({
         ...f,
         mechanisms: f.mechanisms.filter((m) => m !== mechanism),
+      }),
+    });
+  }
+  for (const family of filters.mechanismFamilies) {
+    chips.push({
+      key: `mechfam:${family}`,
+      label: `Mechanism family: ${family}`,
+      remove: (f) => ({
+        ...f,
+        mechanismFamilies: f.mechanismFamilies.filter((m) => m !== family),
       }),
     });
   }
@@ -283,14 +297,18 @@ export function ClaimFiltersPanel({
       </div>
 
       <p className="text-xs text-ink-subtle">
-        Mechanism, outcome, case, and literature controls are exact-tag filters (parsed
-        identifiers). Selecting <span className="font-mono">M1</span> matches records tagged{' '}
-        <span className="font-mono">M1</span> only — not every{' '}
-        <span className="font-mono">M1*</span> submechanism. Within a dimension, selections
-        combine with OR; across dimensions, filters combine with AND.
+        <span className="font-medium text-ink-muted">Mechanism (exact tag)</span> keeps{' '}
+        <span className="font-mono">mechanism=M1</span> semantics — records tagged{' '}
+        <span className="font-mono">M1</span> only.{" "}
+        <span className="font-medium text-ink-muted">Mechanism family</span> uses{" "}
+        <span className="font-mono">mechanism_family=M1</span> and expands via the explicit
+        registry to unique records tagged M1, M1a, M1b, or M1c. Exact and family selections
+        within the mechanism dimension combine with OR; with status, admissibility, case,
+        outcome, literature, search, and source URL they combine with AND. Related-evidence
+        overlap remains exact-tag. Outcome, case, and literature controls stay exact-tag.
       </p>
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
         <FilterGroup
           legend="Mechanism (exact tag)"
           values={availableMechanisms}
@@ -301,6 +319,21 @@ export function ClaimFiltersPanel({
               mechanisms: toggleValue(filters.mechanisms, value),
             })
           }
+        />
+        <FilterGroup
+          legend="Mechanism family"
+          values={[...MECHANISM_FAMILY_IDS]}
+          selected={filters.mechanismFamilies}
+          onToggle={(value) =>
+            onChange({
+              ...filters,
+              mechanismFamilies: toggleValue(
+                filters.mechanismFamilies,
+                value as MechanismFamilyId,
+              ),
+            })
+          }
+          formatLabel={(value) => `${value} family`}
         />
         <FilterGroup
           legend="Outcome (exact tag)"

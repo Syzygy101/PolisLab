@@ -206,7 +206,7 @@ export function ClaimDetailView({
           <div>
             <p className="text-xs uppercase tracking-wide text-ink-subtle">Mechanisms</p>
             <div className="mt-1">
-              <IdChipList values={claim.mechanisms} />
+              <IdChipList values={claim.mechanisms} linkMechanisms />
             </div>
           </div>
           <div>

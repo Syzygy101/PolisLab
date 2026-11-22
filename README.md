@@ -43,9 +43,9 @@ Third-party materials cited or linked here are **not** relicensed. External prim
 
 ---
 
-## Application (development v0.2 — Build 04)
+## Application (development v0.2 — Build 06)
 
-Interactive research laboratory with a **Research Overview**, an evidence **Claims Explorer** (search, status/admissibility/case/mechanism/outcome/literature filters, shareable URLs), full claim inspection, **two-claim comparison** (`/claims/compare`), related-evidence navigation, and an interactive **Casebook Explorer** over the authentic v0.1.1 atlas and published casebook Markdown. Mechanism Explorer, Policy Comparison Laboratory, Evidence Gaps, and the Analytical Sandbox remain deferred navigation stubs only.
+Interactive research laboratory with a **Research Overview**, an evidence **Claims Explorer** (search, status/admissibility/case/mechanism/outcome/literature filters, shareable URLs), full claim inspection, **two-claim comparison** (`/claims/compare`), related-evidence navigation, an interactive **Casebook Explorer**, a **Mechanism Explorer** (`/mechanisms`), and a qualitative **Policy Comparison Laboratory** (`/comparison?a=&b=`) over the authentic v0.1.1 atlas and published casebook Markdown. Evidence Gaps and the Analytical Sandbox remain deferred navigation stubs only.
 
 **Software licensing:** the research artefacts remain under CC BY 4.0 as above. A separate licence decision is still required for the application/software layer; this build does not choose one.
 
@@ -63,12 +63,13 @@ npm install
 npx playwright install chromium   # once, for end-to-end tests
 npm run ingest                    # regenerate claims + casebook generated JSON from published research
 npm run validate                  # fail nonzero on atlas/casebook integrity violations
+npm run validate:release          # pin atlas/casebook/LICENSE to release commit; reject source drift
 npm run dev                       # http://127.0.0.1:5173
 npm run typecheck
 npm run test                      # Vitest unit / component tests
 npm run test:e2e                  # Playwright (serial workers; dedicated port 4173)
 npm run build
-npm run verify:research           # independent atlas + casebook Python verifiers
+npm run verify:research           # independent atlas + casebook + mechanism Python verifiers
 ```
 
 End-to-end tests use a **dedicated Vite server on port 4173** with `reuseExistingServer: false` and `--workers=1`. Do not treat intermittent parallel runs on port 5173 as reliable.
@@ -76,6 +77,15 @@ End-to-end tests use a **dedicated Vite server on port 4173** with `reuseExistin
 The published CSV at `research/10_policy_claims_atlas.csv` and Markdown casebook at `research/10_policy_assessment_casebook.md` remain the sources of truth. Generated JSON under `src/data/` is a reproducible consumer artefact and must not be edited by hand.
 
 `npm run validate` parses both published sources freshly **and** fails if generated JSON is missing or drifts (stale or hand-edited generated data cannot silently pass). It does not rewrite generated artefacts — run `npm run ingest` to regenerate.
+
+### Mechanism Explorer routes
+
+| Route | Meaning |
+| --- | --- |
+| `/mechanisms` | Family taxonomy overview, coverage counts, 6×6 mechanism–outcome matrix, curated pathways |
+| `/mechanisms/:mechanismId` | Profile for a family (`M1`…`M6`) or exact atlas submechanism (`M1a`…`M6b`) |
+
+Coverage counts are research association tallies, not causal importance. Contextual Case 2 subdivisions `M5a-1` / `M5a-2` are documented on the M5a profile and are not atlas tags or standalone routes.
 
 ### Casebook Explorer routes
 
@@ -85,13 +95,16 @@ The published CSV at `research/10_policy_claims_atlas.csv` and Markdown casebook
 | `/casebook/:caseId` | Individual case investigation (`Case1`…`Case4`) with `#section-1`…`#section-10` anchors |
 | `/casebook/source` | Front matter, cross-case comparison table, and closing methodological sections |
 
-Cited-claim membership is the atlas `casebook_cases` field (direct citation, including common front-matter rules). Memberships overlap and are not evidence-quality or policy-performance scores. Inline `ATLAS-*` IDs in case text link to claim detail. Two cited claims can be selected for the existing `/claims/compare` workspace — there is no second comparison engine.
+Cited-claim membership is the atlas `casebook_cases` field (direct citation, including common front-matter rules). Memberships overlap and are not evidence-quality or policy-performance scores. Inline `ATLAS-*` IDs and published mechanism tags in case text link to claim detail / mechanism profiles. Two cited claims can be selected for the existing `/claims/compare` workspace — there is no second comparison engine.
+
 ### Claims Explorer filter semantics
 
 - Free-text search is case-insensitive substring match; whitespace-only search is ignored. Searched fields include claim ID, exact claim, source title, what the source establishes, limitations, competing mechanisms, admissibility conditions, literature IDs, plus related discoverability fields (see `CLAIM_SEARCH_FIELDS` in `src/research/queries.ts`). No fuzzy or semantic search.
 - Status filters match the exact published evidentiary-status vocabulary.
 - Admissibility filters match `yes` / `no` / `conditional` and are **not** truth scores.
-- Mechanism / outcome / case / literature controls are **exact-tag** filters over parsed identifiers. Selecting `M1` matches records tagged `M1` only; it does **not** expand to `M1a` / `M1b` / `M1c`. Family-level expansion is intentionally not implemented.
+- `mechanism=` remains **exact-tag** (selecting `M1` matches records tagged `M1` only).
+- `mechanism_family=` expands via an explicit parent–child registry (family `M1` → unique records tagged `M1`, `M1a`, `M1b`, or `M1c`). Exact and family selections within the mechanism dimension combine with OR.
+- Outcome / case / literature controls remain exact-tag. Related-evidence overlap remains exact-match.
 - `source_url` requires an exact trimmed match against the stored primary source URL.
 - Within one dimension, selected tags combine with OR. Across dimensions (and with search), filters combine with AND.
 - Default sort is `claim_id`; optional `sort=primary_source_title` (claim ID tie-break).
@@ -108,15 +121,16 @@ Filters on `/claims` are mirrored in the query string (shareable and history-fri
 | `case` | Casebook case ID (repeatable) | `/claims?case=Case1` |
 | `outcome` | Exact outcome tag (repeatable) | `/claims?outcome=O6` |
 | `mechanism` | Exact mechanism tag (repeatable) | `/claims?mechanism=M1` |
+| `mechanism_family` | Family-expanded mechanism (repeatable) | `/claims?mechanism_family=M1` |
 | `literature` | Exact literature-source ID (repeatable) | `/claims?literature=SRC-ACCC-INQ` |
 | `source_url` | Exact primary source URL | `/claims?source_url=https%3A%2F%2F…` |
 | `sort` | `claim_id` (default, omitted) or `primary_source_title` | `/claims?sort=primary_source_title` |
 
 - Resetting filters removes the corresponding parameters.
-- **Invalid values:** unknown `status`, `admissibility`, `case`, `outcome`, and `sort` values are **ignored**; an on-page notice lists them. Unknown `mechanism` / `literature` tags are **retained and applied** as exact-tag filters (may match zero claims). Duplicates are deduplicated.
+- **Invalid values:** unknown `status`, `admissibility`, `case`, `outcome`, `mechanism_family`, and `sort` values are **ignored**; an on-page notice lists them. Unknown `mechanism` / `literature` tags are **retained and applied** as exact-tag filters (may match zero claims). Duplicates are deduplicated.
 - Committed filter state is the URL. Search typing uses a short local draft then updates `q` (replace).
 - Direct claim-detail routes `/claims/:claimId` are unchanged.
-- Overview case / status / outcome actions deep-link into this contract.
+- Overview case / status / outcome actions and Mechanism Explorer deep-links use this contract.
 
 ### Two-claim comparison URL contract
 
@@ -126,6 +140,15 @@ Filters on `/claims` are mirrored in the query string (shareable and history-fri
 | `a`, `b` | Claim IDs for slots A and B |
 
 Missing IDs leave a slot empty; invalid IDs show a not-found state for that slot; identical IDs show both records with a distinct-claims notice. Comparison presents original fields side by side and does not adjudicate truth or recommend policy.
+
+### Policy Comparison Laboratory URL contract
+
+| Route / parameter | Meaning |
+| --- | --- |
+| `/comparison` | Qualitative policy-variant workspace (distinct from `/claims/compare`) |
+| `a`, `b` | Intervention variant IDs (e.g. `C1-VAR-R`, `C1-VAR-E`) |
+
+Defaults are empty slots. Invalid IDs are ignored with a notice; identical IDs keep both slots with a distinct-variants notice. The workspace compares definitions, baselines, conditions, pathways, and O1–O6 assessability qualitatively — no rankings, scores, probabilities, or effect sizes.
 
 ### Production routing
 

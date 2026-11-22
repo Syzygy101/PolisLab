@@ -1,6 +1,10 @@
 import type { AdmissibilityValue, ClaimStatus } from './constants';
 import { ADMISSIBILITY_VALUES, CLAIM_STATUSES } from './constants';
 import type { Claim } from './schema';
+import {
+  expandMechanismFamilyTags,
+  type MechanismFamilyId,
+} from './taxonomy';
 
 /**
  * Free-text search fields (case-insensitive substring match after trim).
@@ -53,7 +57,17 @@ export interface ClaimFilters {
   statuses: ClaimStatus[];
   /** Policy-comparison admissibility vocabulary: yes | no | conditional. */
   admissibilities: AdmissibilityValue[];
+  /**
+   * Exact mechanism tags (e.g. M1, M1b). Selecting M1 matches only records
+   * tagged M1 — not M1a/M1b/M1c. Backward-compatible with `mechanism=` URLs.
+   */
   mechanisms: string[];
+  /**
+   * Family-expanded mechanism filters (e.g. M1 → unique records tagged
+   * M1, M1a, M1b, or M1c via the explicit parent-child registry).
+   * Distinct from `mechanisms` exact-tag semantics (`mechanism_family=` URL).
+   */
+  mechanismFamilies: MechanismFamilyId[];
   outcomes: string[];
   cases: string[];
   /** Exact literature-source identifiers (parsed tags). */
@@ -71,12 +85,34 @@ export const EMPTY_FILTERS: ClaimFilters = {
   statuses: [],
   admissibilities: [],
   mechanisms: [],
+  mechanismFamilies: [],
   outcomes: [],
   cases: [],
   literatureSources: [],
   sourceUrl: '',
   sort: 'claim_id',
 };
+
+/**
+ * Union of exact mechanism tags and family-expanded tags for the mechanism
+ * dimension. Within the dimension (exact ∪ family), match is OR; across
+ * dimensions, filters remain AND.
+ */
+export function resolveMechanismFilterTags(filters: ClaimFilters): string[] {
+  const tags = new Set<string>();
+  for (const tag of filters.mechanisms) {
+    const trimmed = tag.trim();
+    if (trimmed) {
+      tags.add(trimmed);
+    }
+  }
+  for (const family of filters.mechanismFamilies) {
+    for (const tag of expandMechanismFamilyTags(family)) {
+      tags.add(tag);
+    }
+  }
+  return [...tags];
+}
 
 function includesIgnoreCase(haystack: string, needle: string): boolean {
   return haystack.toLowerCase().includes(needle.toLowerCase());
@@ -108,8 +144,11 @@ function compareClaims(a: Claim, b: Claim, sort: ClaimSortKey): number {
  * - Within each multi-select dimension, match if the claim includes at least one
  *   selected value (OR).
  * - Across dimensions (and with search / source URL), filters combine with AND.
- * - Mechanism / outcome / case / literature filters are exact-tag over parsed IDs
- *   (no family expansion).
+ * - `mechanisms` remains exact-tag (M1 ≠ M1a/M1b/M1c).
+ * - `mechanismFamilies` expands via the explicit parent-child registry
+ *   (family M1 → M1 ∪ M1a ∪ M1b ∪ M1c), then OR with any exact tags.
+ * - Outcome / case / literature filters remain exact-tag over parsed IDs.
+ * - Related-evidence overlap stays exact-match and is unaffected by family params.
  * - `sourceUrl` requires an exact trim match against `primary_source_url`.
  * - Results are sorted deterministically by `sort` (default claim_id), with
  *   claim_id as a stable tie-breaker for title sort.
@@ -119,6 +158,7 @@ function compareClaims(a: Claim, b: Claim, sort: ClaimSortKey): number {
 export function filterClaims(claims: Claim[], filters: ClaimFilters): Claim[] {
   const statusSet = new Set(filters.statuses);
   const admissibilitySet = new Set(filters.admissibilities);
+  const mechanismTags = resolveMechanismFilterTags(filters);
   const sourceUrl = filters.sourceUrl.trim();
 
   return claims
@@ -136,8 +176,8 @@ export function filterClaims(claims: Claim[], filters: ClaimFilters): Claim[] {
         return false;
       }
       if (
-        filters.mechanisms.length > 0 &&
-        !filters.mechanisms.some((m) => claim.mechanisms.includes(m))
+        mechanismTags.length > 0 &&
+        !mechanismTags.some((m) => claim.mechanisms.includes(m))
       ) {
         return false;
       }
@@ -205,6 +245,7 @@ export function filtersAreActive(filters: ClaimFilters): boolean {
     filters.statuses.length > 0 ||
     filters.admissibilities.length > 0 ||
     filters.mechanisms.length > 0 ||
+    filters.mechanismFamilies.length > 0 ||
     filters.outcomes.length > 0 ||
     filters.cases.length > 0 ||
     filters.literatureSources.length > 0 ||

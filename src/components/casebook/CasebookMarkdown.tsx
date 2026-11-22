@@ -1,8 +1,8 @@
 /**
  * Safe GFM Markdown renderer for casebook content.
  * Maps Markdown to React elements (no unsanitised HTML).
- * Converts ATLAS claim IDs in text leaves into claim-detail links without
- * altering surrounding non-ID text.
+ * Converts ATLAS claim IDs and published mechanism tags in text leaves into
+ * navigable links without altering surrounding non-ID text.
  */
 import { Fragment, type ReactNode } from 'react';
 import type { Components } from 'react-markdown';
@@ -10,8 +10,9 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Link } from 'react-router-dom';
 import { isSafeHttpUrl } from '@/research/safeUrl';
-import { splitTextWithClaimIds } from '@/research/casebookCitations';
+import { splitTextWithClaimsAndMechanisms } from '@/research/mechanismCitations';
 import { findClaimById } from '@/data/researchDataset';
+import { mechanismProfileHref } from '@/research/taxonomy';
 
 export interface CaseClaimReturnState {
   caseId: string;
@@ -23,31 +24,100 @@ function linkifyClaimText(
   claimReturn?: CaseClaimReturnState,
 ): ReactNode {
   if (typeof children === 'string') {
-    return splitTextWithClaimIds(children).map((part, index) => {
+    return splitTextWithClaimsAndMechanisms(children).map((part, index) => {
       if (part.type === 'text') {
-        // Preserve plain text exactly — no wrapper when the whole leaf is text.
         return <Fragment key={index}>{part.value}</Fragment>;
       }
-      const exists = Boolean(findClaimById(part.id));
-      if (!exists) {
+      if (part.type === 'claim') {
+        const exists = Boolean(findClaimById(part.id));
+        if (!exists) {
+          return (
+            <span
+              key={index}
+              className="font-mono text-[0.9em] text-caution"
+              title="Unknown atlas ID"
+              data-unknown-claim-id={part.id}
+            >
+              {part.id}
+            </span>
+          );
+        }
+        return (
+          <Link
+            key={index}
+            to={`/claims/${part.id}`}
+            state={claimReturn ? { caseReturn: claimReturn } : undefined}
+            className="font-mono text-[0.9em] text-accent no-underline hover:underline"
+            data-claim-id={part.id}
+          >
+            {part.id}
+          </Link>
+        );
+      }
+      if (part.type === 'claim_range') {
+        // Preserve published range wording while exposing every expanded target.
         return (
           <span
             key={index}
-            className="font-mono text-[0.9em] text-caution"
-            title="Unknown atlas ID"
-            data-unknown-claim-id={part.id}
+            className="font-mono text-[0.9em]"
+            data-claim-range={part.display}
+          >
+            <span className="text-ink">{part.display}</span>
+            <span className="text-ink-subtle"> [</span>
+            {part.ids.map((id, idIndex) => {
+              const exists = Boolean(findClaimById(id));
+              const sep =
+                idIndex < part.ids.length - 1 ? (
+                  <span className="text-ink-subtle">, </span>
+                ) : null;
+              if (!exists) {
+                return (
+                  <Fragment key={id}>
+                    <span className="text-caution" data-unknown-claim-id={id}>
+                      {id}
+                    </span>
+                    {sep}
+                  </Fragment>
+                );
+              }
+              return (
+                <Fragment key={id}>
+                  <Link
+                    to={`/claims/${id}`}
+                    state={claimReturn ? { caseReturn: claimReturn } : undefined}
+                    className="text-accent no-underline hover:underline"
+                    data-claim-id={id}
+                    data-claim-range-target={part.display}
+                  >
+                    {id}
+                  </Link>
+                  {sep}
+                </Fragment>
+              );
+            })}
+            <span className="text-ink-subtle">]</span>
+          </span>
+        );
+      }
+      if (part.type === 'contextual') {
+        return (
+          <Link
+            key={index}
+            to={part.href}
+            className="font-mono text-[0.9em] text-ink-muted no-underline hover:underline"
+            title="Contextual subdivision — not an atlas tag"
+            data-contextual-mechanism={part.id}
           >
             {part.id}
-          </span>
+          </Link>
         );
       }
       return (
         <Link
           key={index}
-          to={`/claims/${part.id}`}
-          state={claimReturn ? { caseReturn: claimReturn } : undefined}
+          to={mechanismProfileHref(part.id)}
           className="font-mono text-[0.9em] text-accent no-underline hover:underline"
-          data-claim-id={part.id}
+          data-mechanism-id={part.id}
         >
           {part.id}
         </Link>

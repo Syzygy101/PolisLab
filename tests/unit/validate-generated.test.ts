@@ -35,7 +35,9 @@ describe('generated dataset drift detection', () => {
     const drift = findGeneratedDrift(ingested, corrupted);
     expect(drift.length).toBeGreaterThan(0);
     expect(drift.some((issue) => /claim count/i.test(issue))).toBe(true);
-    expect(drift.some((issue) => /SHA-256/i.test(issue))).toBe(true);
+    expect(drift.some((issue) => /sourceContentSha256|SHA-256/i.test(issue))).toBe(
+      true,
+    );
     expect(drift.some((issue) => /exact_claim/i.test(issue))).toBe(true);
   });
 

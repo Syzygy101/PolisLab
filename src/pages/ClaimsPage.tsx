@@ -29,9 +29,28 @@ import {
 
 const SEARCH_URL_DEBOUNCE_MS = 200;
 
+/** Stable key for the non-search filter location that owns a pending search draft. */
+function dimensionScopeKey(filters: ClaimFilters): string {
+  return [
+    filters.statuses.join('\0'),
+    filters.admissibilities.join('\0'),
+    filters.mechanisms.join('\0'),
+    filters.mechanismFamilies.join('\0'),
+    filters.outcomes.join('\0'),
+    filters.cases.join('\0'),
+    filters.literatureSources.join('\0'),
+    filters.sourceUrl,
+    filters.sort,
+  ].join('|');
+}
+
 /**
  * Committed filter state is the URL. A local search draft keeps typing responsive;
  * non-search dimensions always read from and write to the query string immediately.
+ *
+ * Pending search drafts and debounce timers are scoped to the dimension location
+ * that created them. Navigating Back/Forward to a different subset abandons the
+ * draft so a late debounce cannot overwrite the restored URL.
  */
 export function ClaimsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -47,25 +66,46 @@ export function ClaimsPage() {
   const searchDraftRef = useRef(searchDraft);
   searchDraftRef.current = searchDraft;
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const draftScopeRef = useRef(dimensionScopeKey(committed));
+
+  const clearPendingSearchTimer = useCallback(() => {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+      debounceRef.current = null;
+    }
+  }, []);
 
   useEffect(() => {
     mountedRef.current = true;
     return () => {
       mountedRef.current = false;
-      if (debounceRef.current) {
-        clearTimeout(debounceRef.current);
-        debounceRef.current = null;
-      }
+      clearPendingSearchTimer();
     };
-  }, []);
+  }, [clearPendingSearchTimer]);
 
   useEffect(() => {
-    setSearchDraft(committed.search);
-  }, [committed.search]);
+    const nextScope = dimensionScopeKey(committed);
+    if (nextScope !== draftScopeRef.current) {
+      // Location that owned the draft changed (Back/Forward, filter chip, etc.).
+      clearPendingSearchTimer();
+      draftScopeRef.current = nextScope;
+      setSearchDraft(committed.search);
+      return;
+    }
+    // Same dimension scope: sync draft when committed search changes externally
+    // and no timer is pending (e.g. Reset filters clearing q).
+    if (!debounceRef.current) {
+      setSearchDraft(committed.search);
+    }
+  }, [committed, clearPendingSearchTimer]);
+
+  const committedScope = dimensionScopeKey(committed);
+  const searchBelongsToLocation = committedScope === draftScopeRef.current;
+  const effectiveSearch = searchBelongsToLocation ? searchDraft : committed.search;
 
   const filters: ClaimFilters = useMemo(
-    () => ({ ...committed, search: searchDraft }),
-    [committed, searchDraft],
+    () => ({ ...committed, search: effectiveSearch }),
+    [committed, effectiveSearch],
   );
 
   const setFilters = useCallback(
@@ -74,18 +114,25 @@ export function ClaimsPage() {
 
       const dimsUnchanged = dimensionsEqualExceptSearch(committed, next);
       if (dimsUnchanged) {
-        if (debounceRef.current) {
-          clearTimeout(debounceRef.current);
-        }
+        clearPendingSearchTimer();
         const committedSnapshot = committed;
+        const scopeAtSchedule = dimensionScopeKey(committedSnapshot);
+        draftScopeRef.current = scopeAtSchedule;
         debounceRef.current = setTimeout(() => {
           debounceRef.current = null;
           if (!mountedRef.current) {
             return;
           }
+          const live = parseFiltersFromSearchParams(
+            new URLSearchParams(window.location.search),
+          );
+          // Abandon if the browser location no longer matches the drafting scope.
+          if (dimensionScopeKey(live) !== scopeAtSchedule) {
+            return;
+          }
           setSearchParams(
             serializeFiltersToSearchParams({
-              ...committedSnapshot,
+              ...live,
               search: searchDraftRef.current,
             }),
             { replace: true },
@@ -94,13 +141,11 @@ export function ClaimsPage() {
         return;
       }
 
-      if (debounceRef.current) {
-        clearTimeout(debounceRef.current);
-        debounceRef.current = null;
-      }
+      clearPendingSearchTimer();
+      draftScopeRef.current = dimensionScopeKey(next);
       setSearchParams(serializeFiltersToSearchParams(next), { replace: false });
     },
-    [committed, setSearchParams],
+    [committed, setSearchParams, clearPendingSearchTimer],
   );
 
   /**
@@ -109,15 +154,20 @@ export function ClaimsPage() {
    * back / copy-link see the intended research subset.
    */
   const commitPendingSearch = useCallback(() => {
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-      debounceRef.current = null;
-    }
+    clearPendingSearchTimer();
+    const live = parseFiltersFromSearchParams(
+      new URLSearchParams(window.location.search),
+    );
     const next: ClaimFilters = {
-      ...committed,
+      ...live,
       search: searchDraftRef.current,
     };
-    if (filtersEqual(next, committed)) {
+    // Only commit into the location that owns this draft.
+    if (dimensionScopeKey(live) !== draftScopeRef.current) {
+      setSearchDraft(live.search);
+      return;
+    }
+    if (filtersEqual(next, live)) {
       return;
     }
     const params = serializeFiltersToSearchParams(next);
@@ -127,9 +177,8 @@ export function ClaimsPage() {
     if (current !== target) {
       window.history.replaceState(window.history.state, '', target);
     }
-    // Keep React Router searchParams in sync without pushing a new entry.
     setSearchParams(params, { replace: true });
-  }, [committed, setSearchParams]);
+  }, [setSearchParams, clearPendingSearchTimer]);
 
   const explorerReturnState: ExplorerReturnState = useMemo(
     () => ({
@@ -181,6 +230,7 @@ export function ClaimsPage() {
     ...ignored.admissibilities.map((v) => `admissibility=${v}`),
     ...ignored.cases.map((v) => `case=${v}`),
     ...ignored.outcomes.map((v) => `outcome=${v}`),
+    ...ignored.mechanismFamilies.map((v) => `mechanism_family=${v}`),
     ...ignored.sorts.map((v) => `sort=${v}`),
   ];
 
