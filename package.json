@@ -24,7 +24,7 @@
     "check:artifacts": "tsx scripts/check-artifact-safety.ts"
   },
   "engines": {
-    "node": "^22.12.0 || >=24"
+    "node": "^22.22.2 || >=24"
   },
   "dependencies": {
     "mdast-util-to-string": "^4.0.0",

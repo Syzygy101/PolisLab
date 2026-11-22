@@ -66,6 +66,8 @@ Apply the approved refined Direction C visual system and interaction architectur
 **Completed:** 23 November 2026  
 **Context:** Build 09A stopped before push after detecting private machine paths in `docs/08A_FINDINGS_REGISTER.md` on the original freeze (`c594edd` / tip `91d89b7`). A forward redaction on that branch would leave the paths reachable in Git history. This clean branch is cut from verified parent `78631d4`, reapplies the accepted 08F freeze tree with sanitised audit references, and excludes `c594edd` and `91d89b7` from public ancestry. Original local RC branch preserved untouched. No merge of `feat/v0.2-release-candidate`, no final tag, no deploy.
 
+**CI Node pin (09AR follow-up):** GitHub Actions initially failed Vitest on Node `22.12.0` because locked `jsdom@31` / `undici@8` require `^22.22.2` / `>=22.19` (`TypeError` in `undici` decompress interceptor when workers start). Workflow and `package.json` engines aligned to **22.23.1** / `^22.22.2 || >=24` — the locally verified runtime. Research gates unchanged.
+
 ## Build 08F — Final audit remediation, licensing, local release freeze — COMPLETE (local)
 
 **Completed:** 22 November 2026  
