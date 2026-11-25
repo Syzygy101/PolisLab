@@ -2,15 +2,21 @@
 
 Local development record for the interactive application layer. Research artefacts remain authoritative in `research/10_*` and the published v0.1.1 release.
 
-**Checkpoint:** Build 09B — Local release remediation and hosted preview checks\
-**Branch:** `release/v0.2.0-candidate`  
-**Build 09AR clean publication parent:** `78631d41b241c44af0a48736c5c372e9bf13e237`\
-**Research baseline:** v0.1.1 / commit `a1922f8a8d08f59749d34de306e1b7406f9fe10b`  
+**Checkpoint:** Build 09C closed; post-release programme decision gates
+**Application baseline:** v0.2.0 production · `af608a78d1db0caa7a2ca8340a535dcdadf4ca0b`
+**Research baseline:** v0.1.1 · `a1922f8a8d08f59749d34de306e1b7406f9fe10b`
 **Evidence cutoff:** 20 November 2026 · **Correction pass:** 21 November 2026  
-**Application version:** v0.2.0 release candidate (publication branch; not final tagged release)  
-**Design authority:** refined Direction C (local design-exploration materials; not published) + independent 08D2 review (locally retained)  
-**Findings register:** `docs/08A_FINDINGS_REGISTER.md`  
-**Local preserved (not published):** `feat/v0.2-release-candidate` @ `91d89b73e51005267130fc7b77bdc60160c2e789` — excluded from public ancestry because the original freeze docs contained private machine paths
+**Programme authority:** [Post-release master roadmap](MASTER_ROADMAP.md)
+
+## Build 09C — Accepted production release
+
+**Accepted:** 25 November 2026. The tagged merge tree is identical to the reviewed release candidate `5af0fb1`. The registered AgentHarness baseline replayed its two passing stages and 14 native checks. The native assessment excludes hosted browser coverage and the npm-spawning negative gate. Release records separately cover the hosted and npm checks, CI, publication and owner acceptance. The Federal Court evidence gap remains unresolved.
+
+## Post-release development cycle
+
+- Established the dependency and approval gates for v0.2.x, H2.0, H2, v0.3, H3, H4 and academic publication.
+- Reviewed production journeys and prepared alternative local UX prototypes for owner selection. Prepared a private H2.0 charter with literature, data feasibility and a first-model recommendation for separate owner approval.
+- The current production capability remains the v0.2.0 qualitative research application. Design and scientific working artifacts are retained locally and excluded from publication staging.
 
 ## Build 09B — Release remediation
 
@@ -31,7 +37,7 @@ After release acceptance, the roadmap is Impeccable-assisted UX and interaction 
 
 PolisLab is an interactive research laboratory for examining competing institutional and economic mechanisms affecting grocery-market entry and competition in Australia. It presents authenticated research claims with provenance and limitations. It is not legal advice, not an economic forecasting tool, and does not rank policies or simulate welfare effects.
 
-## Product horizons (H0–H4)
+## Historical foundation milestones (Builds 01–07)
 
 | Horizon | Intent | Status |
 | --- | --- | --- |
