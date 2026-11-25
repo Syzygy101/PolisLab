@@ -133,9 +133,9 @@ export function AppShell() {
           </Link>
           <div className="chrome-actions">
             {!withRail ? (
-              <Link to="/casebook/Case1" className="btn btn--primary">
-                Enter laboratory
-              </Link>
+              <a href="#policy-investigations" className="btn btn--secondary">
+                Browse questions
+              </a>
             ) : null}
             <button
               ref={menuButtonRef}

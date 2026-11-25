@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { CASE_ONE_QUESTION, CaseOneSitePlan } from '@/components/case-one/CaseOneSitePlan';
 import { researchDataset, findClaimById } from '@/data/researchDataset';
 import {
   RESEARCH_CORRECTION_PASS,
@@ -24,6 +25,13 @@ import { StatusDistribution } from '@/components/overview/StatusDistribution';
 import { OutcomeStageExplorer } from '@/components/overview/OutcomeStageExplorer';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
+const QUESTION_PROMPTS = {
+  Case1: CASE_ONE_QUESTION,
+  Case2: 'What can delay a foreign retailer’s first store?',
+  Case3: 'How does a new grocery chain build a store network?',
+  Case4: 'What happens after a supermarket acquisition is reviewed?',
+} as const;
+
 const SECTION_NAV = [
   { href: '#policy-investigations', label: 'Investigations' },
   { href: '#scope-methodology', label: 'Scope' },
@@ -47,54 +55,22 @@ export function OverviewPage() {
 
   return (
     <article data-testid="overview-page">
-      {/* A. Editorial entrance — identity, purpose, primary action, coverage */}
-      <header aria-labelledby="orientation-heading">
-        <p className="page-kicker">Independent economic research laboratory</p>
-        <h1 id="orientation-heading" className="page-title page-title--hero">
-          How institutions shape markets. How policy might change them.
-        </h1>
-        <p className="lede">
-          PolisLab publishes source-grounded evidence on Australian grocery competition and
-          related institutional rules — then provides tools to inspect claims, read policy
-          investigations, and compare interventions without inventing rankings or simulated
-          effects.
-        </p>
-        <p className="meta-line" data-testid="overview-version-line">
-          Research Overview · app development v0.2 · research {RESEARCH_RELEASE}
-        </p>
-
-        <div className="flex flex-wrap gap-3">
-          <Link to="/casebook/Case1" className="btn btn--primary" data-testid="overview-enter">
-            Begin investigating — Case 1
-          </Link>
-          <Link to="/claims" className="btn btn--secondary" data-testid="overview-evidence-library">
-            Open evidence library
-          </Link>
-        </div>
-
-        <div
-          className="coverage-strip"
-          aria-label="Published coverage measures"
-          data-testid="coverage-strip"
-        >
-          <div className="coverage-item">
-            <strong>{coverage.claimCount}</strong>
-            <span>published claims</span>
-          </div>
-          <div className="coverage-item">
-            <strong>{coverage.caseCount}</strong>
-            <span>policy investigations</span>
-          </div>
-          <div className="coverage-item">
-            <strong>{requirementCount}</strong>
-            <span>research-requirement entries</span>
+      <header className="field-guide-hero" aria-labelledby="orientation-heading">
+        <div>
+          <p className="site-kicker">Australian grocery competition</p>
+          <h1 id="orientation-heading">{CASE_ONE_QUESTION}</h1>
+          <p className="field-guide-deck">
+            Examine an unused site, check competing explanations against the published evidence,
+            and compare two proposals for opening it to rivals.
+          </p>
+          <div className="field-guide-actions">
+            <Link to="/casebook/Case1" className="field-guide-action" data-testid="overview-enter">
+              Investigate the site
+            </Link>
+            <Link to="/claims" data-testid="overview-evidence-library">Open evidence library</Link>
           </div>
         </div>
-        <p className="meta-line">
-          Coverage measures for the {RESEARCH_RELEASE} evidence baseline — not success metrics.
-          Evidence cutoff {RESEARCH_CUTOFF}; correction pass {RESEARCH_CORRECTION_PASS}.
-          Application development v0.2 is separate from the research release.
-        </p>
+        <CaseOneSitePlan />
       </header>
 
       <hr className="hairline" />
@@ -113,16 +89,10 @@ export function OverviewPage() {
           differentiated entry, and acquisition oversight interact with rival market access —
           each with dated institutional baselines and explicit limits on inference.
         </p>
-        <p className="meta-line">
-          Direct citation membership (including applicable common rules) — not exhaustive
-          relevance. Memberships overlap; do not sum them as unique claims. Open each complete
-          case investigation in the Casebook, or inspect its cited claims in the Evidence
-          library.
-        </p>
-
         <ol className="investigation-list">
           {RESEARCH_CASES.map((researchCase, index) => {
             const cited = coverage.caseMembershipCounts[researchCase.id];
+            const prompt = QUESTION_PROMPTS[researchCase.id];
             return (
               <li
                 key={researchCase.id}
@@ -132,7 +102,8 @@ export function OverviewPage() {
                 <p className="meta-line" style={{ margin: 0 }}>
                   Investigation {index + 1} · <span className="mono">{researchCase.id}</span>
                 </p>
-                <h3>{researchCase.title}</h3>
+                <h3>{prompt}</h3>
+                <p className="meta-line">{researchCase.title}</p>
                 <p>{researchCase.researchQuestion}</p>
                 <p className="meta-line" style={{ margin: 0 }}>
                   Direct cited claims{' '}
@@ -160,6 +131,13 @@ export function OverviewPage() {
             );
           })}
         </ol>
+        <p className="meta-line">
+          Direct citation membership (including applicable common rules) — not exhaustive
+          relevance. Memberships overlap; do not sum them as unique claims. Open each complete
+          case investigation in the Casebook, or inspect its cited claims in the Evidence
+          library.
+        </p>
+
         <p className="meta-line" data-testid="case-membership-note">
           Sum of direct memberships: {coverage.summedCaseMemberships}; unique claims with any case
           tag: {coverage.uniqueCaseMembers}.
@@ -179,6 +157,37 @@ export function OverviewPage() {
         <h2 id="scope-heading" className="section-title">
           Scope, methodology, and limitations
         </h2>
+        <p className="site-kicker">Independent economic research laboratory</p>
+        <p className="meta-line" data-testid="overview-version-line">
+          Research Overview · app development v0.2 · research {RESEARCH_RELEASE}
+        </p>
+        <p>
+          PolisLab publishes source-grounded evidence on Australian grocery competition and
+          related institutional rules, with tools for investigating competing explanations.
+        </p>
+        <div
+          className="coverage-strip"
+          aria-label="Published coverage measures"
+          data-testid="coverage-strip"
+        >
+          <div className="coverage-item">
+            <strong>{coverage.claimCount}</strong>
+            <span>published claims</span>
+          </div>
+          <div className="coverage-item">
+            <strong>{coverage.caseCount}</strong>
+            <span>policy investigations</span>
+          </div>
+          <div className="coverage-item">
+            <strong>{requirementCount}</strong>
+            <span>research-requirement entries</span>
+          </div>
+        </div>
+        <p className="meta-line">
+          Coverage measures for the {RESEARCH_RELEASE} evidence baseline — not success metrics.
+          Evidence cutoff {RESEARCH_CUTOFF}; correction pass {RESEARCH_CORRECTION_PASS}.
+          Application development v0.2 is separate from the research release.
+        </p>
         <p style={{ maxWidth: '68ch', color: 'var(--color-ink-muted)' }}>
           Evidence is dated to the published cutoff. Claims retain source pinpoints,
           admissibility conditions, and competing mechanisms. Policy comparison is qualitative:

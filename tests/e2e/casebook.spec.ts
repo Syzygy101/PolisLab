@@ -128,7 +128,7 @@ test.describe('Casebook Explorer Build 04 journeys', () => {
     });
     await page.goto('/casebook/Case1');
     await expect(page.getByTestId('case-page-Case1')).toBeVisible();
-    await expect(page.getByRole('heading', { level: 1 })).toContainText(/Undeveloped supermarket sites/i);
+    await expect(page.getByRole('heading', { level: 1 })).toContainText(/What keeps a new supermarket out/i);
     await page.screenshot({
       path: path.join(screenshotDir, 'desktop-case1.png'),
       fullPage: false,

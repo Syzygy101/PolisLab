@@ -22,7 +22,7 @@ test.describe('Investigation journeys', () => {
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
     await page.getByTestId('case-investigate-link-Case1').click();
     await expect(page).toHaveURL(/\/casebook\/Case1/);
-    await expect(page.getByRole('heading', { level: 1 })).toContainText(/undeveloped|site|land/i);
+    await expect(page.getByTestId('case-page-Case1').getByRole('heading', { level: 1 })).toHaveText('What keeps a new supermarket out?');
     await expect(page.locator('#section-1')).toBeVisible();
 
     await page.goto('/comparison');

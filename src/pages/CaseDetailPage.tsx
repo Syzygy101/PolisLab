@@ -10,6 +10,7 @@ import { listVariants } from '@/research/comparisonQueries';
 import { isNavigableMechanismId } from '@/research/mechanismQueries';
 import { CasebookMarkdown } from '@/components/casebook/CasebookMarkdown';
 import { CitedEvidencePanel } from '@/components/casebook/CitedEvidencePanel';
+import { CaseOneLab } from '@/components/case-one/CaseOneLab';
 import { CaseInterventionFocus } from '@/components/casebook/CaseInterventionFocus';
 import type { ParsedCase } from '@/research/casebookSchema';
 import {
@@ -156,9 +157,13 @@ function CaseInvestigation({
         <span>{researchCase.id}</span>
       </nav>
 
-      <header>
+      {caseId === 'Case1' && <CaseOneLab requirements={section9Requirements} />}
+
+      <header className={caseId === 'Case1' ? 'site-published-header' : undefined}>
         <p className="page-kicker">{researchCase.heading}</p>
-        <h1 className="page-title page-title--hero">{researchCase.title}</h1>
+        {caseId === 'Case1'
+          ? <h2 className="page-title">{researchCase.title}</h2>
+          : <h1 className="page-title page-title--hero">{researchCase.title}</h1>}
         <p className="lede">{meta.orientation}</p>
         <p className="small-note" style={{ marginBottom: '1rem' }}>
           <strong>Published research question.</strong> See section 1 below for the complete

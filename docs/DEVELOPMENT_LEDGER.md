@@ -2,7 +2,7 @@
 
 Local development record for the interactive application layer. Research artefacts remain authoritative in `research/10_*` and the published v0.1.1 release.
 
-**Checkpoint:** Build 09C closed; post-release programme decision gates
+**Checkpoint:** Case 1 vertical slice and H2.0 feasibility at owner review
 **Application baseline:** v0.2.0 production · `af608a78d1db0caa7a2ca8340a535dcdadf4ca0b`
 **Research baseline:** v0.1.1 · `a1922f8a8d08f59749d34de306e1b7406f9fe10b`
 **Evidence cutoff:** 20 November 2026 · **Correction pass:** 21 November 2026  
@@ -17,6 +17,13 @@ Local development record for the interactive application layer. Research artefac
 - Established the dependency and approval gates for v0.2.x, H2.0, H2, v0.3, H3, H4 and academic publication.
 - Reviewed production journeys and prepared alternative local UX prototypes for owner selection. Prepared a private H2.0 charter with literature, data feasibility and a first-model recommendation for separate owner approval.
 - The current production capability remains the v0.2.0 qualitative research application. Design and scientific working artifacts are retained locally and excluded from publication staging.
+
+## Case 1 vertical slice and H2.0 feasibility
+
+The owner approved the master roadmap, Field Guide entrance, contextual Comparison Desk and selective Site Workbench interactions. The first economic research question is post-consent supermarket entry timing under irreversible investment, with a bounded public-source pilot approved.
+
+- The Case 1 slice implements a schematic interaction, competing explanations, published qualitative policy pathways, source links and research requirements. Existing case and evidence routes continue to work. The slice is ready for owner review before expansion. See [verification](CASE_ONE_VERIFICATION.md).
+- A private NSW source feasibility packet and cohort proposal are ready for review. Model specification and estimation remain gated. The accepted release and pinned research corpus are preserved.
 
 ## Build 09B — Release remediation
 

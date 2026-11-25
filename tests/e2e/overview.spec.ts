@@ -24,7 +24,7 @@ test.describe('Overview Build 02 journeys', () => {
 
     await page.goto('/');
     await expect(
-      page.getByRole('heading', { level: 1, name: /How institutions shape markets/i }),
+      page.getByRole('heading', { level: 1, name: /What keeps a new supermarket out/i }),
     ).toBeVisible();
     await expect(page.getByTestId('overview-enter')).toBeVisible();
     await expect(page.getByTestId('coverage-strip')).toBeVisible();
