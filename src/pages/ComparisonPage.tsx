@@ -1,5 +1,5 @@
-import { useMemo } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useLayoutEffect, useMemo, useRef } from 'react';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import { OrientationTable } from '@/components/comparison/OrientationTable';
 import { VariantComparePanel } from '@/components/comparison/VariantComparePanel';
 import { COMPARISON_DATASET } from '@/research/comparisonDataset';
@@ -23,6 +23,7 @@ const QUICK_LINK_CLASS =
 export function ComparisonPage() {
   useDocumentTitle('Policy Comparison Laboratory');
 
+  const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const urlState = useMemo(
     () => parseComparisonState(searchParams),
@@ -39,11 +40,20 @@ export function ComparisonPage() {
   );
   const hasSelection = Boolean(urlState.slotA.variantId || urlState.slotB.variantId);
 
+  const pendingSelection = useRef<Record<'a' | 'b', string | null> | null>(null);
+  useLayoutEffect(() => {
+    // Committed navigation, including Back and Forward, restores the URL as the source of truth.
+    pendingSelection.current = null;
+  }, [location.key]);
+
   function setSlot(param: 'a' | 'b', variantId: string) {
-    const next = {
-      a: param === 'a' ? variantId || null : urlState.slotA.variantId,
-      b: param === 'b' ? variantId || null : urlState.slotB.variantId,
+    // Consecutive changes can arrive before React Router renders the next URL.
+    const current = pendingSelection.current ?? {
+      a: urlState.slotA.variantId,
+      b: urlState.slotB.variantId,
     };
+    const next = { ...current, [param]: variantId || null };
+    pendingSelection.current = next;
     setSearchParams(serializeComparisonSearchParams(next), { replace: false });
   }
 

@@ -11,7 +11,7 @@ This document supersedes the Build 08 hosting note with a precise checklist for 
 | --- | --- |
 | Repository | Integrated; commit or tag the RC the owner approves for deploy |
 | Install | `npm ci` (use committed `package-lock.json`; do not `npm install` ad hoc) |
-| Node.js | **22.12.0** (matches CI pin; engines allow `^22.12.0 \|\| >=24`) |
+| Node.js | **22.23.1** (CI pin) |
 | Build | `npm run build` (runs ingest + validate, then `tsc -b` + `vite build`) |
 | Output | `dist/` (static files only) |
 | Local preview | `npm run preview` — **not** a substitute for production-host verification |
@@ -63,13 +63,19 @@ Example patterns (owner selects one platform; not committed unless approved):
 
 ## Build 09B verification tests (on the live origin)
 
-Run these against the **deployed** HTTPS URL, not only `vite preview`:
+Use the preview Playwright configuration against the deployed HTTPS origin:
+
+```sh
+PLAYWRIGHT_BASE_URL=https://v020-preview.polislab.pages.dev npx playwright test --config playwright.preview.config.ts
+```
+
+With the environment variable unset, this configuration starts a dedicated local Vite preview on port 4180 using the output of `npm run build`. For a hosted run, record the deployed revision and check the following:
 
 1. **Entry:** `/` loads Overview; shell navigation visible.
 2. **Deep link — claims:** open `/claims/ATLAS-CON-001` in a new tab (cold load).
-3. **Deep link — casebook:** open `/casebook/C1` in a new tab.
+3. **Deep link — casebook:** open `/casebook/Case1` in a new tab.
 4. **Deep link — comparison:** open `/comparison?a=C1-VAR-R&b=C1-VAR-E`.
-5. **Deep link — gaps:** open `/gaps/C1-REQ-01` (or another valid requirement ID).
+5. **Deep link — gaps:** open `/gaps/REQ-C1-01` (or another valid requirement ID).
 6. **Refresh:** on each of the above, use browser refresh; page must not 404.
 7. **Back/forward:** navigate between modules; history must restore scroll-appropriate views without shell loss.
 8. **Assets:** DevTools network — hashed JS/CSS return 200; no broken module loads.

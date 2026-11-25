@@ -16,6 +16,7 @@ const E2E_ORIGIN = `http://127.0.0.1:${E2E_PORT}`;
 
 export default defineConfig({
   testDir: './tests/e2e',
+  testIgnore: 'hosting-readiness.spec.ts',
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,

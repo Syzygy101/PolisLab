@@ -143,6 +143,7 @@ export function findCasebookGeneratedDrift(
     'researchCutoff',
     'correctionPass',
     'sourceContentSha256',
+    'generatedAt',
     'caseCount',
     'sectionCount',
   ] as const;

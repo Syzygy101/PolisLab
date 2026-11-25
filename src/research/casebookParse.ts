@@ -378,14 +378,15 @@ export function ingestCasebookMarkdown(
     throw new ResearchIngestError('Casebook validation failed', issues);
   }
 
+  const sourceContentSha256 = sha256Hex(markdown);
   const dataset = CasebookDatasetSchema.parse({
     provenance: {
       sourceFile: options.sourceFile ?? CASEBOOK_SOURCE_PATH,
       researchRelease: options.researchRelease ?? RESEARCH_RELEASE,
       researchCutoff: options.researchCutoff ?? RESEARCH_CUTOFF,
       correctionPass: options.correctionPass ?? RESEARCH_CORRECTION_PASS,
-      sourceContentSha256: sha256Hex(markdown),
-      generatedAt: options.generatedAt ?? new Date().toISOString(),
+      sourceContentSha256,
+      generatedAt: options.generatedAt ?? `content-sha256:${sourceContentSha256}`,
       caseCount: cases.length,
       sectionCount: cases.reduce((n, c) => n + c.sections.length, 0),
     },

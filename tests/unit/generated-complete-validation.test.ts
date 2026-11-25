@@ -25,9 +25,7 @@ describe('complete generated dataset validation', () => {
   const onDiskCasebook = JSON.parse(
     readFileSync(path.join(root, 'src/data/casebook.generated.json'), 'utf8'),
   );
-  const ingestedCasebook = ingestCasebookMarkdown(markdown, {
-    generatedAt: onDiskCasebook.provenance.generatedAt,
-  });
+  const ingestedCasebook = ingestCasebookMarkdown(markdown, {});
 
   it('reports no drift for complete claims + casebook artefacts', () => {
     expect(findGeneratedDrift(ingested, onDiskClaims)).toEqual([]);
@@ -57,6 +55,16 @@ describe('complete generated dataset validation', () => {
     expect(
       drift.some((d) => /SHA-256 drift/i.test(d)),
     ).toBe(false);
+  });
+
+  it('rejects casebook generation metadata that differs from the content digest', () => {
+    const corrupted = structuredClone(onDiskCasebook);
+    const { sourceContentSha256 } = ingestedCasebook.provenance;
+    expect(ingestedCasebook.provenance.generatedAt).toBe(`content-sha256:${sourceContentSha256}`);
+    corrupted.provenance.generatedAt = '2026-11-22T23:58:56.651Z';
+    expect(findCasebookGeneratedDrift(ingestedCasebook, corrupted)).toEqual([
+      expect.stringContaining('provenance.generatedAt drift'),
+    ]);
   });
 
   it('fails when the casebook checksum is wrong', () => {

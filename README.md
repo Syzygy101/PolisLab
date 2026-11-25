@@ -60,11 +60,11 @@ A browser application for investigating published research claims, case narrativ
 | Module | Route | Role |
 | --- | --- | --- |
 | Overview | `/` | Orientation, coverage, insights, methodology, provenance |
-| Claims Explorer | `/claims`, `/claims/:id`, `/claims/compare` | Filterable evidence, claim detail, **evidence** comparison |
-| Casebook Explorer | `/casebook`, `/casebook/:caseId`, `/casebook/source` | Four investigations and published source |
-| Mechanism Explorer | `/mechanisms`, `/mechanisms/:id` | M1–M6 families and profiles |
-| Policy Comparison Laboratory | `/comparison?a=&b=` | Qualitative **policy-variant** comparison |
-| Evidence Gaps | `/gaps`, `/gaps/:requirementId` | 19 casebook §9 research requirements |
+| Claims Explorer | `/claims`, `/claims/:claimId` (e.g. `/claims/ATLAS-CON-001`), `/claims/compare` | Filterable evidence, claim detail, **evidence** comparison |
+| Casebook Explorer | `/casebook`, `/casebook/Case1`, `/casebook/source` | Four investigations and published source |
+| Mechanism Explorer | `/mechanisms`, `/mechanisms/M1c` | M1–M6 families and profiles |
+| Policy Comparison Laboratory | `/comparison?a=C1-VAR-R&b=C1-VAR-E` | Qualitative **policy-variant** comparison |
+| Evidence Gaps | `/gaps`, `/gaps/REQ-C1-01` | 19 casebook §9 research requirements |
 
 **Evidence comparison** (`/claims/compare`) compares atlas claims. **Policy comparison** (`/comparison`) compares casebook intervention variants. They are not interchangeable.
 
@@ -96,7 +96,7 @@ Licence application is complete for this local RC; **public release** still requ
 
 ### Requirements
 
-- Node.js `^22.12.0 || >=24` (tested on Node 22.x; CI pins 22.12.0)
+- Node.js `^22.22.2 || >=24` (CI pins 22.23.1)
 - npm (lockfile committed)
 
 ### Commands

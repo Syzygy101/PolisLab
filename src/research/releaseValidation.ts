@@ -118,12 +118,11 @@ export function checkGeneratedMatchesPinnedSources(root: string): string[] {
   const casebookMarkdown = readFileSync(path.join(root, CASEBOOK_SOURCE_PATH), 'utf8');
   const onDiskCasebook = JSON.parse(
     readFileSync(path.join(root, 'src/data/casebook.generated.json'), 'utf8'),
-  ) as { provenance: { generatedAt: string; sourceContentSha256: string } };
+  ) as { provenance: { sourceContentSha256: string } };
   const casebook = ingestCasebookMarkdown(casebookMarkdown, {
     sourceFile: CASEBOOK_SOURCE_PATH,
     knownClaimIds,
     atlasMembershipByCase,
-    generatedAt: onDiskCasebook.provenance.generatedAt,
   });
   validateCasebookDataset(casebook, dataset.claims);
   issues.push(...findCasebookGeneratedDrift(casebook, onDiskCasebook));

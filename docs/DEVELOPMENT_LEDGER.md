@@ -2,15 +2,30 @@
 
 Local development record for the interactive application layer. Research artefacts remain authoritative in `research/10_*` and the published v0.1.1 release.
 
-**Checkpoint:** Build 09AR — Clean publication branch for v0.2.0 release candidate  
+**Checkpoint:** Build 09B — Local release remediation and hosted preview checks\
 **Branch:** `release/v0.2.0-candidate`  
-**Parent (clean):** `78631d41b241c44af0a48736c5c372e9bf13e237`  
+**Build 09AR clean publication parent:** `78631d41b241c44af0a48736c5c372e9bf13e237`\
 **Research baseline:** v0.1.1 / commit `a1922f8a8d08f59749d34de306e1b7406f9fe10b`  
 **Evidence cutoff:** 20 November 2026 · **Correction pass:** 21 November 2026  
 **Application version:** v0.2.0 release candidate (publication branch; not final tagged release)  
 **Design authority:** refined Direction C (local design-exploration materials; not published) + independent 08D2 review (locally retained)  
 **Findings register:** `docs/08A_FINDINGS_REGISTER.md`  
 **Local preserved (not published):** `feat/v0.2-release-candidate` @ `91d89b73e51005267130fc7b77bdc60160c2e789` — excluded from public ancestry because the original freeze docs contained private machine paths
+
+## Build 09B — Release remediation
+
+**Verified:** 25 November 2026\
+**Starting public candidate:** `8bbd55eff682eaa679a746ed6e90f2d364c2e6ed` · PR #1 open with green CI at that revision.
+
+- Rapid policy selections now preserve both slots before the router commits. The regression reproduced the lost first selection and now checks the final pair, displayed results and browser history.
+- Casebook generation metadata is content-addressed and checked against a fresh ingest. Two consecutive regenerations reproduced both generated JSON files byte-for-byte. The published v0.1.1 corpus and research licence match the pinned Git blobs.
+- The README and hosting checklist use valid deep-link examples and the current Node pin. Wrangler state is ignored. The production Playwright profile accepts a deployed HTTPS origin, with a dedicated local preview as its default.
+- Local verification passed four independent research verifiers, both validators, typecheck, 291 Vitest tests, the build and artifact scan, 54 Chromium tests, and 12 production-preview tests. An isolated negative npm run accepted regenerated data under the ordinary validator and rejected the edited atlas under the release pins.
+- The existing Cloudflare preview passed 12 hosted Chromium tests, including cold deep links, refresh, history and hashed asset loading. Run the same checks against the exact remediated deployment before release.
+- AgentHarness replayed the historical native pass at `91d89b7`. Its committed-control comparison found the public candidate's Node CI and engine changes. Browser and npm subprocess checks ran in a separate verification copy with dedicated loopback servers and fresh Chromium contexts. AgentHarness's standing isolation profile and native receipt still cover its reviewed revision and scope.
+- Public acceptance remains pending CI and hosted verification for the remediated commit, the intended host's security-header policy, and owner authorisation. The unresolved Federal Court source gap remains in the evidence boundary.
+
+After release acceptance, the roadmap is Impeccable-assisted UX and interaction work, then the Horizon 2 economic research charter, literature review, original mathematical modelling and empirical validation. The Analytical Sandbox and spatial Simulation Studio follow, then multi-scale economic and institutional modelling. Parallel academic publications cover the research software, methodology and substantive findings.
 
 ## Product purpose
 

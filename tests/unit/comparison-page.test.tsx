@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
-import { cleanup, render, screen, within } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { MemoryRouter, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { ComparisonPage } from '../../src/pages/ComparisonPage';
 import { ClaimDetailPage } from '../../src/pages/ClaimDetailPage';
 import { CaseDetailPage } from '../../src/pages/CaseDetailPage';
@@ -12,7 +12,14 @@ afterEach(() => {
 
 function LocationProbe() {
   const loc = useLocation();
-  return <div data-testid="loc">{`${loc.pathname}${loc.search}`}</div>;
+  const navigate = useNavigate();
+  return (
+    <>
+      <div data-testid="loc">{`${loc.pathname}${loc.search}`}</div>
+      <button onClick={() => navigate(-1)}>Back</button>
+      <button onClick={() => navigate(1)}>Forward</button>
+    </>
+  );
 }
 
 function renderComparison(path: string) {
@@ -127,6 +134,38 @@ describe('ComparisonPage', () => {
       'a=C4-VAR-B0&b=C4-VAR-CF-STRONGER',
     );
     expect(screen.getByTestId('comparison-side-C4-VAR-B0')).toBeInTheDocument();
+  });
+
+  it('keeps both rapid selections before the router commits and restores history', () => {
+    renderComparison('/comparison?a=C1-VAR-R&b=C1-VAR-E');
+    const a = screen.getByRole('combobox', { name: 'Variant A' });
+    const b = screen.getByRole('combobox', { name: 'Variant B' });
+
+    act(() => {
+      fireEvent.change(a, { target: { value: 'C4-VAR-B0' } });
+      fireEvent.change(b, { target: { value: 'C4-VAR-CF-STRONGER' } });
+    });
+
+    expect(screen.getByTestId('loc').textContent).toBe(
+      '/comparison?a=C4-VAR-B0&b=C4-VAR-CF-STRONGER',
+    );
+    expect(a).toHaveValue('C4-VAR-B0');
+    expect(b).toHaveValue('C4-VAR-CF-STRONGER');
+    expect(screen.getByTestId('comparison-side-C4-VAR-B0')).toBeInTheDocument();
+    expect(screen.getByTestId('comparison-side-C4-VAR-CF-STRONGER')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Back' }));
+    expect(a).toHaveValue('C4-VAR-B0');
+    expect(b).toHaveValue('C1-VAR-E');
+    fireEvent.click(screen.getByRole('button', { name: 'Back' }));
+    expect(a).toHaveValue('C1-VAR-R');
+    expect(b).toHaveValue('C1-VAR-E');
+    fireEvent.click(screen.getByRole('button', { name: 'Forward' }));
+    expect(a).toHaveValue('C4-VAR-B0');
+    expect(b).toHaveValue('C1-VAR-E');
+
+    fireEvent.change(a, { target: { value: '' } });
+    expect(screen.getByTestId('loc').textContent).toBe('/comparison?b=C1-VAR-E');
   });
 
   it('links to cited claims from evidence uses', () => {
