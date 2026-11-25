@@ -80,7 +80,13 @@ With the environment variable unset, this configuration starts a dedicated local
 7. **Back/forward:** navigate between modules; history must restore scroll-appropriate views without shell loss.
 8. **Assets:** DevTools network — hashed JS/CSS return 200; no broken module loads.
 9. **Fonts:** typography renders (remote Google Fonts or operator mirror).
-10. **Security headers:** owner policy (CSP, HSTS) — out of scope for 08F; define in 09B.
+10. **Security headers:** verify the deployed response against [`public/_headers`](../public/_headers) on the entry and deep routes. Check browser console and CSP violations, Google Fonts and normal app interactions.
+
+### Cloudflare Pages policy and deployment identity
+
+Vite copies `public/_headers` into `dist/` for Pages to apply to static responses. The policy permits same-origin scripts and styles, Google Fonts stylesheets and fonts, and inline style attributes used by the React interface. It blocks embedding and form submissions, and disables camera, microphone and geolocation. HSTS applies to the serving host for one year. Preview indexing remains governed by the Pages preview response.
+
+Build from the exact clean Git revision using its lockfile. Record the commit, tool versions and SHA-256 manifest of the completed build. Confirm the Pages target is a preview before uploading. Run the hosted suite against the immutable deployment URL and compare the served HTML and assets to the manifest. Check response headers separately because Pages consumes `_headers` as configuration.
 
 Record results in the development ledger or release notes when 09B completes.
 
