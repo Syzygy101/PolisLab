@@ -1,0 +1,453 @@
+{
+  "exact": {
+    "M1": [
+      "ATLAS-ASM-002",
+      "ATLAS-HYP-004"
+    ],
+    "M1a": [
+      "ATLAS-EMP-001",
+      "ATLAS-EMP-003",
+      "ATLAS-GAP-001",
+      "ATLAS-LEG-003",
+      "ATLAS-LIT-004"
+    ],
+    "M1b": [
+      "ATLAS-EMP-003",
+      "ATLAS-GAP-001",
+      "ATLAS-LIT-003",
+      "ATLAS-LIT-004",
+      "ATLAS-LIT-006",
+      "ATLAS-PILOT-001"
+    ],
+    "M1c": [
+      "ATLAS-ASM-001",
+      "ATLAS-EMP-001",
+      "ATLAS-EMP-002",
+      "ATLAS-EMP-007",
+      "ATLAS-GAP-001",
+      "ATLAS-GAP-003",
+      "ATLAS-GAP-004",
+      "ATLAS-HYP-001",
+      "ATLAS-HYP-002",
+      "ATLAS-HYP-003",
+      "ATLAS-LEG-005",
+      "ATLAS-LEG-006",
+      "ATLAS-LEG-007",
+      "ATLAS-LIT-004",
+      "ATLAS-POL-001",
+      "ATLAS-POL-002",
+      "ATLAS-POL-004"
+    ],
+    "M2": [
+      "ATLAS-ASM-002",
+      "ATLAS-HYP-004"
+    ],
+    "M2a": [
+      "ATLAS-EMP-003",
+      "ATLAS-EMP-005",
+      "ATLAS-EMP-006"
+    ],
+    "M2b": [
+      "ATLAS-EMP-003",
+      "ATLAS-EMP-005"
+    ],
+    "M3": [
+      "ATLAS-ASM-002",
+      "ATLAS-CON-003"
+    ],
+    "M3a": [
+      "ATLAS-GAP-002",
+      "ATLAS-LIT-001"
+    ],
+    "M3b": [
+      "ATLAS-EMP-004",
+      "ATLAS-EMP-006",
+      "ATLAS-GAP-002",
+      "ATLAS-LIT-002"
+    ],
+    "M4": [
+      "ATLAS-ASM-002",
+      "ATLAS-CON-003"
+    ],
+    "M4a": [
+      "ATLAS-ADM-002",
+      "ATLAS-ADM-003",
+      "ATLAS-LEG-009",
+      "ATLAS-LIT-001",
+      "ATLAS-LIT-002"
+    ],
+    "M4b": [
+      "ATLAS-ASM-001",
+      "ATLAS-EMP-007",
+      "ATLAS-GAP-003",
+      "ATLAS-HYP-002",
+      "ATLAS-HYP-003",
+      "ATLAS-LEG-006",
+      "ATLAS-LEG-007",
+      "ATLAS-LEG-008",
+      "ATLAS-LIT-003",
+      "ATLAS-POL-002"
+    ],
+    "M5": [
+      "ATLAS-ASM-002",
+      "ATLAS-HYP-004"
+    ],
+    "M5a": [
+      "ATLAS-EMP-003",
+      "ATLAS-EMP-005"
+    ],
+    "M6": [
+      "ATLAS-ASM-002"
+    ],
+    "M6a": [
+      "ATLAS-ADM-001",
+      "ATLAS-ASM-001",
+      "ATLAS-CON-001",
+      "ATLAS-CON-002",
+      "ATLAS-HYP-003",
+      "ATLAS-LEG-001",
+      "ATLAS-LEG-002",
+      "ATLAS-LEG-003",
+      "ATLAS-LEG-004",
+      "ATLAS-LEG-005",
+      "ATLAS-POL-001",
+      "ATLAS-POL-003"
+    ],
+    "M6b": [
+      "ATLAS-HYP-003",
+      "ATLAS-LIT-005",
+      "ATLAS-POL-003"
+    ]
+  },
+  "family": {
+    "M1": [
+      "ATLAS-ASM-001",
+      "ATLAS-ASM-002",
+      "ATLAS-EMP-001",
+      "ATLAS-EMP-002",
+      "ATLAS-EMP-003",
+      "ATLAS-EMP-007",
+      "ATLAS-GAP-001",
+      "ATLAS-GAP-003",
+      "ATLAS-GAP-004",
+      "ATLAS-HYP-001",
+      "ATLAS-HYP-002",
+      "ATLAS-HYP-003",
+      "ATLAS-HYP-004",
+      "ATLAS-LEG-003",
+      "ATLAS-LEG-005",
+      "ATLAS-LEG-006",
+      "ATLAS-LEG-007",
+      "ATLAS-LIT-003",
+      "ATLAS-LIT-004",
+      "ATLAS-LIT-006",
+      "ATLAS-PILOT-001",
+      "ATLAS-POL-001",
+      "ATLAS-POL-002",
+      "ATLAS-POL-004"
+    ],
+    "M2": [
+      "ATLAS-ASM-002",
+      "ATLAS-EMP-003",
+      "ATLAS-EMP-005",
+      "ATLAS-EMP-006",
+      "ATLAS-HYP-004"
+    ],
+    "M3": [
+      "ATLAS-ASM-002",
+      "ATLAS-CON-003",
+      "ATLAS-EMP-004",
+      "ATLAS-EMP-006",
+      "ATLAS-GAP-002",
+      "ATLAS-LIT-001",
+      "ATLAS-LIT-002"
+    ],
+    "M4": [
+      "ATLAS-ADM-002",
+      "ATLAS-ADM-003",
+      "ATLAS-ASM-001",
+      "ATLAS-ASM-002",
+      "ATLAS-CON-003",
+      "ATLAS-EMP-007",
+      "ATLAS-GAP-003",
+      "ATLAS-HYP-002",
+      "ATLAS-HYP-003",
+      "ATLAS-LEG-006",
+      "ATLAS-LEG-007",
+      "ATLAS-LEG-008",
+      "ATLAS-LEG-009",
+      "ATLAS-LIT-001",
+      "ATLAS-LIT-002",
+      "ATLAS-LIT-003",
+      "ATLAS-POL-002"
+    ],
+    "M5": [
+      "ATLAS-ASM-002",
+      "ATLAS-EMP-003",
+      "ATLAS-EMP-005",
+      "ATLAS-HYP-004"
+    ],
+    "M6": [
+      "ATLAS-ADM-001",
+      "ATLAS-ASM-001",
+      "ATLAS-ASM-002",
+      "ATLAS-CON-001",
+      "ATLAS-CON-002",
+      "ATLAS-HYP-003",
+      "ATLAS-LEG-001",
+      "ATLAS-LEG-002",
+      "ATLAS-LEG-003",
+      "ATLAS-LEG-004",
+      "ATLAS-LEG-005",
+      "ATLAS-LIT-005",
+      "ATLAS-POL-001",
+      "ATLAS-POL-003"
+    ]
+  },
+  "matrix": {
+    "M1": {
+      "O1": [
+        "ATLAS-ASM-001",
+        "ATLAS-ASM-002",
+        "ATLAS-EMP-001",
+        "ATLAS-EMP-002",
+        "ATLAS-EMP-003",
+        "ATLAS-EMP-007",
+        "ATLAS-GAP-001",
+        "ATLAS-GAP-003",
+        "ATLAS-GAP-004",
+        "ATLAS-HYP-001",
+        "ATLAS-HYP-002",
+        "ATLAS-HYP-004",
+        "ATLAS-LEG-003",
+        "ATLAS-LEG-005",
+        "ATLAS-LEG-006",
+        "ATLAS-LEG-007",
+        "ATLAS-LIT-003",
+        "ATLAS-LIT-004",
+        "ATLAS-LIT-006",
+        "ATLAS-PILOT-001",
+        "ATLAS-POL-001",
+        "ATLAS-POL-002",
+        "ATLAS-POL-004"
+      ],
+      "O2": [
+        "ATLAS-ASM-002",
+        "ATLAS-EMP-001",
+        "ATLAS-EMP-003",
+        "ATLAS-EMP-007",
+        "ATLAS-HYP-002",
+        "ATLAS-HYP-004",
+        "ATLAS-LEG-003",
+        "ATLAS-LIT-003",
+        "ATLAS-LIT-006",
+        "ATLAS-PILOT-001",
+        "ATLAS-POL-001"
+      ],
+      "O3": [
+        "ATLAS-ASM-002",
+        "ATLAS-EMP-003"
+      ],
+      "O4": [
+        "ATLAS-ASM-002",
+        "ATLAS-HYP-001",
+        "ATLAS-LIT-003"
+      ],
+      "O5": [
+        "ATLAS-ASM-001",
+        "ATLAS-ASM-002",
+        "ATLAS-GAP-003",
+        "ATLAS-GAP-004",
+        "ATLAS-HYP-003",
+        "ATLAS-LIT-004",
+        "ATLAS-POL-004"
+      ],
+      "O6": [
+        "ATLAS-ASM-002",
+        "ATLAS-GAP-003",
+        "ATLAS-GAP-004",
+        "ATLAS-HYP-003",
+        "ATLAS-LIT-006"
+      ]
+    },
+    "M2": {
+      "O1": [
+        "ATLAS-ASM-002",
+        "ATLAS-EMP-003",
+        "ATLAS-HYP-004"
+      ],
+      "O2": [
+        "ATLAS-ASM-002",
+        "ATLAS-EMP-003",
+        "ATLAS-EMP-005",
+        "ATLAS-EMP-006",
+        "ATLAS-HYP-004"
+      ],
+      "O3": [
+        "ATLAS-ASM-002",
+        "ATLAS-EMP-003"
+      ],
+      "O4": [
+        "ATLAS-ASM-002",
+        "ATLAS-EMP-006"
+      ],
+      "O5": [
+        "ATLAS-ASM-002"
+      ],
+      "O6": [
+        "ATLAS-ASM-002"
+      ]
+    },
+    "M3": {
+      "O1": [
+        "ATLAS-ASM-002"
+      ],
+      "O2": [
+        "ATLAS-ASM-002",
+        "ATLAS-EMP-006"
+      ],
+      "O3": [
+        "ATLAS-ASM-002",
+        "ATLAS-EMP-004",
+        "ATLAS-LIT-001"
+      ],
+      "O4": [
+        "ATLAS-ASM-002",
+        "ATLAS-EMP-006"
+      ],
+      "O5": [
+        "ATLAS-ASM-002",
+        "ATLAS-CON-003",
+        "ATLAS-EMP-004",
+        "ATLAS-GAP-002",
+        "ATLAS-LIT-001",
+        "ATLAS-LIT-002"
+      ],
+      "O6": [
+        "ATLAS-ASM-002",
+        "ATLAS-CON-003",
+        "ATLAS-EMP-004",
+        "ATLAS-GAP-002",
+        "ATLAS-LIT-001",
+        "ATLAS-LIT-002"
+      ]
+    },
+    "M4": {
+      "O1": [
+        "ATLAS-ASM-001",
+        "ATLAS-ASM-002",
+        "ATLAS-EMP-007",
+        "ATLAS-GAP-003",
+        "ATLAS-HYP-002",
+        "ATLAS-LEG-006",
+        "ATLAS-LEG-007",
+        "ATLAS-LEG-008",
+        "ATLAS-LIT-003",
+        "ATLAS-POL-002"
+      ],
+      "O2": [
+        "ATLAS-ADM-002",
+        "ATLAS-ASM-002",
+        "ATLAS-EMP-007",
+        "ATLAS-HYP-002",
+        "ATLAS-LIT-003"
+      ],
+      "O3": [
+        "ATLAS-ASM-002",
+        "ATLAS-LIT-001"
+      ],
+      "O4": [
+        "ATLAS-ADM-002",
+        "ATLAS-ADM-003",
+        "ATLAS-ASM-002",
+        "ATLAS-LIT-003"
+      ],
+      "O5": [
+        "ATLAS-ADM-002",
+        "ATLAS-ADM-003",
+        "ATLAS-ASM-001",
+        "ATLAS-ASM-002",
+        "ATLAS-CON-003",
+        "ATLAS-GAP-003",
+        "ATLAS-HYP-003",
+        "ATLAS-LEG-009",
+        "ATLAS-LIT-001",
+        "ATLAS-LIT-002"
+      ],
+      "O6": [
+        "ATLAS-ASM-002",
+        "ATLAS-CON-003",
+        "ATLAS-GAP-003",
+        "ATLAS-HYP-003",
+        "ATLAS-LEG-009",
+        "ATLAS-LIT-001",
+        "ATLAS-LIT-002"
+      ]
+    },
+    "M5": {
+      "O1": [
+        "ATLAS-ASM-002",
+        "ATLAS-EMP-003",
+        "ATLAS-HYP-004"
+      ],
+      "O2": [
+        "ATLAS-ASM-002",
+        "ATLAS-EMP-003",
+        "ATLAS-EMP-005",
+        "ATLAS-HYP-004"
+      ],
+      "O3": [
+        "ATLAS-ASM-002",
+        "ATLAS-EMP-003"
+      ],
+      "O4": [
+        "ATLAS-ASM-002"
+      ],
+      "O5": [
+        "ATLAS-ASM-002"
+      ],
+      "O6": [
+        "ATLAS-ASM-002"
+      ]
+    },
+    "M6": {
+      "O1": [
+        "ATLAS-ADM-001",
+        "ATLAS-ASM-001",
+        "ATLAS-ASM-002",
+        "ATLAS-CON-001",
+        "ATLAS-CON-002",
+        "ATLAS-LEG-001",
+        "ATLAS-LEG-002",
+        "ATLAS-LEG-003",
+        "ATLAS-LEG-004",
+        "ATLAS-LEG-005",
+        "ATLAS-POL-001",
+        "ATLAS-POL-003"
+      ],
+      "O2": [
+        "ATLAS-ASM-002",
+        "ATLAS-LEG-003",
+        "ATLAS-LIT-005",
+        "ATLAS-POL-001",
+        "ATLAS-POL-003"
+      ],
+      "O3": [
+        "ATLAS-ASM-002"
+      ],
+      "O4": [
+        "ATLAS-ASM-002"
+      ],
+      "O5": [
+        "ATLAS-ASM-001",
+        "ATLAS-ASM-002",
+        "ATLAS-HYP-003",
+        "ATLAS-LIT-005"
+      ],
+      "O6": [
+        "ATLAS-ASM-002",
+        "ATLAS-HYP-003"
+      ]
+    }
+  }
+}

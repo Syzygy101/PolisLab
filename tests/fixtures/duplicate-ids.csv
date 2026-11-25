@@ -1,0 +1,3 @@
+claim_id,exact_claim,mechanism_ids,outcome_ids,institutional_geographic_scope,status,primary_source_title,primary_source_url,source_date_or_version,pinpoint,what_source_establishes,limitations_external_validity,competing_mechanism_or_contrary_evidence,observation_that_would_alter_assessment,admissible_in_policy_comparison,admissibility_conditions,casebook_cases,literature_src_ids
+FIX-DUP,First,M1,O1,Scope,verified_legal_fact,T,https://example.com,2026,p,E,L,C,A,yes,Cond,Case1,SRC-A
+FIX-DUP,Second,M1,O1,Scope,verified_legal_fact,T,https://example.com,2026,p,E,L,C,A,yes,Cond,Case1,SRC-A

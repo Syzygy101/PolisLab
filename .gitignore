@@ -1,0 +1,66 @@
+# Dependencies
+node_modules/
+
+# Build
+dist/
+dist-ssr/
+*.local
+
+# Test / tooling
+.wrangler/
+coverage/
+playwright-report/
+test-results/
+blob-report/
+.playwright/
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+*.swo
+
+# Env
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+
+# TypeScript
+*.tsbuildinfo
+
+# Pre-existing unpublished local research / third-party reference material.
+# These must not be staged or published with Build 01. Authoritative published
+# research remains research/10_* and LICENSE only.
+/research/01_*
+/research/02_*
+/research/03_*
+/research/04_*
+/research/05_*
+/research/06_*
+/research/07_*
+/research/08_*
+/research/09_*
+/references/
+
+# Build 08 local acceptance screenshots (working artefacts; not publication staging)
+docs/screenshots/
+
+# Build 08D+ design exploration artefacts (local; not publication staging)
+design-exploration/baseline/
+design-exploration/prototypes/**/*.png
+design-exploration/prototypes/**/*.jpg
+design-exploration/review-packet-08d/screenshots/
+design-exploration/review-packet-08d2/screenshots/
+design-exploration/**/independent-review/
+design-exploration/**/AUDIT*.md
+design-exploration/**/*-audit*.md
+
+# Local audit / review packets (if generated outside design-exploration)
+**/AUDIT_REPORT*.md
+**/*_AUDIT.md
