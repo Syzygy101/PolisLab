@@ -12,25 +12,26 @@ export function MechanismsPage() {
   useDocumentTitle('Mechanisms');
 
   return (
-    <div data-testid="mechanisms-page">
+    <div className="research-module" data-testid="mechanisms-page">
+      <header className="research-module-header">
       <p className="page-kicker">Analysis</p>
       <h1 className="page-title">Mechanisms</h1>
       <p className="lede" style={{ maxWidth: '60rem' }}>
-        Investigate the economic mechanisms, competing explanations, and outcome associations
-        represented in the published research. This module distinguishes research metadata
-        associations from hypothesised economic relationships and established causal effects. It is
-        not a structural economic model, causal-inference engine, or calibrated simulator.
+        Explore why a retailer might struggle to enter, expand or compete. Each explanation
+        has conditions you can check against the published evidence.
       </p>
+      <nav aria-label="On this page">
+        <ul className="tag-list">
+          <li><a className="tag-link" href="#mechanism-families">Mechanism families</a></li>
+          <li><a className="tag-link" href="#mechanism-pathways">Conditional explanations</a></li>
+          <li><a className="tag-link" href="#mechanism-matrix">Mechanism–outcome matrix</a></li>
+        </ul>
+      </nav>
+      </header>
 
-      <section
-        className="panel panel--muted"
-        style={{ marginBottom: '1.5rem' }}
-        aria-labelledby="relation-types-heading"
-        data-testid="mechanism-relation-types"
-      >
-        <h2 id="relation-types-heading" className="panel-title">
-          Relationship types used in this module
-        </h2>
+      <details className="panel panel--muted guide-disclosure" style={{ marginBottom: '1.5rem' }}
+        data-testid="mechanism-relation-types">
+        <summary>How to read the relationship types</summary>
         <ul className="tag-list" style={{ marginBottom: '0.5rem' }}>
           {(Object.keys(RELATION_TYPE_LABELS) as MechanismRelationType[]).map((relation) => (
             <li key={relation}>
@@ -39,29 +40,11 @@ export function MechanismsPage() {
           ))}
         </ul>
         <p className="small-note">
-          Directed arrows are not used for generic metadata co-tagging.
+          Shared claim tags show that two topics appear in the same record. Conditional
+          pathways describe hypotheses with stated evidence limits. Directed arrows are not
+          used for generic metadata co-tagging. The diagrams do not simulate causal effects.
         </p>
-      </section>
-
-      <nav aria-label="On this page" style={{ marginBottom: '2rem' }}>
-        <ul className="tag-list">
-          <li>
-            <a className="tag-link" href="#mechanism-families">
-              Mechanism families
-            </a>
-          </li>
-          <li>
-            <a className="tag-link" href="#mechanism-matrix">
-              Mechanism–outcome matrix
-            </a>
-          </li>
-          <li>
-            <a className="tag-link" href="#mechanism-pathways">
-              Conditional explanations
-            </a>
-          </li>
-        </ul>
-      </nav>
+      </details>
 
       <div className="stack stack--loose">
         <MechanismFamilyOverview claims={allClaims} />

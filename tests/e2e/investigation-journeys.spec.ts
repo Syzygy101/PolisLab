@@ -22,11 +22,11 @@ test.describe('Investigation journeys', () => {
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
     await page.getByTestId('case-investigate-link-Case1').click();
     await expect(page).toHaveURL(/\/casebook\/Case1/);
-    await expect(page.getByRole('heading', { level: 1 })).toContainText(/undeveloped|site|land/i);
+    await expect(page.getByTestId('case-page-Case1').getByRole('heading', { level: 1 })).toHaveText('What keeps a new supermarket out?');
     await expect(page.locator('#section-1')).toBeVisible();
 
     await page.goto('/comparison');
-    await page.getByRole('link', { name: 'Case1 R vs E' }).click();
+    await page.getByRole('link', { name: 'Site access proposals' }).click();
     await expect(page).toHaveURL(/a=C1-VAR-R/);
     await expect(page).toHaveURL(/b=C1-VAR-E/);
     await expect(page.getByTestId('comparison-select-a')).toHaveValue('C1-VAR-R');
@@ -69,7 +69,7 @@ test.describe('Investigation journeys', () => {
     await expect(page.getByText('ATLAS-LEG-002').first()).toBeVisible();
 
     await page.goto('/comparison');
-    await page.getByRole('link', { name: 'Case2 CF-A vs CF-C' }).click();
+    await page.getByRole('link', { name: 'Foreign investment proposals' }).click();
     await expect(page.getByTestId('comparison-select-a')).toHaveValue('C2-VAR-CF-A');
     await expect(page.getByTestId('comparison-select-b')).toHaveValue('C2-VAR-CF-C');
     await expect(page.getByText(/C2-VAR-CF-A|C2-VAR-CF-C/i).first()).toBeVisible();
@@ -115,7 +115,7 @@ test.describe('Investigation journeys', () => {
     await page.goto('/comparison?a=C4-VAR-B0&b=C4-VAR-CF-WEAKER');
     await expect(page.getByTestId('comparison-select-a')).toHaveValue('C4-VAR-B0');
     await expect(page.getByTestId('comparison-select-b')).toHaveValue('C4-VAR-CF-WEAKER');
-    await expect(page.getByText(/C4-VAR-B0|B0/i).first()).toBeVisible();
+    await expect(page.getByTestId('compare-sticky-names')).toContainText('Current notification regime');
 
     await page.goto('/gaps?case=Case4');
     await page.getByRole('link', { name: /REQ-C4-05/i }).first().click();

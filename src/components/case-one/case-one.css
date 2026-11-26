@@ -1,0 +1,420 @@
+.field-guide-hero,
+.site-lab {
+  color: var(--site-ink);
+}
+
+.field-guide-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 5vw, 4.5rem);
+  align-items: center;
+  padding-block: clamp(1.5rem, 5vw, 4rem);
+}
+
+.site-kicker {
+  margin: 0 0 0.65rem;
+  color: var(--site-muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.field-guide-hero h1,
+.site-lab h1,
+.site-room h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 650;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.field-guide-hero h1,
+.site-lab h1 {
+  max-width: 18ch;
+  font-size: clamp(2.45rem, 5.3vw, 5.2rem);
+}
+
+.field-guide-deck,
+.site-lab-header > p:last-child {
+  max-width: 51ch;
+  margin: 1rem 0 0;
+  font-size: clamp(1.05rem, 1.55vw, 1.29rem);
+  line-height: 1.5;
+}
+
+.field-guide-actions,
+.site-comparison-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 1.3rem;
+  margin-top: 1.25rem;
+}
+
+.field-guide-actions a,
+.site-comparison-links a,
+.site-lab-nav a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+}
+
+.field-guide-actions .field-guide-action {
+  padding: 0.55rem 1rem;
+  background: var(--site-forest);
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.field-guide-action:hover {
+  background: #334a3c;
+}
+
+.site-published-header {
+  border-top: 2px solid var(--color-line);
+  padding-top: 1.75rem;
+}
+
+.site-lab-header {
+  padding-block: clamp(1.2rem, 3.6vw, 3rem) 1.6rem;
+}
+
+.site-lab-nav {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 1.35rem;
+  border-block: 1px solid var(--site-line);
+  font-weight: 650;
+}
+
+.site-room {
+  scroll-margin-top: 1rem;
+  margin-block: clamp(2rem, 4.5vw, 3.5rem);
+}
+
+.site-room-header {
+  max-width: 56ch;
+  margin-bottom: 1.15rem;
+}
+
+.site-room h2 {
+  font-size: clamp(1.8rem, 3.4vw, 3rem);
+}
+
+.site-room-header p {
+  margin: 0.6rem 0 0;
+}
+
+.site-investigation-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  border: 1px solid #455f50;
+  background: var(--site-forest);
+  color: #fafbf2;
+}
+
+.site-plan {
+  margin: 0;
+  border: 1px solid #829481;
+  background: #dce3cc;
+  color: var(--site-ink);
+}
+
+.site-investigation-grid .site-plan {
+  border: 0;
+  background: #203a30;
+  color: #f1f6e9;
+}
+
+.site-plan-field {
+  position: relative;
+  min-height: clamp(14rem, 26vw, 22rem);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.site-plan-drawing {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template: repeat(8, 1fr) / repeat(9, 1fr);
+  gap: 0.36rem;
+  padding: 0.75rem;
+  background: #edf0df;
+}
+
+.site-investigation-grid .site-plan-drawing {
+  background: #203a30;
+  box-shadow: inset 0 0 0 1px #486251;
+}
+
+.site-plan-land {
+  border: 1px solid #809276;
+  background: #bcc9a7;
+}
+
+.site-investigation-grid .site-plan-land {
+  border-color: #a2b397;
+  background: #455e49;
+}
+
+.site-plan-land--north { grid-area: 1 / 1 / 4 / 6 }
+.site-plan-land--west { grid-area: 5 / 1 / 9 / 4 }
+.site-plan-land--east { grid-area: 1 / 7 / 8 / 10 }
+.site-plan-land--south { grid-area: 8 / 4 / 9 / 10 }
+
+.site-plan-road {
+  grid-area: 4 / 1 / 5 / 10;
+  border-block: 1px dashed #a8af9d;
+}
+
+.site-plan-parcel {
+  z-index: 1;
+  grid-area: 5 / 4 / 8 / 7;
+  display: grid;
+  place-items: center;
+  padding: 0.25rem;
+  border: 2px solid #efc6aa;
+  background: #9a4e36;
+  color: #fff;
+  text-align: center;
+  font-weight: 700;
+}
+
+.site-investigation-grid .site-plan-parcel span {
+  align-self: end;
+  margin-bottom: 0.15rem;
+}
+
+/* Highlights provide a second visual cue for the selected explanation. */
+.site-plan[data-focus="viability"] .site-plan-land--north,
+.site-plan[data-focus="permission"] .site-plan-road,
+.site-plan[data-focus="waiting"] .site-plan-parcel {
+  border-color: var(--site-lime);
+  box-shadow: inset 0 0 0 1px var(--site-lime);
+}
+
+.site-plan[data-focus="control"] .site-plan-parcel {
+  outline: 2px dashed var(--site-lime);
+  outline-offset: 3px;
+}
+
+.site-plan figcaption {
+  padding: 0.45rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+.site-plan-controls {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template: repeat(3, minmax(44px, 1fr)) / repeat(2, minmax(0, 1fr));
+  gap: 0.45rem;
+  align-items: center;
+  min-height: inherit;
+  padding: 0.8rem;
+}
+
+.site-pin {
+  min-height: 44px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid #b7c3ad;
+  background: #192d26;
+  color: #fbfaf2;
+  font-weight: 700;
+  line-height: 1.18;
+  cursor: pointer;
+}
+
+.site-pin--viability { grid-area: 1 / 1 }
+.site-pin--permission { grid-area: 1 / 2; justify-self: end }
+.site-pin--waiting { grid-area: 3 / 1 }
+.site-pin--control { grid-area: 3 / 2; justify-self: end }
+
+.site-pin:hover,
+.site-pin[aria-pressed="true"] {
+  border-color: var(--site-lime);
+  background: var(--site-lime);
+  color: #1c2c22;
+}
+
+.site-pin[aria-pressed="true"] {
+  outline: 2px solid #24392b;
+  outline-offset: -4px;
+}
+
+.site-inspector {
+  min-width: 0;
+  padding: clamp(1.05rem, 2vw, 1.65rem);
+}
+
+.site-inspector .site-kicker {
+  color: #d1e1c9;
+}
+
+.site-inspector h3,
+.site-policy-grid h3 {
+  margin: 0 0 0.4rem;
+  font-size: clamp(1.22rem, 2vw, 1.6rem);
+  font-weight: 720;
+  line-height: 1.2;
+}
+
+.site-inspector h4 {
+  margin: 0.8rem 0 0.15rem;
+  font-weight: 700;
+}
+
+.site-inspector p {
+  margin: 0 0 0.6rem;
+}
+
+.site-inspector a,
+.field-guide-actions a:not(.field-guide-action) {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.site-inspector a {
+  color: #f4f3da;
+}
+
+.site-inspector details {
+  border-top: 1px solid #718879;
+  margin-top: 0.65rem;
+}
+
+.site-inspector details a {
+  display: block;
+  margin-bottom: .35rem;
+}
+
+.site-investigation-grid :focus-visible {
+  outline: 3px solid #ffd0a6;
+  outline-offset: 3px;
+}
+
+.field-guide-hero :focus-visible,
+.site-lab-nav :focus-visible,
+.site-room--comparison :focus-visible,
+.site-room--evidence :focus-visible {
+  outline: 3px solid var(--site-focus);
+  outline-offset: 3px;
+}
+
+.site-boundary {
+  margin: 0.85rem 0 1rem;
+  max-width: 77ch;
+  color: var(--site-muted);
+}
+
+.site-mode-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-block: 1rem;
+}
+
+.site-mode-switch button {
+  min-height: 44px;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid #849389;
+  background: var(--site-paper);
+  color: var(--site-ink);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.site-mode-switch button:hover {
+  border-color: var(--site-forest);
+}
+
+.site-mode-switch button[aria-pressed="true"] {
+  border-color: var(--site-forest);
+  background: var(--site-forest);
+  color: #fff;
+}
+
+.site-policy-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border: 1px solid var(--site-line);
+  background: var(--site-paper);
+}
+
+.site-policy-grid article {
+  min-width: 0;
+  padding: clamp(1.05rem, 2.5vw, 1.65rem);
+}
+
+.site-policy-grid article + article {
+  border-left: 1px solid var(--site-line);
+}
+
+.site-policy-grid article > p:first-of-type {
+  color: var(--site-muted);
+}
+
+.site-policy-result {
+  margin: 0.85rem 0;
+}
+
+.site-policy-evidence {
+  display: grid;
+  gap: 0.65rem;
+  padding-inline-start: 1.3rem;
+  list-style: disc;
+}
+
+.site-evidence-list {
+  border-block: 1px solid var(--site-line);
+}
+
+.site-evidence-list details + details {
+  border-top: 1px solid var(--site-line);
+}
+
+.site-evidence-list details[open] {
+  padding-bottom: 0.75rem;
+}
+
+.site-evidence-list p {
+  margin: 0 0 0.45rem;
+  max-width: 72ch;
+}
+
+.site-lab summary {
+  min-height: 44px;
+  padding-block: 0.5rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+@media (min-width: 1100px) {
+  .field-guide-hero {
+    width: min(74rem, 88vw);
+    margin-inline: calc((100% - min(74rem, 88vw)) / 2);
+  }
+}
+
+@media (max-width: 680px) {
+  .field-guide-hero,
+  .site-investigation-grid,
+  .site-policy-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .site-investigation-grid .site-plan-parcel span {
+    align-self: center;
+    margin-bottom: 0;
+  }
+
+  .site-policy-grid article + article {
+    border-top: 1px solid var(--site-line);
+    border-left: 0;
+  }
+}

@@ -1,4 +1,5 @@
 import { useLayoutEffect, useMemo, useRef } from 'react';
+import { FIELD_GUIDE } from '@/components/field-guide/content';
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import { OrientationTable } from '@/components/comparison/OrientationTable';
 import { VariantComparePanel } from '@/components/comparison/VariantComparePanel';
@@ -61,27 +62,27 @@ export function ComparisonPage() {
   const bName = comparison.b?.variant.label;
 
   return (
-    <div data-testid="comparison-page">
-      <header className="space-y-2 pb-2">
-        <h1 className="font-display text-3xl font-semibold text-ink">
+    <div className="research-module" data-testid="comparison-page">
+      <header className="research-module-header">
+        <h1 className="page-title">
           Policy Comparison Laboratory
         </h1>
-        <p className="max-w-3xl text-sm text-ink-muted">
-          Qualitative comparison of published baselines, intervention variants, pathways, and
-          outcome assessments across the four casebook investigations, aligned section by section.
-          Distinct from two-claim evidence comparison at{' '}
-          <Link to="/claims/compare" className="text-accent underline underline-offset-2">
-            /claims/compare
-          </Link>
-          . No policy rankings, composite scores, fabricated probabilities, or effect sizes.
+        <p className="lede">
+          Compare published policy proposals and dated baselines side by side. Explore where
+          each approach could help, fail or make little difference. The assessment is qualitative.
         </p>
-        <p className="text-xs text-ink-subtle">
-          Dataset {COMPARISON_DATASET.provenance.datasetVersion} · casebook SHA{' '}
-          <span className="font-mono">
-            {COMPARISON_DATASET.provenance.sourceContentSha256.slice(0, 12)}…
-          </span>
-          {integrity.ok ? ' · integrity OK' : ` · integrity issues: ${integrity.issues.length}`}
-        </p>
+        <p><Link to="/claims/compare" className="underline underline-offset-2">Compare two evidence claims</Link></p>
+        <details className="guide-disclosure">
+          <summary>Comparison method and source version</summary>
+          <p>The comparison aligns pathways and outcomes by section. The laboratory provides no
+            rankings, composite scores, probabilities or effect sizes.</p>
+          <p className="meta-line">
+            Dataset {COMPARISON_DATASET.provenance.datasetVersion} · casebook SHA{' '}
+            <span className="font-mono">{COMPARISON_DATASET.provenance.sourceContentSha256.slice(0, 12)}…</span>
+            {integrity.ok ? ' · integrity OK' : ` · integrity issues: ${integrity.issues.length}`}
+            {' · '}<span className="font-mono">policyWinnerDeclared={String(comparison.policyWinnerDeclared)}</span>
+          </p>
+        </details>
       </header>
 
       <div className="compare-sticky" data-testid="comparison-selector">
@@ -102,10 +103,10 @@ export function ComparisonPage() {
                 >
                   <option value="">— empty —</option>
                   {CASE_IDS.map((caseId) => (
-                    <optgroup key={caseId} label={caseId}>
+                    <optgroup key={caseId} label={FIELD_GUIDE[caseId].topic}>
                       {listVariants(caseId).map((v) => (
                         <option key={v.id} value={v.id}>
-                          {v.shortCode} — {v.label}
+                          {v.label}
                         </option>
                       ))}
                     </optgroup>
@@ -134,19 +135,25 @@ export function ComparisonPage() {
       <div className="mb-4 flex flex-wrap items-center gap-2 text-xs">
         <span className="text-ink-subtle">Examples:</span>
         <Link to={comparisonHref({ a: 'C1-VAR-R', b: 'C1-VAR-E' })} className={QUICK_LINK_CLASS}>
-          Case1 R vs E
+          Site access proposals
         </Link>
         <Link
           to={comparisonHref({ a: 'C2-VAR-CF-A', b: 'C2-VAR-CF-C' })}
           className={QUICK_LINK_CLASS}
         >
-          Case2 CF-A vs CF-C
+          Foreign investment proposals
         </Link>
         <Link
           to={comparisonHref({ a: 'C4-VAR-B0', b: 'C4-VAR-CF-STRONGER' })}
           className={QUICK_LINK_CLASS}
         >
-          Case4 B0 vs CF-stronger
+          Acquisition oversight proposals
+        </Link>
+        <Link
+          to={comparisonHref({ a: 'C3-VAR-SITE-FDI', b: 'C3-VAR-FDI-ONLY' })}
+          className={QUICK_LINK_CLASS}
+        >
+          Entry and scale comparisons
         </Link>
         <Link to="/comparison" className={QUICK_LINK_CLASS}>
           Clear selection

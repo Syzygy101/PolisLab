@@ -1,3 +1,4 @@
+import { version as appVersion } from '../../../package.json';
 import { useEffect, useId, useRef, useState } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import {
@@ -91,10 +92,30 @@ export function AppShell() {
     if (previousPath.current === location.pathname) return;
     previousPath.current = location.pathname;
     drawerRef.current?.close();
-    const anchor = document.getElementById(location.hash.slice(1));
-    if (anchor) anchor.scrollIntoView();
-    else window.scrollTo(0, 0);
+    if (!location.hash) window.scrollTo(0, 0);
     mainRef.current?.focus({ preventScroll: true });
+  }, [location.pathname, location.hash]);
+
+  useEffect(() => {
+    if (!location.hash || !mainRef.current) return;
+    let id = location.hash.slice(1);
+    try {
+      id = decodeURIComponent(id);
+    } catch {
+      // An invalid escape can still be part of a literal fragment.
+    }
+    function scrollToFragment() {
+      const anchor = document.getElementById(id);
+      anchor?.scrollIntoView?.();
+      return Boolean(anchor);
+    }
+    if (scrollToFragment()) return;
+
+    const observer = new MutationObserver(() => {
+      if (scrollToFragment()) observer.disconnect();
+    });
+    observer.observe(mainRef.current, { childList: true, subtree: true });
+    return () => observer.disconnect();
   }, [location.pathname, location.hash]);
 
   useEffect(() => {
@@ -133,9 +154,9 @@ export function AppShell() {
           </Link>
           <div className="chrome-actions">
             {!withRail ? (
-              <Link to="/casebook/Case1" className="btn btn--primary">
-                Enter laboratory
-              </Link>
+              <a href="#policy-investigations" className="btn btn--secondary">
+                Browse questions
+              </a>
             ) : null}
             <button
               ref={menuButtonRef}
@@ -159,6 +180,19 @@ export function AppShell() {
         onClose={() => {
           setDrawerOpen(false);
           menuButtonRef.current?.focus();
+        }}
+        onKeyDown={(event) => {
+          if (event.key !== 'Tab') return;
+          const tabStops = event.currentTarget.querySelectorAll<HTMLElement>('button, a[href]');
+          const first = tabStops.item(0);
+          const last = tabStops.item(tabStops.length - 1);
+          if (event.shiftKey && event.target === first) {
+            event.preventDefault();
+            last?.focus();
+          } else if (!event.shiftKey && event.target === last) {
+            event.preventDefault();
+            first?.focus();
+          }
         }}
         onClick={(event) => {
           if (event.target === event.currentTarget) event.currentTarget.close();
@@ -207,7 +241,7 @@ export function AppShell() {
                 <br />
                 Correction {RESEARCH_CORRECTION_PASS}
                 <br />
-                App v0.2 · Build 08F
+                App v{appVersion}
               </p>
               <p style={{ marginTop: '0.75rem' }}>
                 <Link to="/casebook/source">Methodology &amp; source</Link>

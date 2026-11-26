@@ -46,7 +46,7 @@ describe('Casebook pages', () => {
     renderApp('/casebook/Case1');
     expect(screen.getByTestId('case-page-Case1')).toBeInTheDocument();
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
-      /Undeveloped supermarket sites/i,
+      /What keeps a new supermarket out/i,
     );
     for (let n = 1; n <= 10; n += 1) {
       expect(screen.getByTestId(`case-section-${n}`)).toBeInTheDocument();

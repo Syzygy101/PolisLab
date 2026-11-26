@@ -49,7 +49,7 @@ export function SourceRefList({
               <span key={`${source.kind}-${source.id}`} className="inline-flex flex-wrap items-baseline gap-1">
                 <Link
                   to={`/claims/${source.id}`}
-                  className="font-mono text-accent no-underline hover:underline"
+                  className="inline-flex min-h-6 items-center font-mono text-accent no-underline hover:underline"
                   data-comparison-claim={source.id}
                   title={hint ?? undefined}
                 >
@@ -66,7 +66,7 @@ export function SourceRefList({
               <Link
                 key={`${source.kind}-${source.id}`}
                 to={`/casebook/${source.caseId}#${caseSectionAnchor(source.section)}`}
-                className="font-mono text-accent no-underline hover:underline"
+                className="inline-flex min-h-6 items-center font-mono text-accent no-underline hover:underline"
                 data-comparison-case-section={source.id}
               >
                 {source.id}

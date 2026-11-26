@@ -58,3 +58,23 @@ test.describe('Accessibility smoke', () => {
     await expect(gaps).toHaveAttribute('aria-current', 'page');
   });
 });
+
+test('mobile drawer wraps keyboard focus and restores it on dismissal', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.goto('/');
+  const menu = page.getByRole('button', { name: 'Menu' });
+  const drawer = page.getByRole('dialog', { name: 'Navigate' });
+  const close = drawer.getByRole('button', { name: 'Close' });
+  const lastLink = drawer.getByRole('link', { name: 'Methodology & source' });
+
+  await menu.focus();
+  await page.keyboard.press('Enter');
+  await expect(close).toBeFocused();
+  await page.keyboard.press('Shift+Tab');
+  await expect(lastLink).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(close).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(drawer).not.toBeVisible();
+  await expect(menu).toBeFocused();
+});

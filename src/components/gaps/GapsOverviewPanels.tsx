@@ -92,9 +92,12 @@ export function GapsEntryPoints({ counts }: { counts: GapsAtlasCounts }) {
             B. Claim-level limitations and assessment-changing observations
           </h3>
           <p className="small-note">
-            {assessmentClaims.length} atlas claims carry a non-empty{' '}
-            <span className="mono">observation_that_would_alter_assessment</span>.
+            {assessmentClaims.length} atlas claims describe an observation that could change the assessment.
           </p>
+          <details className="guide-disclosure">
+            <summary>Atlas field name</summary>
+            <p className="small-note mono">observation_that_would_alter_assessment</p>
+          </details>
           <p>
             <Link to="/claims" className="btn btn--secondary">
               Open Evidence library
@@ -111,7 +114,10 @@ export function GapsEntryPoints({ counts }: { counts: GapsAtlasCounts }) {
           <ul className="link-rows">
             <li>
               <span>
-                <Link to={claimsExplorerHref({ statuses: ['absence_of_finding'] })}>
+                <Link
+                  to={claimsExplorerHref({ statuses: ['absence_of_finding'] })}
+                  className="underline underline-offset-2"
+                >
                   Absence of finding
                 </Link>
                 : {counts.absenceOfFinding} records (includes {counts.gapPrefixed} GAP-prefixed)
@@ -119,7 +125,10 @@ export function GapsEntryPoints({ counts }: { counts: GapsAtlasCounts }) {
             </li>
             <li>
               <span>
-                <Link to={claimsExplorerHref({ statuses: ['unresolved_hypothesis'] })}>
+                <Link
+                  to={claimsExplorerHref({ statuses: ['unresolved_hypothesis'] })}
+                  className="underline underline-offset-2"
+                >
                   Unresolved hypothesis
                 </Link>
                 : {counts.unresolvedHypothesis} records

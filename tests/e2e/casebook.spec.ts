@@ -52,7 +52,7 @@ test.describe('Casebook Explorer Build 04 journeys', () => {
   test('Direct Case 2 URL → transaction pathways → source claim', async ({ page }) => {
     const consoleErrors = await collectConsoleErrors(page);
     await page.goto('/casebook/Case2');
-    await expect(page.getByRole('heading', { level: 1 })).toContainText(/Foreign greenfield/i);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('What can delay a foreign retailer’s first store?');
     await page.locator('#section-2').scrollIntoViewIfNeeded();
     await expect(page.getByTestId('case-section-2')).toContainText('T1');
     await expect(page.getByTestId('case-section-2')).toContainText('FGI');
@@ -128,7 +128,7 @@ test.describe('Casebook Explorer Build 04 journeys', () => {
     });
     await page.goto('/casebook/Case1');
     await expect(page.getByTestId('case-page-Case1')).toBeVisible();
-    await expect(page.getByRole('heading', { level: 1 })).toContainText(/Undeveloped supermarket sites/i);
+    await expect(page.getByRole('heading', { level: 1 })).toContainText(/What keeps a new supermarket out/i);
     await page.screenshot({
       path: path.join(screenshotDir, 'desktop-case1.png'),
       fullPage: false,
@@ -141,7 +141,7 @@ test.describe('Casebook Explorer Build 04 journeys', () => {
     });
     await page.goto('/casebook/Case2');
     await expect(page.getByTestId('case-page-Case2')).toBeVisible();
-    await expect(page.getByRole('heading', { level: 1 })).toContainText(/Foreign greenfield/i);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('What can delay a foreign retailer’s first store?');
     await page.screenshot({
       path: path.join(screenshotDir, 'desktop-case2.png'),
       fullPage: false,

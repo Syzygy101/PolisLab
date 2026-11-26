@@ -17,7 +17,8 @@ for (const [path, locator, name] of deepLinks) {
     expect((await page.goto(path))?.status()).toBe(200);
     await expect(page).toHaveURL(url);
     await expect(content).toBeVisible();
-    expect((await page.reload())?.status()).toBe(200);
+    // A cached navigation can report the HTTP revalidation response.
+    expect([200, 304]).toContain((await page.reload())?.status());
     await expect(page).toHaveURL(url);
     await expect(content).toBeVisible();
 
@@ -48,7 +49,7 @@ test('serves production assets and restores app navigation history', async ({ pa
     [expect.stringMatching(/-[\w-]+\.css$/), { status: 200, contentType: expect.stringMatching(/text\/css/) }],
   ]));
 
-  await page.getByTestId('overview-enter').click();
+  await page.getByTestId('case-investigate-link-Case1').click();
   await expect(page.getByTestId('case-page-Case1')).toBeVisible();
   await page.getByTestId('case-compare-policies').click();
   await expect(page.getByTestId('comparison-page')).toBeVisible();

@@ -250,15 +250,19 @@ export function ClaimsPage() {
   ];
 
   return (
-    <div className="space-y-4" data-testid="claims-page">
-      <header className="space-y-2">
+    <div className="research-module space-y-4" data-testid="claims-page">
+      <header className="research-module-header">
         <p className="page-kicker">Evidence</p>
         <h1 className="page-title">Evidence library</h1>
         <p className="lede" style={{ maxWidth: '60rem' }}>
-          Search all {allClaims.length} authentic Policy Claims Atlas claims, inspect a record
-          beside the results, or select two to compare. Status and admissibility remain distinct;
-          hypotheses are not styled as established findings. Filters sync to the URL.
+          Search {allClaims.length} published claims, inspect the underlying evidence, or select two
+          records to compare.
         </p>
+        <details className="guide-disclosure">
+          <summary>How to read a claim</summary>
+          <p>Read the research status and the permitted use separately. An unresolved hypothesis
+            remains open even if it is relevant to a policy comparison. Filters sync to the URL.</p>
+        </details>
         {!ignoredFilterParamsAreEmpty(ignored) ? (
           <p
             className="text-sm text-warn"
