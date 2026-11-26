@@ -214,3 +214,7 @@ Growth is from the adopted design-system CSS and denser shell/claims/overview on
 - **Search:** substring + same-field whole-word fallback (`src/research/queries.ts`)
 - **Ingest / validate / verify:** `npm run ingest`, `validate`, `validate:release`, `verify:research`
 - **CI:** `.github/workflows/verify.yml` (no deploy)
+
+## v0.3 preview qualification
+
+The retail-1 disclosure, versioned replay and exact browser licence notices are in the release inventory. The pre-regeneration and post-build CI gates enforce that boundary. The local screenshot suite uses the CSS fallback font stack for reproducibility. Hosted checks cover the configured web fonts separately.

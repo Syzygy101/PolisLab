@@ -4,6 +4,8 @@ test('guided demand, horizon and approval replays', async ({ page }) => {
   await page.goto('/sandbox');
   const result = page.getByRole('region', { name: 'Comparison result' });
   await expect(result).toContainText('+59.08');
+  await expect(result).toContainText('Partial-equilibrium present value');
+  await expect(page.getByText(/The sites, costs and demand are invented/)).toBeVisible();
   await page.getByLabel('Welfare horizon').selectOption('2');
   await expect(result).toContainText('-38.84');
   await page.getByLabel('Welfare horizon').selectOption('3');
@@ -15,6 +17,7 @@ test('guided demand, horizon and approval replays', async ({ page }) => {
   await expect(result).toContainText('+77.63');
   await page.getByLabel('Approval outcome').selectOption('denied');
   await expect(result).toContainText('0.00 welfare units');
+  await expect(page.getByText(/Conditional model history weight.*given the selected approval outcome/).first()).toBeVisible();
   await expect(page.getByText(/Developer B pays 5 to A at year 0/)).toBeVisible();
   const replay = page.getByRole('link', { name: 'Open exact hypothetical replay · retail-1' });
   await expect(replay).toHaveAttribute('href', /model=retail-1.*approval=denied/);

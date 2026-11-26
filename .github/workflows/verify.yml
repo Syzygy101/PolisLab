@@ -45,6 +45,9 @@ jobs:
       - name: Independent Python research verification
         run: npm run verify:research
 
+      - name: Check v0.3 source disclosure before regeneration
+        run: python3 scripts/check-v03-disclosure.py
+
       - name: Validate generated data before regeneration
         run: npm run validate
 
@@ -65,6 +68,9 @@ jobs:
 
       - name: Production build
         run: npm run build
+
+      - name: Check v0.3 source and built disclosure
+        run: python3 scripts/check-v03-disclosure.py --built
 
       - name: Artifact safety — reject unpublished research and references
         run: npm run check:artifacts

@@ -32,6 +32,7 @@ export default defineConfig({
     // instead of silently binding another port that would break baseURL.
     command: `npx vite --host 127.0.0.1 --port ${E2E_PORT} --strictPort`,
     url: E2E_ORIGIN,
+    env: { POLISLAB_E2E_LOCAL_FONTS: '1' },
     reuseExistingServer: false,
     timeout: 120_000,
   },

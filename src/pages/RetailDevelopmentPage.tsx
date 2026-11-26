@@ -13,7 +13,7 @@ const actorLabels = {
   operatorA: 'Operator A income',
   operatorB: 'Operator B income',
   government: 'Government receipts',
-  welfare: 'Total model welfare',
+  welfare: 'Partial-equilibrium welfare',
 } as const;
 const kinds = {
   preparation: 'Preparation', commitment: 'Commitment', works: 'Works',
@@ -49,6 +49,8 @@ export default function RetailDevelopmentPage() {
       <h1>When does a required offer change supermarket entry?</h1>
       <p>Compare a required offer with voluntary site access. Follow the same lease terms through approval, construction
         and trading, then change the welfare horizon to see which costs and benefits it captures.</p>
+      <p>The sites, costs and demand are invented. Use the results to explore the model’s mechanisms.
+        They provide no estimate of Australian market outcomes or of the effects of an actual policy.</p>
     </header>
     <fieldset className="retail-controls">
       <legend>Set the comparison</legend>
@@ -76,7 +78,7 @@ export default function RetailDevelopmentPage() {
     <section className="retail-result" aria-label="Comparison result" aria-live="polite" aria-atomic="true">
       <p>Required offer minus voluntary access</p>
       <strong>{signed(required.accounts.welfare - voluntary.accounts.welfare)} welfare units</strong>
-      <p>Present value over {horizon} years at a hypothetical 4% social discount rate.
+      <p>Partial-equilibrium present value over {horizon} years at a hypothetical 4% social discount rate.
         {' '}Developer B’s private gain from accepting the site lease is {signed(result.entrantGain)} units.</p>
     </section>
     <div className="retail-timelines">
@@ -86,7 +88,9 @@ export default function RetailDevelopmentPage() {
           <p>{arm.access ? `Lease accepted. Developer B pays ${input.fee} to A at year 0. Fresh approval: ${draw}.`
             : title === 'Voluntary access' ? 'Site B is retained.' : 'Developer B refuses the lease.'}</p>
           {arm.histories.map(({ path, weight }, i) => <div key={i}>
-            {arm.histories.length > 1 && <h3>History {i + 1} · {(weight * 100).toFixed(1)}%</h3>}
+            {arm.histories.length > 1 && <h3>History {i + 1}</h3>}
+            <p>Conditional model history weight {(weight * 100).toFixed(1)}%
+              {arm.access ? ' given the selected approval outcome.' : ' given the site is retained.'}</p>
             {path.events.length ? <ol>
               {path.events.map(event => <li key={`${event.site}-${event.kind}`}>
                 Year {event.date} · Site {event.site === 0 ? 'A' : 'B'} · {kinds[event.kind]}
@@ -121,7 +125,11 @@ export default function RetailDevelopmentPage() {
         Developers earn the displayed share of contribution after basket costs. Operators keep the remainder.</p>
       <p>Private values use an 8% continuous discount rate. The lease is signed before the fresh approval outcome
         resolves at year zero. The social ledger adds consumer surplus and retail contribution, then deducts
-        development resource costs. Dated payments at the selected horizon are included.</p>
+        development resource costs. Dated payments at the selected horizon are included.
+        This partial-equilibrium account covers the modelled retail market. Wider effects on labour,
+        suppliers and land markets, and effects beyond the selected horizon, are outside the calculation.
+        History weights describe the model’s selected continuations within the displayed arm, conditional
+        on the chosen approval outcome when that arm has a lease.</p>
       <p id="retail-transfer-derivation">Transfer accounting follows directly from the actor balances.
         A receives the fee and B pays the same amount at signing, so their combined fee entry is zero.
         In each trading period the developer receives the rent and the operator keeps the gross contribution

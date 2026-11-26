@@ -43,25 +43,16 @@ application software that generates and serves them is Apache 2.0; the
 underlying research text remains CC BY 4.0.
 
 ================================================================================
-Runtime dependencies (summary)
+Third-party software in the browser distribution
 ================================================================================
 
-Runtime npm dependencies are predominantly MIT-licensed, including React, React
-DOM, React Router, Zod, PapaParse, and the unified / remark / mdast stack used
-for Markdown processing.
+The browser distribution includes third-party JavaScript and CSS under MIT
+and ISC terms. See public/third-party-notices.txt in source and
+/third-party-notices.txt on the site for the exact versions and licence texts.
 
-For authoritative package-level licence strings and versions, see
-`package-lock.json` or run `npx license-checker` before redistribution.
-
-================================================================================
-Build and test tooling (summary)
-================================================================================
-
-Development dependencies include MIT, Apache-2.0, ISC, BSD, MPL-2.0, and
-BlueOak-1.0.0 licensed packages (for example Vite, Vitest, Playwright,
-TypeScript, Tailwind). They are not required to run the built static site in a
-browser but may matter for source redistribution. Confirm with
-`package-lock.json` / `license-checker`.
+The dependency lock pins the full npm toolchain. Its build- and test-only
+packages are installed separately and retain their upstream terms. The release
+does not distribute an npm dependency directory or toolchain archive.
 
 ================================================================================
 Fonts (SIL Open Font License 1.1)

@@ -1,5 +1,6 @@
 """Check the exact v0.3 change inventory relative to production."""
 import argparse
+from hashlib import sha256
 from pathlib import Path
 import re
 import subprocess
@@ -13,13 +14,14 @@ ADDED = {
     'src/pages/RetailDevelopmentPage.tsx', 'src/pages/retail-development.css',
     'scripts/replay-retail.ts', 'scripts/check-v03-disclosure.py',
     'tests/unit/retail-development.test.ts', 'tests/e2e/retail-development.spec.ts',
-    'tests/fixtures/retail-1-reference.json',
+    'tests/fixtures/retail-1-reference.json', 'public/third-party-notices.txt',
 }
 MODIFIED = {
     'NOTICE', 'README.md', 'docs/RESEARCH_INVARIANTS.md', 'docs/ROUTE_INVENTORY.md', 'docs/MASTER_ROADMAP.md',
     'package.json', 'package-lock.json', 'src/components/layout/AppShell.tsx',
     'playwright.preview.config.ts', 'src/App.tsx', 'src/pages/OverviewPage.tsx',
     'tests/e2e/investigation-journeys.spec.ts', 'tests/unit/overview.test.tsx',
+    '.github/workflows/verify.yml', 'playwright.config.ts', 'vite.config.ts', 'docs/DEVELOPMENT_LEDGER.md',
 }
 CHUNKS = {
     *[(name, 'js') for name in (
@@ -44,6 +46,11 @@ def require(condition, message):
 
 
 def verify(built):
+    notices = (ROOT / 'public/third-party-notices.txt').read_bytes()
+    require(sha256(notices).hexdigest() == '67da2dae4a173ad68b78ff3b1ff8e5285c2b2ead6586e94a3afc49f2cc6ebb48',
+            'Browser notices differ from reviewed bytes')
+    require(sha256((ROOT / 'package-lock.json').read_bytes().replace(b'\r\n', b'\n')).hexdigest()
+            == 'dfc087a34420ee110f22b9fc79bd9631d4ce58bb680845257cab946064da70b3', 'Dependency lock differs from reviewed inventory')
     rows = git('diff', '--name-status', '-z', '--no-renames', BASE)
     by_status = {status: set(rows[i+1] for i in range(0,len(rows)-1,2) if rows[i]==status)
                  for status in ('A','M')}
@@ -59,9 +66,11 @@ def verify(built):
     if built:
         dist = ROOT / 'dist'
         paths = {file.relative_to(dist).as_posix() for file in dist.rglob('*') if file.is_file()}
-        require({'index.html','_headers'} <= paths, 'Missing index or headers')
+        support = {'index.html', '_headers', 'third-party-notices.txt'}
+        require(support <= paths, 'Missing index, headers or third-party notices')
+        require((dist / 'third-party-notices.txt').read_bytes() == notices, 'Built notices differ from source')
         chunks = set()
-        for rel in sorted(paths - {'index.html','_headers'}):
+        for rel in sorted(paths - support):
             match = re.fullmatch(r'assets/(.+)-[A-Za-z0-9_-]{8}\.(js|css)',rel)
             require(match and match.groups() in CHUNKS and match.groups() not in chunks,
                     f'Unexpected output {rel}')
