@@ -1,3 +1,4 @@
+import { version as appVersion } from '../../package.json';
 import { Link } from 'react-router-dom';
 import { FIELD_GUIDE, RESEARCH_MODULES } from '@/components/field-guide/content';
 import { researchDataset, findClaimById } from '@/data/researchDataset';
@@ -172,7 +173,7 @@ export function OverviewPage() {
         </h2>
         <p className="site-kicker">Independent economic research laboratory</p>
         <p className="meta-line" data-testid="overview-version-line">
-          Research Overview · app development v0.2 · research {RESEARCH_RELEASE}
+          Research Overview · app v{appVersion} · research {RESEARCH_RELEASE}
         </p>
         <p>
           PolisLab publishes source-grounded evidence on Australian grocery competition and

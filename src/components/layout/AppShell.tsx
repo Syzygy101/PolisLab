@@ -1,3 +1,4 @@
+import { version as appVersion } from '../../../package.json';
 import { useEffect, useId, useRef, useState } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import {
@@ -240,7 +241,7 @@ export function AppShell() {
                 <br />
                 Correction {RESEARCH_CORRECTION_PASS}
                 <br />
-                App v0.2 · Build 08F
+                App v{appVersion}
               </p>
               <p style={{ marginTop: '0.75rem' }}>
                 <Link to="/casebook/source">Methodology &amp; source</Link>
