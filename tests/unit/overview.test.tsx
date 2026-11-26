@@ -37,15 +37,15 @@ describe('Overview page', () => {
     expect(
       screen.getByRole('heading', {
         level: 1,
-        name: /What keeps a new supermarket out\?/i,
+        name: /PolisLab Research Laboratory/i,
       }),
     ).toBeInTheDocument();
     expect(screen.getByText(/Independent economic research laboratory/i)).toBeInTheDocument();
     expect(document.body.textContent).toMatch(/PolisLab publishes source-grounded evidence/i);
 
     const primary = screen.getByTestId('overview-enter');
-    expect(primary).toHaveTextContent(/Investigate the site/);
-    expect(primary).toHaveAttribute('href', '/casebook/Case1');
+    expect(primary).toHaveTextContent(/Explore the investigations/);
+    expect(primary).toHaveAttribute('href', '#policy-investigations');
     expect(screen.getByRole('link', { name: /Open evidence library/i })).toHaveAttribute(
       'href',
       '/claims',

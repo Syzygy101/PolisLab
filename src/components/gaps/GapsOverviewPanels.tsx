@@ -92,9 +92,12 @@ export function GapsEntryPoints({ counts }: { counts: GapsAtlasCounts }) {
             B. Claim-level limitations and assessment-changing observations
           </h3>
           <p className="small-note">
-            {assessmentClaims.length} atlas claims carry a non-empty{' '}
-            <span className="mono">observation_that_would_alter_assessment</span>.
+            {assessmentClaims.length} atlas claims describe an observation that could change the assessment.
           </p>
+          <details className="guide-disclosure">
+            <summary>Atlas field name</summary>
+            <p className="small-note mono">observation_that_would_alter_assessment</p>
+          </details>
           <p>
             <Link to="/claims" className="btn btn--secondary">
               Open Evidence library

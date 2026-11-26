@@ -48,7 +48,7 @@ test('serves production assets and restores app navigation history', async ({ pa
     [expect.stringMatching(/-[\w-]+\.css$/), { status: 200, contentType: expect.stringMatching(/text\/css/) }],
   ]));
 
-  await page.getByTestId('overview-enter').click();
+  await page.getByTestId('case-investigate-link-Case1').click();
   await expect(page.getByTestId('case-page-Case1')).toBeVisible();
   await page.getByTestId('case-compare-policies').click();
   await expect(page.getByTestId('comparison-page')).toBeVisible();

@@ -11,6 +11,8 @@ import { isNavigableMechanismId } from '@/research/mechanismQueries';
 import { CasebookMarkdown } from '@/components/casebook/CasebookMarkdown';
 import { CitedEvidencePanel } from '@/components/casebook/CitedEvidencePanel';
 import { CaseOneLab } from '@/components/case-one/CaseOneLab';
+import { GuidedInvestigation } from '@/components/field-guide/GuidedInvestigation';
+import { FIELD_GUIDE } from '@/components/field-guide/content';
 import { CaseInterventionFocus } from '@/components/casebook/CaseInterventionFocus';
 import type { ParsedCase } from '@/research/casebookSchema';
 import {
@@ -154,16 +156,16 @@ function CaseInvestigation({
       <nav aria-label="Breadcrumb" className="breadcrumb">
         <Link to="/casebook">Investigations</Link>
         <span aria-hidden="true">/</span>
-        <span>{researchCase.id}</span>
+        <span>{FIELD_GUIDE[caseId].topic}</span>
       </nav>
 
-      {caseId === 'Case1' && <CaseOneLab requirements={section9Requirements} />}
+      {caseId === 'Case1'
+        ? <CaseOneLab requirements={section9Requirements} />
+        : <GuidedInvestigation caseId={caseId} requirements={section9Requirements} />}
 
-      <header className={caseId === 'Case1' ? 'site-published-header' : undefined}>
-        <p className="page-kicker">{researchCase.heading}</p>
-        {caseId === 'Case1'
-          ? <h2 className="page-title">{researchCase.title}</h2>
-          : <h1 className="page-title page-title--hero">{researchCase.title}</h1>}
+      <header className="site-published-header" id="published-investigation">
+        <p className="page-kicker">Published investigation</p>
+        <h2 className="page-title">{researchCase.title}</h2>
         <p className="lede">{meta.orientation}</p>
         <p className="small-note" style={{ marginBottom: '1rem' }}>
           <strong>Published research question.</strong> See section 1 below for the complete
@@ -227,79 +229,74 @@ function CaseInvestigation({
         </nav>
       </details>
 
-      <section
-        className="panel panel--muted case-related"
-        aria-labelledby="case-related-heading"
-        data-testid="case-related"
-      >
-        <h2 id="case-related-heading" className="sr-only">
-          Related analysis for {researchCase.id}
-        </h2>
-        <div className="case-related-group">
-          <p className="eyebrow">Policies to compare</p>
-          <ul className="tag-list">
-            {variants.map((variant) => (
-              <li key={variant.id}>
-                <Link
-                  to={comparisonHref({ a: variant.id })}
-                  className="tag-link"
-                  title={variant.label}
-                  data-testid={`case-variant-${variant.id}`}
-                >
-                  <span className="mono">{variant.shortCode}</span>
-                </Link>
+      <details className="guide-disclosure case-expert" data-testid="case-related">
+        <summary>Research index and identifiers</summary>
+        <div className="panel panel--muted case-related">
+          <div className="case-related-group">
+            <p className="eyebrow">Policies to compare</p>
+            <ul className="tag-list">
+              {variants.map((variant) => (
+                <li key={variant.id}>
+                  <Link
+                    to={comparisonHref({ a: variant.id })}
+                    className="tag-link"
+                    title={variant.label}
+                    data-testid={`case-variant-${variant.id}`}
+                  >
+                    <span className="mono">{variant.shortCode}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <p className="small-note small-note--subtle">
+              Opens the comparison with that variant selected.
+            </p>
+          </div>
+          <div className="case-related-group">
+            <p className="eyebrow">Mechanism tags on cited claims</p>
+            <ul className="tag-list">
+              {mechanismTags.map((tag) => (
+                <li key={tag}>
+                  <Link to={mechanismProfileHref(tag)} className="tag-link">
+                    <span className="mono">{tag}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <p className="small-note small-note--subtle">
+              Metadata co-tags on directly cited claims — not a causal pathway.
+            </p>
+          </div>
+          <div className="case-related-group">
+            <p className="eyebrow">Evidence</p>
+            <ul className="link-rows">
+              <li>
+                <a href="#cited-evidence">
+                  Cited evidence index ({researchCase.membershipClaimIds.length})
+                </a>
               </li>
-            ))}
-          </ul>
-          <p className="small-note small-note--subtle">
-            Opens the comparison with that variant selected.
-          </p>
-        </div>
-        <div className="case-related-group">
-          <p className="eyebrow">Mechanism tags on cited claims</p>
-          <ul className="tag-list">
-            {mechanismTags.map((tag) => (
-              <li key={tag}>
-                <Link to={mechanismProfileHref(tag)} className="tag-link">
-                  <span className="mono">{tag}</span>
-                </Link>
+              <li>
+                <Link to={claimsExplorerHref({ cases: [caseId] })}>Open in Evidence library</Link>
               </li>
-            ))}
-          </ul>
-          <p className="small-note small-note--subtle">
-            Metadata co-tags on directly cited claims — not a causal pathway.
-          </p>
+            </ul>
+          </div>
+          <div className="case-related-group">
+            <p className="eyebrow">Research requirements</p>
+            <ul className="tag-list">
+              {section9Requirements.map((req) => (
+                <li key={req.id}>
+                  <Link to={`/gaps/${req.id}`} className="tag-link" title={req.curatedLabel}>
+                    <span className="mono">{req.id}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <p className="small-note small-note--subtle">
+              Published §9 entries for {caseId}.
+            </p>
+          </div>
         </div>
-        <div className="case-related-group">
-          <p className="eyebrow">Evidence</p>
-          <ul className="link-rows">
-            <li>
-              <a href="#cited-evidence">
-                Cited evidence index ({researchCase.membershipClaimIds.length})
-              </a>
-            </li>
-            <li>
-              <Link to={claimsExplorerHref({ cases: [caseId] })}>Open in Evidence library</Link>
-            </li>
-          </ul>
-        </div>
-        <div className="case-related-group">
-          <p className="eyebrow">Research requirements</p>
-          <ul className="tag-list">
-            {section9Requirements.map((req) => (
-              <li key={req.id}>
-                <Link to={`/gaps/${req.id}`} className="tag-link" title={req.curatedLabel}>
-                  <span className="mono">{req.id}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-          <p className="small-note small-note--subtle">
-            Published §9 entries for {caseId}.
-          </p>
-        </div>
-      </section>
-
+      </details>
 
       <div className="case-layout">
         <nav

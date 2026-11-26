@@ -24,7 +24,7 @@ test.describe('Overview Build 02 journeys', () => {
 
     await page.goto('/');
     await expect(
-      page.getByRole('heading', { level: 1, name: /What keeps a new supermarket out/i }),
+      page.getByRole('heading', { level: 1, name: /PolisLab Research Laboratory/i }),
     ).toBeVisible();
     await expect(page.getByTestId('overview-enter')).toBeVisible();
     await expect(page.getByTestId('coverage-strip')).toBeVisible();
@@ -48,11 +48,12 @@ test.describe('Overview Build 02 journeys', () => {
     expect(consoleErrors, `Console errors: ${consoleErrors.join('\n')}`).toEqual([]);
   });
 
-  test('Overview primary action begins Case 1 investigation', async ({ page }) => {
+  test('Overview primary action reveals all four investigations', async ({ page }) => {
     const consoleErrors = await collectConsoleErrors(page);
     await page.goto('/');
     await page.getByTestId('overview-enter').click();
-    await expect(page).toHaveURL(/\/casebook\/Case1/);
+    await expect(page).toHaveURL(/#policy-investigations$/);
+    await expect(page.getByTestId('case-card-Case4')).toBeVisible();
     expect(consoleErrors, `Console errors: ${consoleErrors.join('\n')}`).toEqual([]);
   });
 

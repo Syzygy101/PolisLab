@@ -32,20 +32,14 @@ export function GapsPage() {
   const returnSearch = serializeGapsSearchParams(filters).toString();
 
   return (
-    <div data-testid="gaps-page">
+    <div className="research-module" data-testid="gaps-page">
+      <header className="research-module-header">
       <p className="page-kicker">Evidence</p>
       <h1 className="page-title">Research gaps</h1>
       <p className="lede" style={{ maxWidth: '60rem' }}>
-        Identify unresolved propositions, limitations, competing explanations, assessment-changing
-        observations, and source-grounded future research requirements from the published atlas and
-        casebook. This module does not conduct new empirical research, invent falsification tests
-        the source does not state, or automatically close research gaps.
+        Find out what is still uncertain and which observations could change the
+        published assessments.
       </p>
-      <p className="meta-line" style={{ marginBottom: '1rem' }}>
-        Registry {GAPS_REGISTRY.provenance.registryVersion} · {GAPS_REGISTRY.requirements.length}{' '}
-        casebook §9 requirements · research {GAPS_REGISTRY.provenance.researchRelease}
-      </p>
-
       <nav aria-label="On this page" style={{ marginBottom: '1.5rem' }}>
         <ul className="tag-list">
           <li>
@@ -65,11 +59,19 @@ export function GapsPage() {
           </li>
         </ul>
       </nav>
+      </header>
+      <details className="guide-disclosure" style={{ marginBottom: '1rem' }}>
+        <summary>Registry and evidence boundaries</summary>
+        <p>Requirements come from the published casebook. Where it does not specify a sufficient
+          test, the registry records that limit.</p>
+        <p className="meta-line">
+          Registry {GAPS_REGISTRY.provenance.registryVersion} · {GAPS_REGISTRY.requirements.length}{' '}
+          casebook §9 requirements · research {GAPS_REGISTRY.provenance.researchRelease}
+        </p>
+        <GapsIntegrityNote counts={counts} />
+      </details>
 
       <div className="stack stack--loose">
-        <GapsIntegrityNote counts={counts} />
-        <GapsEntryPoints counts={counts} />
-        <AssessmentChangingThemes />
 
         <section
           className="stack"
@@ -103,6 +105,9 @@ export function GapsPage() {
 
           <RequirementList requirements={filtered} returnSearch={returnSearch} />
         </section>
+
+        <GapsEntryPoints counts={counts} />
+        <AssessmentChangingThemes />
 
         <p className="small-note">
           Continue in the{' '}

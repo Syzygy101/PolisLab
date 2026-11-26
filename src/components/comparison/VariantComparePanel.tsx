@@ -294,9 +294,8 @@ export function VariantComparePanel({ comparison }: { comparison: VariantCompari
         ) : null}
 
         <p className="meta-line py-2 text-xs text-ink-subtle">
-          Qualitative comparison only. No policy rankings, composite scores, fabricated
-          probabilities, effect sizes, or causal edges inferred from taxonomy/co-tagging/chronology.
-          policyWinnerDeclared={String(comparison.policyWinnerDeclared)}.
+          Qualitative comparison only. No policy rankings, numerical effects or causal conclusions
+          follow from these pathways.
         </p>
 
         {/* Definitions */}

@@ -91,10 +91,30 @@ export function AppShell() {
     if (previousPath.current === location.pathname) return;
     previousPath.current = location.pathname;
     drawerRef.current?.close();
-    const anchor = document.getElementById(location.hash.slice(1));
-    if (anchor) anchor.scrollIntoView();
-    else window.scrollTo(0, 0);
+    if (!location.hash) window.scrollTo(0, 0);
     mainRef.current?.focus({ preventScroll: true });
+  }, [location.pathname, location.hash]);
+
+  useEffect(() => {
+    if (!location.hash || !mainRef.current) return;
+    let id = location.hash.slice(1);
+    try {
+      id = decodeURIComponent(id);
+    } catch {
+      // An invalid escape can still be part of a literal fragment.
+    }
+    function scrollToFragment() {
+      const anchor = document.getElementById(id);
+      anchor?.scrollIntoView?.();
+      return Boolean(anchor);
+    }
+    if (scrollToFragment()) return;
+
+    const observer = new MutationObserver(() => {
+      if (scrollToFragment()) observer.disconnect();
+    });
+    observer.observe(mainRef.current, { childList: true, subtree: true });
+    return () => observer.disconnect();
   }, [location.pathname, location.hash]);
 
   useEffect(() => {

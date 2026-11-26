@@ -6,7 +6,8 @@ import { comparisonHref } from '@/research/comparisonUrl';
 import { RESEARCH_CUTOFF, RESEARCH_RELEASE } from '@/research/constants';
 import { STATUS_LABELS } from '@/research/taxonomy';
 import type { ResearchRequirement } from '@/research/gapsSchema';
-import { CASE_ONE_QUESTION, CaseOneSitePlan } from './CaseOneSitePlan';
+import { FIELD_GUIDE } from '@/components/field-guide/content';
+import { CaseOneSitePlan } from './CaseOneSitePlan';
 
 const EXPLANATIONS = [
   {
@@ -99,13 +100,14 @@ export function CaseOneLab({ requirements }: { requirements: readonly ResearchRe
     <div className="site-lab">
       <header className="site-lab-header">
         <p className="site-kicker">Undeveloped supermarket sites</p>
-        <h1>{CASE_ONE_QUESTION}</h1>
+        <h1>{FIELD_GUIDE.Case1.question}</h1>
         <p>Explore why an unused site may not become a store, then compare two proposals for changing who can use it.</p>
       </header>
       <nav className="site-lab-nav" aria-label="Site investigation">
         <a href="#site-investigation">Examine the site</a>
         <a href="#site-comparison">Compare proposals</a>
         <a href="#site-evidence">Follow the evidence</a>
+        <a href="#published-investigation">Published investigation</a>
       </nav>
 
       <section id="site-investigation" className="site-room" aria-labelledby="site-investigation-heading">
@@ -220,7 +222,7 @@ export function CaseOneLab({ requirements }: { requirements: readonly ResearchRe
               <summary>{item.sourceText.trim()}</summary>
               <p>{item.remainsUncertain}</p>
               <p>{item.qualification}</p>
-              <Link to={`/gaps/${item.id}`}>Open requirement {item.id}</Link>
+              <Link to={`/gaps/${item.id}`}>Open the research requirement</Link>
             </details>
           ))}
         </div>

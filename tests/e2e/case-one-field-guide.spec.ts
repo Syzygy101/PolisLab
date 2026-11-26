@@ -15,10 +15,10 @@ for (const { label, viewport, mobile } of viewports) {
       page.on('pageerror', (error) => errors.push(error.message));
 
       await page.goto('/');
-      await expect(page.getByRole('heading', { level: 1 })).toHaveText('What keeps a new supermarket out?');
+      await expect(page.getByRole('heading', { level: 1 })).toHaveText('PolisLab Research Laboratory');
       await page.getByRole('link', { name: 'Investigate the site' }).click();
       await expect(page).toHaveURL(/\/casebook\/Case1$/);
-      await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
+      await expect(page.getByRole('heading', { level: 1 })).toHaveText('What keeps a new supermarket out?');
       await expect(page.getByText('Illustrative site plan · no real parcel data')).toBeVisible();
 
       const explanationGroup = page.getByRole('group', { name: 'Competing explanations' });

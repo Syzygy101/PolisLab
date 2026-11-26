@@ -26,7 +26,7 @@ test.describe('Investigation journeys', () => {
     await expect(page.locator('#section-1')).toBeVisible();
 
     await page.goto('/comparison');
-    await page.getByRole('link', { name: 'Case1 R vs E' }).click();
+    await page.getByRole('link', { name: 'Site access proposals' }).click();
     await expect(page).toHaveURL(/a=C1-VAR-R/);
     await expect(page).toHaveURL(/b=C1-VAR-E/);
     await expect(page.getByTestId('comparison-select-a')).toHaveValue('C1-VAR-R');
@@ -69,7 +69,7 @@ test.describe('Investigation journeys', () => {
     await expect(page.getByText('ATLAS-LEG-002').first()).toBeVisible();
 
     await page.goto('/comparison');
-    await page.getByRole('link', { name: 'Case2 CF-A vs CF-C' }).click();
+    await page.getByRole('link', { name: 'Foreign investment proposals' }).click();
     await expect(page.getByTestId('comparison-select-a')).toHaveValue('C2-VAR-CF-A');
     await expect(page.getByTestId('comparison-select-b')).toHaveValue('C2-VAR-CF-C');
     await expect(page.getByText(/C2-VAR-CF-A|C2-VAR-CF-C/i).first()).toBeVisible();

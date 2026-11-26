@@ -2,7 +2,7 @@
 
 Local development record for the interactive application layer. Research artefacts remain authoritative in `research/10_*` and the published v0.1.1 release.
 
-**Checkpoint:** Case 1 vertical slice and H2.0 feasibility at owner review
+**Checkpoint:** v0.2.x Field Guide candidate and H2.0 cohort audit at owner review
 **Application baseline:** v0.2.0 production · `af608a78d1db0caa7a2ca8340a535dcdadf4ca0b`
 **Research baseline:** v0.1.1 · `a1922f8a8d08f59749d34de306e1b7406f9fe10b`
 **Evidence cutoff:** 20 November 2026 · **Correction pass:** 21 November 2026  
@@ -24,6 +24,14 @@ The owner approved the master roadmap, Field Guide entrance, contextual Comparis
 
 - The Case 1 slice implements a schematic interaction, competing explanations, published qualitative policy pathways, source links and research requirements. Existing case and evidence routes continue to work. The slice is ready for owner review before expansion. See [verification](CASE_ONE_VERIFICATION.md).
 - A private NSW source feasibility packet and cohort proposal are ready for review. Model specification and estimation remain gated. The accepted release and pinned research corpus are preserved.
+
+## v0.2.x Field Guide and H2.0 cohort audit
+
+The owner approved the wider local redesign and a capped H2.0 audit. The design candidate builds on the approved Case 1 system with a laboratory entrance, transaction screening branches, a dated rollout chronology and an acquisition milestone guide. The supporting modules prioritise search, comparison and research requirements. Published sections, cases, filters and evidence remain available through their same routes.
+
+- An independent Chromium review checked desktop and mobile design, keyboard selection, case and requirement links, policy comparisons and research fidelity. Follow-up verification confirmed separated cards, 44px mobile actions, narrow reflow with expert disclosures open, cold fragment navigation and the corrected screening and notification source references.
+- The local audit resolved its first-pass pagination but did not establish an independently reconciled cohort or an operative-consent-to-opening pair. A descriptive case series is the proposed next gate. The audit and its evidence remain private. Economic specification, parameter selection and estimation remain held.
+- The installed AgentHarness health profile still covers the accepted v0.2.0 baseline. The candidate has separate local repository and browser verification. Production, release tags and the pinned v0.1.1 corpus are preserved. Additional expenditure was AUD 0.00.
 
 ## Build 09B — Release remediation
 

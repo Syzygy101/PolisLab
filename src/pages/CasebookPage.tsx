@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { casebookDataset } from '@/data/casebookDataset';
 import { allClaims } from '@/data/researchDataset';
 import { CASE_DERIVED_META } from '@/research/casebookMeta';
+import { FIELD_GUIDE } from '@/components/field-guide/content';
 import { RESEARCH_CASES } from '@/research/taxonomy';
 import { atlasMembershipIds } from '@/research/casebookQueries';
 import { claimsExplorerHref } from '@/research/urlFilters';
@@ -18,7 +19,7 @@ export function CasebookPage() {
   const { provenance } = casebookDataset;
 
   return (
-    <div data-testid="casebook-directory">
+    <div className="research-module" data-testid="casebook-directory">
       <p className="page-kicker">Research · Policy Assessment Casebook {RESEARCH_RELEASE}</p>
       <h1 className="page-title">Investigations</h1>
       <p className="lede">
@@ -56,9 +57,10 @@ export function CasebookPage() {
         quality, or policy performance.
       </p>
 
-      <ol className="investigation-list">
-        {RESEARCH_CASES.map((researchCase, index) => {
+      <ol className="investigation-list field-guide-cards">
+        {RESEARCH_CASES.map((researchCase) => {
           const parsed = casebookDataset.cases.find((c) => c.id === researchCase.id);
+          const guide = FIELD_GUIDE[researchCase.id];
           const meta = CASE_DERIVED_META[researchCase.id];
           const citedCount = atlasMembershipIds(allClaims, researchCase.id).length;
           return (
@@ -67,13 +69,13 @@ export function CasebookPage() {
               className="investigation-item"
               data-testid={`casebook-card-${researchCase.id}`}
             >
-              <p className="meta-line" style={{ margin: 0 }}>
-                Investigation {index + 1} · <span className="mono">{researchCase.id}</span>
-              </p>
               <h2>
                 <Link to={`/casebook/${researchCase.id}`}>{researchCase.title}</Link>
               </h2>
-              <dl className="detail-list">
+              <p>{guide.description}</p>
+              <details className="guide-disclosure">
+                <summary>Published scope and citations</summary>
+                <dl className="detail-list">
                 <dt>Research question</dt>
                 <dd>{researchCase.researchQuestion}</dd>
                 <dt>Analytical focus</dt>
@@ -96,7 +98,8 @@ export function CasebookPage() {
                     </span>
                   ) : null}
                 </dd>
-              </dl>
+                </dl>
+              </details>
               <div className="action-row">
                 <Link
                   to={`/casebook/${researchCase.id}`}

@@ -1,12 +1,5 @@
 .field-guide-hero,
 .site-lab {
-  --site-ink: #202e28;
-  --site-muted: #4c5e54;
-  --site-paper: #f7f8f0;
-  --site-line: #a8b4a6;
-  --site-forest: #192d26;
-  --site-lime: #d9ed99;
-  --site-focus: #9e452e;
   color: var(--site-ink);
 }
 

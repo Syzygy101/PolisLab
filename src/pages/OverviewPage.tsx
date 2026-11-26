@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { CASE_ONE_QUESTION, CaseOneSitePlan } from '@/components/case-one/CaseOneSitePlan';
+import { FIELD_GUIDE, RESEARCH_MODULES } from '@/components/field-guide/content';
 import { researchDataset, findClaimById } from '@/data/researchDataset';
 import {
   RESEARCH_CORRECTION_PASS,
@@ -24,13 +24,6 @@ import { ProgrammeVisual } from '@/components/overview/ProgrammeVisual';
 import { StatusDistribution } from '@/components/overview/StatusDistribution';
 import { OutcomeStageExplorer } from '@/components/overview/OutcomeStageExplorer';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
-
-const QUESTION_PROMPTS = {
-  Case1: CASE_ONE_QUESTION,
-  Case2: 'What can delay a foreign retailer’s first store?',
-  Case3: 'How does a new grocery chain build a store network?',
-  Case4: 'What happens after a supermarket acquisition is reviewed?',
-} as const;
 
 const SECTION_NAV = [
   { href: '#policy-investigations', label: 'Investigations' },
@@ -58,19 +51,28 @@ export function OverviewPage() {
       <header className="field-guide-hero" aria-labelledby="orientation-heading">
         <div>
           <p className="site-kicker">Australian grocery competition</p>
-          <h1 id="orientation-heading">{CASE_ONE_QUESTION}</h1>
+          <h1 id="orientation-heading">PolisLab Research Laboratory</h1>
           <p className="field-guide-deck">
-            Examine an unused site, check competing explanations against the published evidence,
-            and compare two proposals for opening it to rivals.
+            Investigate how supermarkets gain access to sites, enter new markets and compete.
+            Follow the published evidence from policy rules to the outcomes that can be verified.
           </p>
           <div className="field-guide-actions">
-            <Link to="/casebook/Case1" className="field-guide-action" data-testid="overview-enter">
-              Investigate the site
-            </Link>
+            <a href="#policy-investigations" className="field-guide-action" data-testid="overview-enter">
+              Explore the investigations
+            </a>
             <Link to="/claims" data-testid="overview-evidence-library">Open evidence library</Link>
           </div>
         </div>
-        <CaseOneSitePlan />
+        <nav className="lab-index" aria-label="Research tools">
+          <h2>Research tools</h2>
+          <ul>
+            {RESEARCH_MODULES.map(({ title, href, description }) => (
+              <li key={href}>
+                <Link to={href}><strong>{title}</strong><span>{description}</span></Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </header>
 
       <hr className="hairline" />
@@ -89,35 +91,36 @@ export function OverviewPage() {
           differentiated entry, and acquisition oversight interact with rival market access —
           each with dated institutional baselines and explicit limits on inference.
         </p>
-        <ol className="investigation-list">
-          {RESEARCH_CASES.map((researchCase, index) => {
+        <ol className="investigation-list field-guide-cards">
+          {RESEARCH_CASES.map((researchCase) => {
             const cited = coverage.caseMembershipCounts[researchCase.id];
-            const prompt = QUESTION_PROMPTS[researchCase.id];
+            const guide = FIELD_GUIDE[researchCase.id];
             return (
               <li
                 key={researchCase.id}
                 className="investigation-item"
                 data-testid={`case-card-${researchCase.id}`}
               >
-                <p className="meta-line" style={{ margin: 0 }}>
-                  Investigation {index + 1} · <span className="mono">{researchCase.id}</span>
-                </p>
-                <h3>{prompt}</h3>
-                <p className="meta-line">{researchCase.title}</p>
-                <p>{researchCase.researchQuestion}</p>
-                <p className="meta-line" style={{ margin: 0 }}>
-                  Direct cited claims{' '}
-                  <strong data-testid={`case-count-${researchCase.id}`}>{cited}</strong>
-                  {' · '}
-                  {researchCase.themes.join(' · ')}
-                </p>
+                <p className="site-kicker">{guide.topic}</p>
+                <h3>{guide.question}</h3>
+                <p>{guide.description}</p>
+                <details className="guide-disclosure">
+                  <summary>Published scope and citations</summary>
+                  <p>{researchCase.researchQuestion}</p>
+                  <p className="meta-line">
+                    {researchCase.title !== guide.topic && <><span>{researchCase.title}</span> · </>}
+                    {researchCase.id} · Direct cited claims{' '}
+                    <strong data-testid={`case-count-${researchCase.id}`}>{cited}</strong>
+                    {' · '}{researchCase.themes.join(' · ')}
+                  </p>
+                </details>
                 <div className="flex flex-wrap gap-2">
                   <Link
                     to={`/casebook/${researchCase.id}`}
                     className="btn btn--secondary"
                     data-testid={`case-investigate-link-${researchCase.id}`}
                   >
-                    Open case investigation
+                    {researchCase.id === 'Case1' ? 'Investigate the site' : 'Open investigation'}
                   </Link>
                   <Link
                     to={claimsExplorerHref({ cases: [researchCase.id] })}
@@ -145,6 +148,15 @@ export function OverviewPage() {
       </section>
 
       <hr className="hairline" />
+
+      <section className="lab-roadmap" aria-labelledby="lab-roadmap-heading">
+        <h2 id="lab-roadmap-heading" className="section-title">Future research workspaces</h2>
+        <p>
+          The <Link to="/sandbox">Analytical Sandbox</Link> is planned for approved assumption tests.
+          A spatial Simulation Studio would build on validated site and network evidence.
+          Both workspaces are planned capabilities.
+        </p>
+      </section>
 
       <ProgrammeVisual claimCount={coverage.claimCount} requirementCount={requirementCount} />
 
