@@ -74,7 +74,8 @@ Established safeguards for the interactive application. These constrain Build 01
 
 ## No policy ranking or quantified forecasting
 
-- The application must not produce policy rankings, welfare forecasts, or simulated economic effects.
+Published evidence, claim and case views, and the Policy Comparison Laboratory must not generate policy rankings, welfare forecasts, numerical real-world policy effects, or simulated outputs. The separately labelled Analytical Sandbox may show independently verified hypothetical computations under explicit, reproducible synthetic model assumptions. Numerical comparisons apply only to the selected hypothetical arms. Screens, downloads and shareable views must identify the model, inputs and version and must not frame the comparison as an empirical result, a calibrated forecast or a policy recommendation.
+
 - Open thesis questions (e.g. `ATLAS-HYP-003`) remain unresolved hypotheses, not ranked recommendations.
 - The Policy Comparison Laboratory (Build 06) is qualitative only: no scores, ranks, invented probabilities, or numerical effect estimates. `policyWinnerDeclared` remains false for every case.
 
@@ -111,9 +112,12 @@ Established safeguards for the interactive application. These constrain Build 01
 - Unpublished local files under `research/01–09` and `references/` must not be staged, committed, or bundled as source files.
 - Local acceptance screenshots under `docs/screenshots/` are working artefacts and must not enter publication commits unless separately authorised.
 
+Release artefacts may include only owner-approved synthetic scenarios, model code, tests and public methods material identified in a disclosure inventory. Private working papers, unpublished case records, full exploration sweeps, private fixtures, receipts, screenshots, local paths and unpublished research remain outside release source and assets. Verify the approved release inventory and published source pins before regenerating or promoting any artefact.
+
 ## Product integration fidelity (Build 08)
 
-- Do not present the Analytical Sandbox as an active research workflow. Direct `/sandbox` may explain a future capability only.
+The Analytical Sandbox is an opt-in workflow for approved hypothetical experiments. Its route, replays, help and results must distinguish published evidence, scoped theoretical results and hypothetical computation. It must display the relevant state, assumptions, accounting boundary and equilibrium selection. Sandbox results do not change atlas fields, claim statuses or admissibility, link as evidence for casebook pathways, or feed numerical effects into Policy Comparison.
+
 - Evidence comparison (`/claims/compare`) and policy comparison (`/comparison`) must remain distinct in UI copy and documentation.
 - Comparison pathway surfaces must retain casebook §6 “plausible” framing; gap/hypothesis claim IDs linked as sources are limiting or conditional evidence, not affirmative pathway proof, unless the source text establishes the proposition.
 - Gaps competing-explanation labels must track taxonomy: M1a scarcity, M1b planning, M1c foreclosure, M5a option value, M6a FDI/FIRB friction.

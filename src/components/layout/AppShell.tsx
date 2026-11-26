@@ -283,8 +283,8 @@ export function AppShell() {
           .
         </p>
         <p>
-          Not legal advice. Does not produce policy rankings, welfare forecasts, or
-          simulated economic effects.
+          Not legal advice. Published policy comparisons are qualitative. The Analytical Sandbox runs
+          hypothetical model comparisons.
         </p>
       </footer>
     </div>

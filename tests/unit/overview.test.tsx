@@ -179,7 +179,7 @@ describe('Overview page', () => {
     ).not.toBeInTheDocument();
     const body = document.body.textContent ?? '';
     expect(body).toMatch(/calibrated simulator, legal advice, policy-ranking tool or original causal/i);
-    expect(body).toMatch(/Analytical Sandbox is a future gated capability/i);
+    expect(body).toMatch(/Analytical Sandbox hosts the hypothetical experiment/i);
     expect(body).toMatch(/probabilities, welfare forecasts, or policy rankings/i);
   });
 

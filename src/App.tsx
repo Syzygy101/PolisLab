@@ -4,7 +4,7 @@ import { AppShell } from '@/components/layout/AppShell';
 import { OverviewPage } from '@/pages/OverviewPage';
 import { ClaimsPage } from '@/pages/ClaimsPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
-import { PlaceholderPage } from '@/pages/PlaceholderPage';
+const RetailDevelopmentPage = lazy(() => import('@/pages/RetailDevelopmentPage'));
 
 /** Claim detail / compare and heavier modules load on demand. */
 const ClaimDetailPage = lazy(() =>
@@ -132,16 +132,9 @@ export default function App() {
             </Suspense>
           }
         />
-        <Route
-          path="sandbox"
-          element={
-            <PlaceholderPage
-              title="Analytical Sandbox"
-              description="Future gated analytical workspace. Not part of the v0.2 research modules and not available for investigation in this release candidate. Use Claims, Casebook, Mechanisms, Policy Comparison, or Evidence Gaps instead."
-              gated
-            />
-          }
-        />
+        <Route path="sandbox" element={<Suspense fallback={<RouteFallback label="experiment" />}>
+          <RetailDevelopmentPage />
+        </Suspense>} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

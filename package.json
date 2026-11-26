@@ -1,7 +1,7 @@
 {
   "name": "polislab",
   "private": true,
-  "version": "0.2.1",
+  "version": "0.3.0",
   "type": "module",
   "description": "PolisLab interactive research laboratory — Overview, Claims, Casebook, Mechanisms, Comparison, Evidence Gaps",
   "scripts": {

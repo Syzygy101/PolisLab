@@ -18,7 +18,7 @@ shareable filter/compare state lives in the query string where noted.
 | `/comparison` | Policy Comparison Laboratory | Query: `a`, `b` variant IDs | — |
 | `/gaps` | Evidence Gaps directory | Query: `case*`, `mechanism*`, `mechanism_family*`, `outcome*`, `status*`, `type*`, `role*`, `agenda`, `claim` | — |
 | `/gaps/:requirementId` | Research requirement | Optional `?from=` encoded gaps QS | Optional `gapsSearch` state |
-| `/sandbox` | Future capability stub | — | Not in primary nav |
+| `/sandbox` | Guided hypothetical retail-funded development experiment | `model`, `scenario`, `approval`, `horizon` | Linked from Overview |
 | `*` | Not found | — | Helpful links; no silent redirect |
 
 **Evidence comparison** = Claims Explorer `/claims/compare` (atlas claims).  

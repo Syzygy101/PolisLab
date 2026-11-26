@@ -174,7 +174,7 @@ test.describe('Investigation journeys', () => {
     const nav = page.getByRole('navigation', { name: 'Primary' });
     await expect(nav.getByRole('link', { name: /Sandbox/i })).toHaveCount(0);
     await page.goto('/sandbox');
-    await expect(page.getByRole('heading', { name: /Analytical Sandbox/i })).toBeVisible();
-    await expect(page.getByText(/not available|future capability/i).first()).toBeVisible();
+    await expect(page.getByRole('heading', { name: /When does a required offer change supermarket entry/i })).toBeVisible();
+    await expect(page.getByText(/Hypothetical computational experiment/i).first()).toBeVisible();
   });
 });

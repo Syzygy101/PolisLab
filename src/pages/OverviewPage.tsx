@@ -151,12 +151,10 @@ export function OverviewPage() {
       <hr className="hairline" />
 
       <section className="lab-roadmap" aria-labelledby="lab-roadmap-heading">
-        <h2 id="lab-roadmap-heading" className="section-title">Future research workspaces</h2>
+        <h2 id="lab-roadmap-heading" className="section-title">Analytical experiments</h2>
         <p>
           The <Link to="/sandbox" className="underline underline-offset-2">Analytical Sandbox</Link>
-          {' '}is planned for approved assumption tests.
-          A spatial Simulation Studio would build on validated site and network evidence.
-          Both workspaces are planned capabilities.
+          {' '}offers a reproducible, hypothetical retail-funded development comparison.
         </p>
       </section>
 
@@ -629,8 +627,7 @@ export function OverviewPage() {
           <Link to="/casebook" className="text-accent underline underline-offset-2">
             /casebook
           </Link>
-          . The Analytical Sandbox is a future gated capability and is not an active research
-          workflow in v0.2.
+          . The Analytical Sandbox hosts the hypothetical experiment.
         </p>
       </section>
     </article>

@@ -1,0 +1,20 @@
+.retail-development { max-width: 66rem; margin: 0 auto; padding-block: 1rem 3rem; }
+.retail-development header { max-width: 44rem; }
+.retail-development h1 { font-size: clamp(1.75rem, 5vw, 2.8rem); line-height: 1.12; margin-block: .5rem 1rem; }
+.retail-development h2 { font-size: 1.25rem; margin-block: .25rem .75rem; }
+.retail-development p { margin-block: .65rem; }
+.retail-development a { text-decoration: underline; }
+.retail-development section { margin-block: 1.5rem; }
+.retail-controls { display: grid; gap: .85rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); border: 1px solid currentColor; padding: .85rem; margin-block: 1.25rem .5rem; }
+.retail-controls legend { padding-inline: .35rem; }
+.retail-controls label { display: grid; gap: .35rem; }
+.retail-controls select { width: 100%; min-height: 44px; border: 1px solid currentColor; border-radius: .25rem; padding: .25rem; background: Canvas; color: CanvasText; }
+.retail-result { border-inline-start: .25rem solid currentColor; padding-inline: 1rem; }
+.retail-result strong { font-size: clamp(1.35rem, 4vw, 2.1rem); }
+.retail-timelines { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); }
+.retail-timelines section { margin: 0; border-block-start: 1px solid currentColor; padding-block-start: .7rem; }
+.retail-timelines ol { padding-inline-start: 1.4rem; list-style: decimal; }
+.retail-development table { width: 100%; border-collapse: collapse; font-size: clamp(.75rem, 2.5vw, 1rem); }
+.retail-development th, .retail-development td { border-block-end: 1px solid currentColor; padding: .45rem .2rem; text-align: right; }
+.retail-development th:first-child { text-align: left; }
+.retail-development caption { text-align: left; padding-block-end: .4rem; }

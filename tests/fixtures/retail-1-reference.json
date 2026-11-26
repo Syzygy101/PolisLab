@@ -1,0 +1,344 @@
+{
+  "low": {
+    "granted": {
+      "1.25": {
+        "welfareChange": -33.67572226459559,
+        "requiredOpenings": [
+          [
+            1,
+            1.5
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            1.5
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            1.5
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            1.5
+          ]
+        ]
+      },
+      "2": {
+        "welfareChange": -28.71222766742548,
+        "requiredOpenings": [
+          [
+            1,
+            1.5
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            1.5
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            1.5
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            1.5
+          ]
+        ]
+      },
+      "3": {
+        "welfareChange": -4.3416340348519356,
+        "requiredOpenings": [
+          [
+            1,
+            1.5
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            1.5
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            1.5
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            1.5
+          ]
+        ]
+      },
+      "9.5": {
+        "welfareChange": 141.67065139574777,
+        "requiredOpenings": [
+          [
+            1,
+            1.5
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            1.5
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            1.5
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            1.5
+          ]
+        ]
+      }
+    }
+  },
+  "high": {
+    "granted": {
+      "1.25": {
+        "welfareChange": -33.72467654110348,
+        "requiredOpenings": [
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            1.5
+          ]
+        ]
+      },
+      "2": {
+        "welfareChange": -16.03210189234119,
+        "requiredOpenings": [
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            1.5
+          ]
+        ]
+      },
+      "3": {
+        "welfareChange": 32.932605295082,
+        "requiredOpenings": [
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            1.5
+          ]
+        ]
+      },
+      "9.5": {
+        "welfareChange": 326.1258117642574,
+        "requiredOpenings": [
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            1.5
+          ]
+        ]
+      }
+    }
+  },
+  "timing": {
+    "granted": {
+      "1.25": {
+        "welfareChange": -81.7641484987196,
+        "requiredOpenings": [
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            1.5
+          ]
+        ]
+      },
+      "2": {
+        "welfareChange": -38.844882932521045,
+        "requiredOpenings": [
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            1.5
+          ]
+        ]
+      },
+      "3": {
+        "welfareChange": 59.084531442325385,
+        "requiredOpenings": [
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            1.5
+          ]
+        ]
+      },
+      "9.5": {
+        "welfareChange": 645.470944380676,
+        "requiredOpenings": [
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            1.5
+          ]
+        ]
+      }
+    }
+  },
+  "permit": {
+    "granted": {
+      "1.25": {
+        "welfareChange": -81.7641484987196,
+        "requiredOpenings": [
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            1.5
+          ]
+        ]
+      },
+      "2": {
+        "welfareChange": -32.53821020316204,
+        "requiredOpenings": [
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            1.5
+          ]
+        ]
+      },
+      "3": {
+        "welfareChange": 77.63238096854008,
+        "requiredOpenings": [
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            1.5
+          ]
+        ]
+      },
+      "9.5": {
+        "welfareChange": 737.3170955241847,
+        "requiredOpenings": [
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            1.5
+          ]
+        ]
+      }
+    },
+    "denied": {
+      "1.25": {
+        "welfareChange": 0.0,
+        "requiredOpenings": [
+          [
+            0,
+            1
+          ]
+        ]
+      },
+      "2": {
+        "welfareChange": 0.0,
+        "requiredOpenings": [
+          [
+            0,
+            1
+          ]
+        ]
+      },
+      "3": {
+        "welfareChange": 0.0,
+        "requiredOpenings": [
+          [
+            0,
+            1
+          ]
+        ]
+      },
+      "9.5": {
+        "welfareChange": 0.0,
+        "requiredOpenings": [
+          [
+            0,
+            1
+          ]
+        ]
+      }
+    }
+  }
+}

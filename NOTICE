@@ -23,6 +23,15 @@ See LICENSE. Do not modify published research artefacts without the owner's
 research-release process.
 
 ================================================================================
+Standalone synthetic methods and reference data
+================================================================================
+
+docs/RETAIL_DEVELOPMENT_METHODS.md and tests/fixtures/retail-1-reference.json
+are licensed under Creative Commons Attribution 4.0 International. Attribute
+them to Seiji Lorefice (PolisLab). The executable replay and tests remain
+software under Apache 2.0.
+
+================================================================================
 Research-derived generated datasets
 ================================================================================
 

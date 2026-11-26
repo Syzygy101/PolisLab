@@ -68,7 +68,7 @@ A browser application for investigating published research claims, case narrativ
 
 **Evidence comparison** (`/claims/compare`) compares atlas claims. **Policy comparison** (`/comparison`) compares casebook intervention variants. They are not interchangeable.
 
-The Analytical Sandbox is a **future** gated capability (direct `/sandbox` stub only; not in primary navigation).
+The opt-in Analytical Sandbox at `/sandbox` compares hypothetical retail-funded development scenarios. See the [model methods and replay](docs/RETAIL_DEVELOPMENT_METHODS.md).
 
 Route inventory: [docs/ROUTE_INVENTORY.md](docs/ROUTE_INVENTORY.md).
 

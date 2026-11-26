@@ -17,7 +17,7 @@ if (externalOrigin !== undefined) {
 
 export default defineConfig({
   testDir: './tests/e2e',
-  testMatch: ['investigation-journeys.spec.ts', 'hosting-readiness.spec.ts', 'case-one-field-guide.spec.ts', 'field-guide-investigations.spec.ts'],
+  testMatch: ['investigation-journeys.spec.ts', 'hosting-readiness.spec.ts', 'case-one-field-guide.spec.ts', 'field-guide-investigations.spec.ts', 'retail-development.spec.ts'],
   fullyParallel: false,
   workers: 1,
   reporter: 'list',
