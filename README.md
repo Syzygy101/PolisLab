@@ -45,9 +45,9 @@ Third-party materials cited or linked here are **not** relicensed. External prim
 
 ---
 
-## Application (v0.2.0 candidate — Build 08F local RC)
+## Application (v0.2.1 Field Guide candidate)
 
-Interactive research laboratory over the authentic v0.1.1 atlas and published casebook. **Application v0.2.0 candidate** is distinct from **research v0.1.1**. Visiting later does not refresh the institutional/legal cutoff. This README describes a **local release candidate**, not a completed public release or live hosted deployment.
+Interactive research laboratory over the authentic v0.1.1 atlas and published casebook. **Application v0.2.1 candidate** is distinct from **research v0.1.1**. Visiting later does not refresh the institutional/legal cutoff. This README describes the Field Guide release candidate. The production release requires separate approval.
 
 ### What PolisLab is
 
