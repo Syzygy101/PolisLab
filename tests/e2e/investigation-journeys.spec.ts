@@ -115,7 +115,7 @@ test.describe('Investigation journeys', () => {
     await page.goto('/comparison?a=C4-VAR-B0&b=C4-VAR-CF-WEAKER');
     await expect(page.getByTestId('comparison-select-a')).toHaveValue('C4-VAR-B0');
     await expect(page.getByTestId('comparison-select-b')).toHaveValue('C4-VAR-CF-WEAKER');
-    await expect(page.getByText(/C4-VAR-B0|B0/i).first()).toBeVisible();
+    await expect(page.getByTestId('compare-sticky-names')).toContainText('Current notification regime');
 
     await page.goto('/gaps?case=Case4');
     await page.getByRole('link', { name: /REQ-C4-05/i }).first().click();
