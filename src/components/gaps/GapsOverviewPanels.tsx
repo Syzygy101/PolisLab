@@ -114,7 +114,10 @@ export function GapsEntryPoints({ counts }: { counts: GapsAtlasCounts }) {
           <ul className="link-rows">
             <li>
               <span>
-                <Link to={claimsExplorerHref({ statuses: ['absence_of_finding'] })}>
+                <Link
+                  to={claimsExplorerHref({ statuses: ['absence_of_finding'] })}
+                  className="underline underline-offset-2"
+                >
                   Absence of finding
                 </Link>
                 : {counts.absenceOfFinding} records (includes {counts.gapPrefixed} GAP-prefixed)
@@ -122,7 +125,10 @@ export function GapsEntryPoints({ counts }: { counts: GapsAtlasCounts }) {
             </li>
             <li>
               <span>
-                <Link to={claimsExplorerHref({ statuses: ['unresolved_hypothesis'] })}>
+                <Link
+                  to={claimsExplorerHref({ statuses: ['unresolved_hypothesis'] })}
+                  className="underline underline-offset-2"
+                >
                   Unresolved hypothesis
                 </Link>
                 : {counts.unresolvedHypothesis} records

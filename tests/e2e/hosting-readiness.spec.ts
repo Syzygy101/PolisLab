@@ -17,7 +17,8 @@ for (const [path, locator, name] of deepLinks) {
     expect((await page.goto(path))?.status()).toBe(200);
     await expect(page).toHaveURL(url);
     await expect(content).toBeVisible();
-    expect((await page.reload())?.status()).toBe(200);
+    // A cached navigation can report the HTTP revalidation response.
+    expect([200, 304]).toContain((await page.reload())?.status());
     await expect(page).toHaveURL(url);
     await expect(content).toBeVisible();
 

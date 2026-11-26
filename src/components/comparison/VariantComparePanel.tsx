@@ -67,6 +67,7 @@ function Band({
   return (
     <Tag
       className={`band ${className}`.trim()}
+      role={Tag === 'div' ? 'group' : undefined}
       aria-labelledby={labelId}
       data-testid={testId}
     >

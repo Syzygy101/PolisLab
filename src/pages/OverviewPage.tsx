@@ -152,7 +152,8 @@ export function OverviewPage() {
       <section className="lab-roadmap" aria-labelledby="lab-roadmap-heading">
         <h2 id="lab-roadmap-heading" className="section-title">Future research workspaces</h2>
         <p>
-          The <Link to="/sandbox">Analytical Sandbox</Link> is planned for approved assumption tests.
+          The <Link to="/sandbox" className="underline underline-offset-2">Analytical Sandbox</Link>
+          {' '}is planned for approved assumption tests.
           A spatial Simulation Studio would build on validated site and network evidence.
           Both workspaces are planned capabilities.
         </p>
@@ -179,6 +180,7 @@ export function OverviewPage() {
         </p>
         <div
           className="coverage-strip"
+          role="group"
           aria-label="Published coverage measures"
           data-testid="coverage-strip"
         >

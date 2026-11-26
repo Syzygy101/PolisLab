@@ -63,7 +63,10 @@ for (const { label, viewport, mobile } of viewports) {
       await expect(evidence.locator('summary')).toHaveCount(5);
       await evidence.getByText(/Parcel-level findings/).click();
       await expect(evidence.getByText(/Absence of an ACCC land-banking finding/)).toBeVisible();
-      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+      await page.evaluate(() => document.fonts.ready.then(() => undefined));
+      await expect.poll(() => page.evaluate(() => {
+        return document.documentElement.scrollWidth - document.documentElement.clientWidth;
+      })).toBe(0);
 
       await page.goto('/casebook/Case1#section-9');
       await expect(page.getByTestId('case-section-9')).toBeInViewport();

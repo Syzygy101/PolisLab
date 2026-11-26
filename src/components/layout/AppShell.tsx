@@ -180,6 +180,19 @@ export function AppShell() {
           setDrawerOpen(false);
           menuButtonRef.current?.focus();
         }}
+        onKeyDown={(event) => {
+          if (event.key !== 'Tab') return;
+          const tabStops = event.currentTarget.querySelectorAll<HTMLElement>('button, a[href]');
+          const first = tabStops.item(0);
+          const last = tabStops.item(tabStops.length - 1);
+          if (event.shiftKey && event.target === first) {
+            event.preventDefault();
+            last?.focus();
+          } else if (!event.shiftKey && event.target === last) {
+            event.preventDefault();
+            first?.focus();
+          }
+        }}
         onClick={(event) => {
           if (event.target === event.currentTarget) event.currentTarget.close();
         }}
